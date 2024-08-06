@@ -1,0 +1,28 @@
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  check:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v4"
+
+      - uses: "DeterminateSystems/nix-installer-action@v9"
+        with:
+          diagnostic-endpoint: ""
+
+      - uses: "DeterminateSystems/magic-nix-cache-action@main"
+        with:
+          diagnostic-endpoint: ""
+
+      - uses: "DeterminateSystems/flake-checker-action@v14"
+        with:
+          fail-mode: true
+          ignore-missing-flake-lock: false
+          nixpkgs-keys: "nixpkgs"
+          send-statistics: false
+
+      - name: "Flake check"
+        run: "nix flake check --all-systems --print-build-logs"
