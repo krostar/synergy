@@ -1,0 +1,3 @@
+{
+  printHello = person: "hello ${person}";
+}
