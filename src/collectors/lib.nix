@@ -5,7 +5,7 @@
   ...
 }: {
   options.lib = lib.mkOption {
-    type = with (lib.types // synergy-lib.modules.types); attrsOf (attrsOfAnyDepthOf (functionTo raw));
+    type = with (lib.types // synergy-lib.modules.types); attrsOf (attrsOfAnyDepthOf raw);
     default = config.synergy.result.systemless.lib or {};
     readOnly = true;
   };
