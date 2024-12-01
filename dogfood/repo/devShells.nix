@@ -1,8 +1,8 @@
 {
   pkgs,
-  self,
+  unit,
   ...
 }:
 pkgs.mkShellNoCC {
-  nativeBuildInputs = [self.formatter];
+  nativeBuildInputs = [unit.formatter];
 }

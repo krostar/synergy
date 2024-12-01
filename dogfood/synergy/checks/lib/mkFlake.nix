@@ -2,12 +2,12 @@
   flake,
   lib,
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib) mkFlake;
+  inherit (unit.lib) mkFlake;
 in
   testEqualContents {
     assertion = "lib.mkFlake";

@@ -1,11 +1,11 @@
 {
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib) mustFindOneNixpkgs;
+  inherit (unit.lib) mustFindOneNixpkgs;
 in
   testEqualContents {
     assertion = "lib.mustFindOneNixpkgs";

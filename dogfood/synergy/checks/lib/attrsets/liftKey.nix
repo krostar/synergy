@@ -1,11 +1,11 @@
 {
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.attrsets) liftKey;
+  inherit (unit.lib.attrsets) liftKey;
 in
   testEqualContents {
     assertion = "lib.attrsets.liftKey";

@@ -1,11 +1,11 @@
 {
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.attrsets) removeEmptySets;
+  inherit (unit.lib.attrsets) removeEmptySets;
 in
   testEqualContents {
     assertion = "lib.attrsets.removeEmptySets";

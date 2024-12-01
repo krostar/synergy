@@ -6,11 +6,11 @@
 Loads all sources and provides them with a set of arguments.
 
 The following arguments are provided to loaded sources if they are functions:
-  - `synergy-lib`: Synergy library.
+  - `args`: Provided `args` attributes.
   - `pkgs`: Provided only if the `pkgs` argument is not `null`.
-  - `self`: Current unit modules.
+  - `synergy-lib`: Synergy library.
+  - `unit`: Current unit modules.
   - `units`: All units modules.
-  - `args`: Provided `args`.
 
 If a loaded source is not a function, it is loaded without any arguments.
 */
@@ -24,15 +24,15 @@ pkgs: let
 
   # units contains modules for all units
   units = builtins.mapAttrs (module: modules: (let
-    # self contains all modules for current unit
-    self =
+    # unit contains all modules for current unit
+    unit =
       builtins.mapAttrs (
-        unit: source: let
+        unitName: source: let
           loadArgs =
             args
             // (lib.attrsets.optionalAttrs systemized {inherit pkgs;})
             // {
-              inherit units self;
+              inherit units unit;
               synergy-lib = root;
             };
 
@@ -42,7 +42,11 @@ pkgs: let
             if lib.trivial.isFunction loaded
             then
               lib.trivial.throwIf ((builtins.hasAttr "pkgs" (builtins.functionArgs loaded)) && !systemized)
-              "while trying to load ${unit}.${module} at ${toLoad}:\nthe pkgs attribute is only available in systemized result ; trying to access pkgs via a systemless result is impossible" (loaded loadArgs)
+              ''
+                while trying to load ${unitName}.${module} at ${toLoad}:
+                the pkgs attribute is only available in systemized result
+                trying to access pkgs via a systemless result is possible through `results`
+              '' (loaded loadArgs)
             else loaded;
         in
           if builtins.isAttrs source
@@ -51,7 +55,7 @@ pkgs: let
       )
       modules;
   in
-    self))
+    unit))
   sources;
 in
   units

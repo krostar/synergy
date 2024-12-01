@@ -1,10 +1,9 @@
 {
   pkgs,
-  self,
+  unit,
   synergy-lib,
   ...
 }:
 synergy-lib.tests.cover {
-  inherit pkgs;
-  unit = self;
+  inherit pkgs unit;
 }

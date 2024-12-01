@@ -1,12 +1,12 @@
 {
   lib,
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.modules) collect;
+  inherit (unit.lib.modules) collect;
 in
   testEqualContents {
     assertion = "lib.modules.collect";

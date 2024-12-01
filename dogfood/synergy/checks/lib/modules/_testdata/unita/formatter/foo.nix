@@ -1,1 +1,1 @@
-{self, ...}: self.packages.nginx
+{unit, ...}: unit.packages.nginx

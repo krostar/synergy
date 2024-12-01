@@ -2,12 +2,12 @@
   flake,
   lib,
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.modules) eval;
+  inherit (unit.lib.modules) eval;
 in
   # TODO: this is a minimal test only to check that overall the lib is working
   # later more test should be added to check:

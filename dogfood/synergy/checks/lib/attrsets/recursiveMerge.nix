@@ -1,12 +1,12 @@
 {
   lib,
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.attrsets) recursiveMerge;
+  inherit (unit.lib.attrsets) recursiveMerge;
 in
   testEqualContents {
     assertion = "lib.attrsets.recursiveMerge";

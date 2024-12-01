@@ -1,12 +1,12 @@
 {
   lib,
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.modules) collect load;
+  inherit (unit.lib.modules) collect load;
 
   loaded =
     load {
@@ -22,7 +22,7 @@ in
       modules = builtins.mapAttrs (_: value: builtins.attrNames value) loaded;
       args = {
         names = builtins.attrNames loaded.unitb.lib.debug;
-        self = loaded.unitb.lib.debug.self == loaded.unitb;
+        unit = loaded.unitb.lib.debug.unit == loaded.unitb;
         units = loaded.unitb.lib.debug.units == loaded;
       };
       libA = builtins.attrNames loaded.unita.lib;
@@ -38,11 +38,11 @@ in
       args = {
         names = [
           "hello"
-          "self"
           "synergy-lib"
+          "unit"
           "units"
         ];
-        self = true;
+        unit = true;
         units = true;
       };
       libA = ["foo"];

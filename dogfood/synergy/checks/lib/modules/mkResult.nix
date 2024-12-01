@@ -2,12 +2,12 @@
   flake,
   lib,
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.modules) mkResult;
+  inherit (unit.lib.modules) mkResult;
 
   result = mkResult {
     src = ./_testdata;
@@ -36,7 +36,7 @@ in
           units = builtins.mapAttrs (_: v: builtins.attrNames v) loaded.result;
           args = {
             names = builtins.attrNames loaded.result.lib.unitb.debug;
-            self = builtins.attrNames loaded.result.lib.unitb.debug.self;
+            unit = builtins.attrNames loaded.result.lib.unitb.debug.unit;
             units = builtins.attrNames loaded.result.lib.unitb.debug.units;
           };
           lib = [
@@ -69,8 +69,8 @@ in
             packages = ["unita" "unitb"];
           };
           args = {
-            names = ["data" "deps" "flake" "lib" "loaded" "pkgs" "self" "synergy-lib" "units"];
-            self = ["lib" "packages"];
+            names = ["data" "deps" "flake" "lib" "pkgs" "results" "synergy-lib" "unit" "units"];
+            unit = ["lib" "packages"];
             units = ["unita" "unitb"];
           };
           lib = [["foo"] ["debug"] ["printHello"]];

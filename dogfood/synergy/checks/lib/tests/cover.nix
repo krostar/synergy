@@ -1,10 +1,10 @@
 {
   pkgs,
-  self,
+  unit,
   ...
 }: let
   inherit (pkgs.testers) testBuildFailure;
-  inherit (self.lib.tests) cover;
+  inherit (unit.lib.tests) cover;
 in {
   empty = cover {
     inherit pkgs;

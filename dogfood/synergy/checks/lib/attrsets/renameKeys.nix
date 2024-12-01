@@ -1,11 +1,11 @@
 {
   pkgs,
-  self,
+  unit,
   ...
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (self.lib.attrsets) renameKeys;
+  inherit (unit.lib.attrsets) renameKeys;
   renamer = key: "-${key}-";
 in
   testEqualContents {

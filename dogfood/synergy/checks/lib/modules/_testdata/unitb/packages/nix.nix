@@ -1,1 +1,1 @@
-{pkgs, ...:} pkgs.nix;
+{pkgs, ...}: pkgs.nix
