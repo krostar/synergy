@@ -3,9 +3,7 @@
 Lifts name/value pairs from a nested attribute set one level up,
   joining the parent and child attribute names with the given separator.
 
-This function ignores derivations.
-
-Example:
+  Example:
   liftChildren "-" {a = {b = 1;}; c = {d = 2;};}
     => {a-b = 1; c-d = 2;}
 */

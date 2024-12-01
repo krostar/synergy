@@ -2,8 +2,6 @@
 /*
 Recursively lifts a nested attribute with the given key to the top level.
 
-This function ignores derivations.
-
 Example:
   liftKey "key" {a = 1; key = {b = 2;};}
     => {a = 1; b = 2;}
