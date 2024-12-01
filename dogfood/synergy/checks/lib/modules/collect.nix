@@ -23,6 +23,7 @@ in
         lib = ./_testdata/unitb/lib/default.nix;
         packages = {
           foo = ./_testdata/unitb/packages/foo.nix;
+          nix = ./_testdata/unitb/packages/nix.nix;
         };
       };
     };

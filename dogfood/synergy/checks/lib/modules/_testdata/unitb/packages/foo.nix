@@ -1,2 +1,1 @@
-{units, ...}:
-units.unita.packages.hello
+{units, ...}: units.unita.packages.hello
