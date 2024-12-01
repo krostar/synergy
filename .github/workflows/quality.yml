@@ -1,5 +1,4 @@
 ---
-
 name: "Quality"
 on:
   push:
@@ -11,7 +10,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v4"
-      - uses: "DeterminateSystems/nix-installer-action@v14"
+      - uses: "DeterminateSystems/nix-installer-action@v16"
         with:
           diagnostic-endpoint: ""
       - uses: "DeterminateSystems/magic-nix-cache-action@v8"
