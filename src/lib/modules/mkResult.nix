@@ -23,7 +23,7 @@ in {
       find = set:
         if flake.narHash == set.flake.narHash
         then set.result
-        else lib.lists.findFirst (x: x != {}) null (lib.lists.flatten (builtins.map find (builtins.attrValues set.dependencies)));
+        else lib.lists.findFirst builtins.isAttrs null (lib.lists.flatten (builtins.map find (builtins.attrValues set.dependencies)));
     in {
       systemless = find config.synergy.loaded.systemless;
       systemized = builtins.mapAttrs (_: find) config.synergy.loaded.systemized;
