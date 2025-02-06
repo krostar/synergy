@@ -9,7 +9,7 @@
 in {
   options = {
     data = lib.mkOption {
-      type = lib.types.submodule {freeformType = lib.types.anything;};
+      type = lib.types.submodule {freeformType = with lib.types; lazyAttrsOf anything;};
       description = "data model is extensible through custom collectors ; evaluated configuration is an argument provided to synergy modules";
       default = {};
     };
@@ -90,11 +90,11 @@ in {
           attrsOf (submodule {
             options = {
               systemless = lib.mkOption {
-                type = lib.types.bool;
+                type = bool;
                 default = false;
               };
               systemized = lib.mkOption {
-                type = lib.types.bool;
+                type = bool;
                 default = false;
               };
             };
@@ -159,10 +159,13 @@ in {
   };
 
   config = {
-    data = lib.mkMerge (lib.lists.flatten (
-      builtins.attrValues (builtins.mapAttrs (_: units: builtins.attrValues (builtins.mapAttrs (_: modules: builtins.attrValues (modules.data or {})) units)) cfg.dependencies.systemized)
-      ++ builtins.attrValues (builtins.mapAttrs (_: modules: builtins.attrValues (modules.data or {})) cfg.result.systemized)
-    ));
+    data = builtins.listToAttrs (builtins.map(system:
+      lib.attrsets.nameValuePair system (
+        lib.mkMerge (lib.lists.flatten (
+          builtins.attrValues(cfg.result.systemized.${system}.data or {})
+          ++builtins.attrValues (builtins.mapAttrs(dep: modules: builtins.attrValues (modules.data or {})) (cfg.dependencies.systemized.${system} or {}))
+        )))
+    ) cfg.systems);
 
     flake._synergy = {
       config = builtins.removeAttrs config ["_module" "assertions" "flake" "warnings"];
