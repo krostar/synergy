@@ -159,13 +159,16 @@ in {
   };
 
   config = {
-    data = builtins.listToAttrs (builtins.map(system:
-      lib.attrsets.nameValuePair system (
-        lib.mkMerge (lib.lists.flatten (
-          builtins.attrValues(cfg.result.systemized.${system}.data or {})
-          ++builtins.attrValues (builtins.mapAttrs(dep: modules: builtins.attrValues (modules.data or {})) (cfg.dependencies.systemized.${system} or {}))
-        )))
-    ) cfg.systems);
+    data = builtins.listToAttrs (builtins.map (
+        system:
+          lib.attrsets.nameValuePair system (
+            lib.mkMerge (lib.lists.flatten (
+              builtins.attrValues (cfg.result.systemized.${system}.data or {})
+              ++ builtins.attrValues (builtins.mapAttrs (_: modules: builtins.attrValues (modules.data or {})) (cfg.dependencies.systemized.${system} or {}))
+            ))
+          )
+      )
+      cfg.systems);
 
     flake._synergy = {
       config = builtins.removeAttrs config ["_module" "assertions" "flake" "warnings"];

@@ -1,6 +1,5 @@
 {
   flake,
-  lib,
   pkgs,
   unit,
   ...

@@ -35,7 +35,10 @@ in {
           inherit (config) data;
           deps = dependencies;
         };
-        sources = super.collect src;
+        sources =
+          if src != null
+          then super.collect src
+          else {};
       }
       pkgs
     );

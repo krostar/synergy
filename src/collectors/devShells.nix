@@ -6,12 +6,14 @@
 }: {
   options.devShells = lib.mkOption {
     type = with lib.types; attrsOf (attrsOf (attrsOf package));
-    default = builtins.mapAttrs (_: m:
-      lib.attrsets.mapAttrs (_: v:
-        if lib.attrsets.isDerivation v
-        then {default = v;}
-        else v) (m.devShells or {}))
-    config.synergy.result.systemized;
+    default = lib.attrsets.filterAttrs (_: v: v != {}) (
+      builtins.mapAttrs (_: m:
+        lib.attrsets.mapAttrs (_: v:
+          if lib.attrsets.isDerivation v
+          then {default = v;}
+          else v) (m.devShells or {}))
+      config.synergy.result.systemized
+    );
     readOnly = true;
   };
 

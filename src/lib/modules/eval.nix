@@ -9,10 +9,10 @@ Load sources and evaluate module.
 See collect.nix for more details about how sources are loaded.
 */
 {
-  src, # path to the directory containing sources
   inputs, # flake inputs, containing self
   eval ? {}, # inline module configuration
   collectors ? (builtins.attrValues synergy-collectors), # list of collectors
+  src ? null, # path to the directory containing sources
 }: let
   mkResult = super.mkResult {inherit src inputs;};
 
