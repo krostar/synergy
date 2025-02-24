@@ -78,10 +78,7 @@ in {
       collectors = lib.mkOption {
         type = with lib.types // synergy-lib.modules.types; attrsOfAnyDepthOf deferredModule;
         description = "collectors that will be loaded after the initial module evalutation ; this is useful when collectors are defined inside synergy";
-        default = {
-          result = cfg.result.systemless.collectors or {};
-          dependencies = builtins.mapAttrs (_: modules: (modules.collectors or {})) cfg.dependencies.systemless;
-        };
+        default = (builtins.mapAttrs (_: modules: (modules.collectors or {})) cfg.dependencies.systemless) // (cfg.result.systemless.collectors or {});
         apply = collectors: lib.attrsets.collect lib.trivial.isFunction collectors;
       };
 

@@ -1,1 +1,1 @@
-{pkgs, ...}: pkgs.alejandra
+{units, ...}: units.harmony.packages.treefmt
