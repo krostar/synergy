@@ -1,8 +1,1 @@
-{
-  pkgs,
-  unit,
-  ...
-}:
-pkgs.mkShellNoCC {
-  nativeBuildInputs = [unit.formatter];
-}
+{units, ...}: units.harmony.devShells.nix

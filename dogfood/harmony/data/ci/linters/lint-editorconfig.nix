@@ -1,0 +1,3 @@
+{
+  Exclude = ["^\\.direnv/" "_testdata/"];
+}
