@@ -238,7 +238,6 @@
       "dogsled"
       "err113"
       "exhaustruct"
-      "exportloopref"
       "forbidigo"
       "forcetypeassert"
       "funlen"
