@@ -16,25 +16,17 @@
     indent_style = "tab";
   };
 
-  "{*.go,go.mod}" = {
+  "{./go.mod,*.go}" = {
     indent_size = "tab";
     indent_style = "tab";
   };
 
-  "{LICENSES/**,LICENSE}" = {
+  "{./LICENSES/*, ./LICENSE, ./LICENSE.*, secrets/**}" = {
     charset = "unset";
     end_of_line = "unset";
     indent_size = "unset";
     indent_style = "unset";
     insert_final_newline = "unset";
-    trim_trailing_whitespace = "unset";
-  };
-
-  "**/secrets/**" = {
-    indent_size = "unset";
-    indent_style = "unset";
-    insert_final_newline = "unset";
-    tab_width = "unset";
     trim_trailing_whitespace = "unset";
   };
 }

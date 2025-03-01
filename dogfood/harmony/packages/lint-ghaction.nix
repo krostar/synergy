@@ -13,11 +13,11 @@ in
     checkPhase = "";
 
     text = ''
+      declare -a tolint=()
       if [ "$#" -ne 0 ]; then
-        >&2 echo "This script takes no arguments."
-        exit 1
+        tolint=("$@")
       fi
 
-      actionlint ${lib.strings.concatStringsSep " " (builtins.map (ignore: "-ignore ${lib.strings.escapeShellArg ignore}") config.ignore or [])}
+      actionlint ${lib.strings.concatStringsSep " " (builtins.map (ignore: "-ignore ${lib.strings.escapeShellArg ignore}") config.ignore or [])} "''${tolint[@]}"
     '';
   }

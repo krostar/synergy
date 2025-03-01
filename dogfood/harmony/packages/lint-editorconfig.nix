@@ -21,11 +21,11 @@ in
     checkPhase = "";
 
     text = ''
+      declare -a tolint=()
       if [ "$#" -ne 0 ]; then
-        >&2 echo "This script takes no arguments."
-        exit 1
+        tolint=("$@")
       fi
 
-      editorconfig-checker -config=${configFile}
+      editorconfig-checker -config=${configFile} "''${tolint[@]}"
     '';
   }
