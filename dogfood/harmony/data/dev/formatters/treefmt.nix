@@ -6,7 +6,7 @@
     cue.enable = true;
     gci = {
       enable = true;
-      order = ["standard" "default" "Prefix(github.com/krostar/)" "localmodule"];
+      order = ["standard" "default" "localmodule"];
     };
 
     gofumpt = {
