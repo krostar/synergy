@@ -1,4 +1,17 @@
-{
+let
+  allUnset = {
+    charset = "unset";
+    end_of_line = "unset";
+    indent_size = "unset";
+    indent_style = "unset";
+    insert_final_newline = "unset";
+    trim_trailing_whitespace = "unset";
+  };
+  indentWithTab = {
+    indent_size = "tab";
+    indent_style = "tab";
+  };
+in {
   root = true;
 
   "*" = {
@@ -11,22 +24,10 @@
     trim_trailing_whitespace = true;
   };
 
-  "*.cue" = {
-    indent_size = "tab";
-    indent_style = "tab";
-  };
+  "/go.mod" = indentWithTab;
+  "*.go" = indentWithTab;
+  "*.cue" = indentWithTab;
 
-  "{./go.mod,*.go}" = {
-    indent_size = "tab";
-    indent_style = "tab";
-  };
-
-  "{./LICENSES/*, ./LICENSE, ./LICENSE.*, secrets/**}" = {
-    charset = "unset";
-    end_of_line = "unset";
-    indent_size = "unset";
-    indent_style = "unset";
-    insert_final_newline = "unset";
-    trim_trailing_whitespace = "unset";
-  };
+  "/LICENSE" = allUnset;
+  "secrets/**" = allUnset;
 }
