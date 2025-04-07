@@ -1,3 +1,3 @@
 {
-  Exclude = ["^\\.direnv/" "_testdata/"];
+  Exclude = ["^\\.direnv\/" "_testdata\/"];
 }
