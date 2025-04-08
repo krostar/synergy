@@ -228,7 +228,7 @@
           }
           {
             name = "function-result-limit";
-            arguments = [3];
+            arguments = [4];
           }
           {
             name = "line-length-limit";
