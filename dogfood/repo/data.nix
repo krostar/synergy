@@ -24,10 +24,8 @@ in {
       nixfmt = {
         enable = true;
         includes = alejandraSlowNixFiles;
+        strict = true;
       };
-    };
-    settings.formatter = {
-      nixfmt.strict = true;
     };
   };
 }

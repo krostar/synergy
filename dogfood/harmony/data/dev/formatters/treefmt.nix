@@ -1,23 +1,21 @@
 {pkgs, ...}: {
-  package = pkgs.treefmt; # we need argument '--tree-root-file'
+  package = pkgs.treefmt;
   projectRootFile = "flake.nix";
   programs = {
     alejandra.enable = true;
     cue.enable = true;
+    formatjson5.enable = true;
     gci = {
       enable = true;
       order = ["standard" "default" "localmodule"];
     };
-
     gofumpt = {
       enable = true;
       extra = true;
     };
     goimports.enable = true;
-    jsonfmt.enable = true;
     mdformat = {
       enable = true;
-      package = pkgs.python312Packages.mdformat; # error with ghostscripts in darwin
     };
     mdsh.enable = true;
     shfmt.enable = true;
