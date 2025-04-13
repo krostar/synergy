@@ -22,6 +22,7 @@
       "ginkgolinter"
       "gocognit"
       "gocyclo"
+      "godot"
       "goheader"
       "ireturn"
       "lll"
@@ -109,12 +110,6 @@
       gocritic = {
         enable-all = true;
         disabled-checks = ["ifElseChain" "unnamedResult" "unnecessaryBlock"];
-      };
-
-      godot = {
-        scope = "toplevel";
-        capital = true;
-        period = true;
       };
 
       govet = {
