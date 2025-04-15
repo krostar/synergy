@@ -5,14 +5,29 @@
 /*
 Loads all sources and provides them with a set of arguments.
 
+This function is responsible for importing all the source files collected by the
+sources.collect function and providing them with a standardized set of arguments.
+It distinguishes between systemized (with pkgs) and systemless loading contexts.
+
+Parameters:
+  - `sources`: The result of calling sources.collect function, containing unit modules to load
+  - `args`: Custom arguments to provide to loaded sources
+  - `pkgs`: Nixpkgs instance for systemized loading, or null for systemless operation
+
 The following arguments are provided to loaded sources if they are functions:
-  - `args`: Provided `args` attributes.
-  - `pkgs`: Provided only if the `pkgs` argument is not `null`.
-  - `synergy-lib`: Synergy library.
-  - `unit`: Current unit modules.
-  - `units`: All units modules.
+  - `args`: Provided `args` attributes
+  - `pkgs`: Provided only if the `pkgs` argument is not `null`
+  - `synergy-lib`: Synergy library
+  - `unit`: Current unit modules
+  - `units`: All units modules
 
 If a loaded source is not a function, it is loaded without any arguments.
+
+Returns:
+  An attribute set with the structure: { unitName = { moduleName = loadedModule; }; }
+
+Errors:
+  - If a source requires pkgs but is loaded in a systemless context
 */
 {
   sources, # result of calling sources.collect
@@ -43,9 +58,15 @@ pkgs: let
             then
               lib.trivial.throwIf ((builtins.hasAttr "pkgs" (builtins.functionArgs loaded)) && !systemized)
               ''
-                while trying to load ${unitName}.${module} at ${toLoad}:
-                the pkgs attribute is only available in systemized result
-                trying to access pkgs via a systemless result is possible through `results`
+                Error loading module: ${unitName}.${module} at ${toLoad}
+                ------------------------------------------------------------
+                This module requires the 'pkgs' attribute, but was loaded in a systemless context.
+                The 'pkgs' attribute is only available in systemized results.
+
+                Possible solutions:
+                1. Use a systemized result instead
+                2. Access pkgs via the 'results' attribute instead
+                3. Make the module systemless
               '' (loaded loadArgs)
             else loaded;
         in

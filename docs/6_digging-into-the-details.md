@@ -83,3 +83,7 @@ you can see that using nix repl:
 ```
 
 everything else is based on this `loaded` attribute.
+
+## Next Steps
+
+See [Troubleshooting](./7_troubleshooting.md).

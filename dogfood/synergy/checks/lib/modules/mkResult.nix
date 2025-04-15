@@ -1,6 +1,4 @@
 {
-  flake,
-  lib,
   pkgs,
   unit,
   ...
@@ -21,9 +19,6 @@
     };
   };
 in
-  # TODO: this is a minimal test only to check that overall the lib is working
-  # later more test should be added to check:
-  # - that dependencies are correctly setup
   testEqualContents {
     assertion = "lib.modules.mkResult";
     actual = formatJSON "actual.json" {

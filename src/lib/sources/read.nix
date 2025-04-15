@@ -2,10 +2,17 @@
   /*
   Reads the contents of a directory recursively and returns a structured attribute set.
 
-  The returned attribute set follows the directory structure, with keys representing file and directory names.
-  The values are either:
-    - An attribute set, representing a non-empty subdirectory.
-    - A boolean `true`, indicating a regular file ending with ".nix".
+  This function traverses a directory structure and creates an attribute set that mirrors
+  the hierarchy of Nix files and directories found.
+
+  Parameters:
+    - `dir`: Path to the directory to read recursively
+
+  Returns:
+    An attribute set following the directory structure, with keys representing file and directory names.
+    The values are either:
+      - An attribute set, representing a non-empty subdirectory
+      - A boolean `true`, indicating a regular file ending with ".nix"
   */
   readSource = dir:
     lib.attrsets.filterAttrsRecursive (

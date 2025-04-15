@@ -8,9 +8,6 @@
   inherit (pkgs.testers) testEqualContents;
   inherit (unit.lib.modules) eval;
 in
-  # TODO: this is a minimal test only to check that overall the lib is working
-  # later more test should be added to check:
-  # - that collectors are correctly applied after initial load
   testEqualContents {
     assertion = "lib.modules.eval";
     actual = let
