@@ -24,7 +24,7 @@ in {
     trim_trailing_whitespace = true;
   };
 
-  "/go.mod" = indentWithTab;
+  "go.mod" = indentWithTab;
   "*.go" = indentWithTab;
   "*.cue" = indentWithTab;
 
