@@ -22,9 +22,14 @@
     yamlfmt.enable = true;
   };
   settings.formatter = {
-    yamlfmt.options = ["-formatter" "include_document_start=true,trim_trailing_whitespace=true,retain_line_breaks_single=true"];
     gci.priority = 1;
     goimports.priority = 3;
     gofumpt.priority = 2;
+    mdformat.package = pkgs.mdformat.withPlugins (p: [
+      p.mdformat-beautysh
+      p.mdformat-gfm
+      p.mdformat-nix-alejandra
+    ]);
+    yamlfmt.options = ["-formatter" "include_document_start=true,trim_trailing_whitespace=true,retain_line_breaks_single=true"];
   };
 }

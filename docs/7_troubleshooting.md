@@ -76,6 +76,7 @@ If you're still having trouble:
 1. Check the README and other documentation
 1. Look at the examples in the repository
 1. Open an issue on GitHub with:
-  - A minimal reproduction of the issue
-  - Expected vs. actual behavior
-  - Error messages and relevant code
+
+- A minimal reproduction of the issue
+- Expected vs. actual behavior
+- Error messages and relevant code

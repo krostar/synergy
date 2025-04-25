@@ -37,7 +37,7 @@ outputs = {synergy,...}@inputs: {
 };
 ```
 
-- `src`: Specifies the directory containing your units and modules (e.g., `./nix`).  See [Loading Sources](./docs/2_loading-sources.md) for more details.
+- `src`: Specifies the directory containing your units and modules (e.g., `./nix`). See [Loading Sources](./docs/2_loading-sources.md) for more details.
 - `inputs`: Provides the flake's inputs to Synergy.
 
 1. **Organize Your Source Code:** Structure your project into units and modules within the `src` directory.
@@ -57,11 +57,11 @@ This example defines two units (`unitA`, `unitB`). `unitA` contains two modules 
 
 ## Understanding Synergy's core mechanics
 
-- **Loading Sources:**  Synergy recursively loads all Nix files within the `src` directory. See [Loading Sources](./docs/2_loading-sources.md) for details on the loading process.
+- **Loading Sources:** Synergy recursively loads all Nix files within the `src` directory. See [Loading Sources](./docs/2_loading-sources.md) for details on the loading process.
 
 - **Collectors:** Collectors aggregate configuration data from units and modules to generate flake outputs. See the [Collectors](./docs/4_collectors.md) documentation for details on available collectors and how to create new ones.
 
-- **The `_synergy` Attribute:**  Synergy adds a `_synergy` attribute to your flake outputs, providing access to the internal configuration and loading mechanism.
+- **The `_synergy` Attribute:** Synergy adds a `_synergy` attribute to your flake outputs, providing access to the internal configuration and loading mechanism.
 
 ## Working with external dependencies
 
