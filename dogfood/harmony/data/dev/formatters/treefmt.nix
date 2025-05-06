@@ -5,6 +5,7 @@
     alejandra.enable = true;
     cue.enable = true;
     formatjson5.enable = true;
+    just.enable = true;
     gci = {
       enable = true;
       order = ["standard" "default" "localmodule"];
@@ -29,6 +30,7 @@
       p.mdformat-beautysh
       p.mdformat-gfm
       p.mdformat-nix-alejandra
+      p.mdformat-tables
     ]);
     yamlfmt.options = ["-formatter" "include_document_start=true,trim_trailing_whitespace=true,retain_line_breaks_single=true"];
   };

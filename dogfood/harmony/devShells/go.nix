@@ -16,26 +16,14 @@ in
   pkgs.mkShellNoCC
   {
     inherit (nixagoFiles) shellHook;
-
-    nativeBuildInputs =
-      (with units.harmony.packages; [
-        lint-editorconfig
-        lint-ghaction
-        lint-go
-        lint-nix
-        lint-renovate
-        lint-sh
-        lint-yaml
-        renovate-diff
-        treefmt
-      ])
-      ++ (with pkgs; [
-        binsider
-        go_1_23
-        gotools
-        govulncheck
-        jq
-        nix-diff
-        nix-tree
-      ]);
+    nativeBuildInputs = with pkgs; [
+      binsider
+      go_1_23
+      gotools
+      govulncheck
+      jq
+      just
+      nix-diff
+      nix-tree
+    ];
   }

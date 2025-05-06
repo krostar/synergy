@@ -10,6 +10,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-checker = {
+      url = "github:DeterminateSystems/flake-checker";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nixago = {

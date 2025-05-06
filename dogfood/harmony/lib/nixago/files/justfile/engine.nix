@@ -34,7 +34,7 @@
 
     formatGroups =
       if builtins.length groups > 0
-      then lib.strings.concatMapStrings (group: "[group('${group}')]\n") groups
+      then lib.strings.concatMapStrings (group: "[group('${group}')]\n") (lib.lists.sort (p: q: p < q) groups)
       else "";
 
     formatAttrs =

@@ -15,16 +15,11 @@ pkgs.writeShellApplication {
       exit 1
     fi
 
-    # Check if GITHUB_TOKEN_FILE environment variable is set
-    if [[ -n "$GITHUB_TOKEN_FILE" ]]; then
-      # Read the token from the file
-      if [[ -f "$GITHUB_TOKEN_FILE" ]]; then # Check if the file exists
-        GITHUB_COM_TOKEN=$(tr -d '[:space:]' < "$GITHUB_TOKEN_FILE")
-      else
-        GITHUB_COM_TOKEN="" # Set to empty string if file not found
-      fi
+    # if GITHUB_COM_TOKEN is defined, do nothing
+    # otherwise try to fill it based on GITHUB_TOKEN_FILE content
+    if [[ -z "''${GITHUB_COM_TOKEN:-}" && -n "''${GITHUB_TOKEN_FILE:-}" && -f "$GITHUB_TOKEN_FILE" ]]; then
+      GITHUB_COM_TOKEN="$(tr -d '[:space:]' < "$GITHUB_TOKEN_FILE")"
     else
-      # GITHUB_TOKEN_FILE is not set, set GITHUB_COM_TOKEN to empty
       GITHUB_COM_TOKEN=""
     fi
 
