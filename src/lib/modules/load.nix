@@ -15,19 +15,27 @@ Parameters:
   - `pkgs`: Nixpkgs instance for systemized loading, or null for systemless operation
 
 The following arguments are provided to loaded sources if they are functions:
-  - `args`: Provided `args` attributes
-  - `pkgs`: Provided only if the `pkgs` argument is not `null`
-  - `synergy-lib`: Synergy library
-  - `unit`: Current unit modules
-  - `units`: All units modules
+  - `_synergy`: Attribute used internally by synergy, it is not advised to use it
+  - `args`: All provided `args` attributes are passed through
+  - `pkgs`: Provided only if the `pkgs` argument is not `null` (systemized context)
+  - `synergy-lib`: The complete Synergy library for access to all its functions
+  - `unit`: The current unit's modules
+  - `units`: All units' modules, allowing cross-unit references
 
 If a loaded source is not a function, it is loaded without any arguments.
 
+This function uses circular references to allow modules to reference other modules
+in the same unit and across units. A unit can access its own modules via `unit` and
+all units via `units`.
+
 Returns:
-  An attribute set with the structure: { unitName = { moduleName = loadedModule; }; }
+  An attribute set with the structure: { $unitName = { $moduleName = loadedModule; }; }
+  where each loadedModule is the result of importing the source with appropriate arguments.
 
 Errors:
-  - If a source requires pkgs but is loaded in a systemless context
+  - If a source requires pkgs but is loaded in a systemless context, the error will be
+    raised by the modules.import function with detailed troubleshooting information.
+```
 */
 {
   sources, # result of calling sources.collect
@@ -38,41 +46,21 @@ pkgs: let
   systemized = pkgs != null;
 
   # units contains modules for all units
-  units = builtins.mapAttrs (module: modules: (let
+  units = builtins.mapAttrs (unitName: modules: (let
     # unit contains all modules for current unit
     unit =
       builtins.mapAttrs (
-        unitName: source: let
-          loadArgs =
-            args
-            // (lib.attrsets.optionalAttrs systemized {inherit pkgs;})
-            // {
-              inherit units unit;
-              synergy-lib = root;
-            };
-
-          load = toLoad: let
-            loaded = builtins.import toLoad;
-          in
-            if lib.trivial.isFunction loaded
-            then
-              lib.trivial.throwIf ((builtins.hasAttr "pkgs" (builtins.functionArgs loaded)) && !systemized)
-              ''
-                Error loading module: ${unitName}.${module} at ${toLoad}
-                ------------------------------------------------------------
-                This module requires the 'pkgs' attribute, but was loaded in a systemless context.
-                The 'pkgs' attribute is only available in systemized results.
-
-                Possible solutions:
-                1. Use a systemized result instead
-                2. Access pkgs via the 'results' attribute instead
-                3. Make the module systemless
-              '' (loaded loadArgs)
-            else loaded;
-        in
-          if builtins.isAttrs source
-          then (lib.mapAttrsRecursive (_: load) source)
-          else load source
+        moduleName: source:
+          root.modules.import {
+            inherit unitName moduleName source;
+            args =
+              args
+              // {
+                inherit units unit;
+                synergy-lib = root;
+              }
+              // (lib.attrsets.optionalAttrs systemized {inherit pkgs;});
+          }
       )
       modules;
   in

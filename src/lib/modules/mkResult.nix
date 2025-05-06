@@ -37,7 +37,7 @@ in {
         };
         sources =
           if src != null
-          then super.collect src
+          then root.sources.filters.dropNonDirectoryRoots (super.collect src)
           else {};
       }
       pkgs

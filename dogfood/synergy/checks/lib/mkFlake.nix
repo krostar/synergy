@@ -1,6 +1,5 @@
 {
   flake,
-  lib,
   pkgs,
   unit,
   ...
@@ -15,7 +14,7 @@ in
       formatJSON "actual.json"
       (builtins.attrNames
         (mkFlake {
-          src = ./modules/_testdata;
+          src = ./modules/_testdata/test-load;
           inputs = {
             inherit (flake.inputs) nixpkgs;
             self = 42;

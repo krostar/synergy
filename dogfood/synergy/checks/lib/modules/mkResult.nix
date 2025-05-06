@@ -8,7 +8,7 @@
   inherit (unit.lib.modules) mkResult;
 
   result = mkResult {
-    src = ./_testdata;
+    src = ./_testdata/test-load;
     inputs = {
       self = {
         outPath = "myOutPath";
@@ -64,7 +64,7 @@ in
             packages = ["unita" "unitb"];
           };
           args = {
-            names = ["data" "deps" "flake" "lib" "pkgs" "results" "synergy-lib" "unit" "units"];
+            names = ["_synergy" "data" "deps" "flake" "lib" "pkgs" "results" "synergy-lib" "unit" "units"];
             unit = ["lib" "packages"];
             units = ["unita" "unitb"];
           };

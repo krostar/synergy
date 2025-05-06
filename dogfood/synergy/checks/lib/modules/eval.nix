@@ -12,7 +12,7 @@ in
     assertion = "lib.modules.eval";
     actual = let
       evaled = eval {
-        src = ./_testdata;
+        src = ./_testdata/test-load;
         inputs = {
           inherit (flake.inputs) nixpkgs;
           self = 42;

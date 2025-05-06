@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   unit,
   ...
@@ -10,7 +9,7 @@
 
   loaded =
     load {
-      sources = collect ./_testdata;
+      sources = collect ./_testdata/test-load;
       args = {hello = "world";};
     }
     null;
@@ -20,9 +19,9 @@ in
     actual = formatJSON "actual.json" {
       units = builtins.attrNames loaded;
       modules = builtins.mapAttrs (_: value: builtins.attrNames value) loaded;
+      synergy = loaded.unitb.lib.debug._synergy;
       args = {
         names = builtins.attrNames loaded.unitb.lib.debug;
-        unit = loaded.unitb.lib.debug.unit == loaded.unitb;
         units = loaded.unitb.lib.debug.units == loaded;
       };
       libA = builtins.attrNames loaded.unita.lib;
@@ -35,14 +34,18 @@ in
         unita = ["formatter" "lib" "packages"];
         unitb = ["lib" "packages"];
       };
+      synergy = {
+        unitName = "unitb";
+        moduleName = "lib";
+      };
       args = {
         names = [
+          "_synergy"
           "hello"
           "synergy-lib"
           "unit"
           "units"
         ];
-        unit = true;
         units = true;
       };
       libA = ["foo"];

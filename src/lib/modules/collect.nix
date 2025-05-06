@@ -22,7 +22,6 @@ in
           (preferFilesOverDirectories "nix")
           stopAtDefaultNixFile
           dropPrefixedWithUnderscore
-          dropNonDirectoryRoots
         ])
       ))
     )
