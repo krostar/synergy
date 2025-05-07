@@ -24,7 +24,7 @@ This allows you to share configuration data between modules, units, and even pro
 
 ### deps
 
-**Description**: The `deps` parameter provides access to the evaluated configuration and results from  other Synergy units defined in your flake's inputs.
+**Description**: The `deps` parameter provides access to the evaluated configuration and results from other Synergy units defined in your flake's inputs.
 This allows you to reuse and extend configurations from other units.
 
 **Example**:

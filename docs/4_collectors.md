@@ -12,7 +12,7 @@ They provide a consistent mechanism for collecting and aggregating data, reducin
 
 Synergy provides several built-in collectors:
 
-- `checks`:  Collects checks (e.g., tests, linters) defined in your modules.
+- `checks`: Collects checks (e.g., tests, linters) defined in your modules.
 - `devShells`: Collects development shell configurations.
 - `formatter`: Collects code formatters.
 - `lib`: Collects utility functions and libraries.
