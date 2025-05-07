@@ -14,7 +14,7 @@ in [
     fileExtension = "*";
     workingDir = "$ProjectFileDir$";
     program = justExe;
-    arguments = "fmt $FileRelativePath$";
+    arguments = "-- fmt $FileRelativePath$";
     output = "$FileRelativePath$";
   }
   {
@@ -25,16 +25,6 @@ in [
     workingDir = "$ProjectFileDir$";
     program = justExe;
     arguments = "lint-editorconfig";
-    output = "$FileRelativePath$";
-  }
-  {
-    enabled = just.lint-github.enable;
-    name = "Lint github actions";
-    scope = "Current File";
-    fileExtension = "ghe";
-    workingDir = "$ProjectFileDir$";
-    program = justExe;
-    arguments = "lint-ghaction $FileRelativePath$";
     output = "$FileRelativePath$";
   }
   {

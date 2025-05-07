@@ -6,7 +6,7 @@
   ...
 }:
 unit.lib.just.mkRecipe "linters" "lint-editorconfig" {
-  editorconfig-checker = let
+  _editorconfig-checker = let
     inherit (unit.lib) nixago;
     cfg = data.${pkgs.system}.ci.linters.editorconfig-checker;
     inherit

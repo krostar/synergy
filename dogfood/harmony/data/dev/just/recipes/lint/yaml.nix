@@ -8,7 +8,7 @@
   inherit (unit.lib) nixago;
 in
   unit.lib.just.mkRecipe "linters" "lint-yaml" {
-    yamllint = let
+    _yamllint = let
       cfg = data.${pkgs.system}.ci.linters.yamllint;
 
       inherit

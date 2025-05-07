@@ -8,7 +8,7 @@
   inherit (unit.lib) nixago;
 in
   unit.lib.just.mkRecipe "linters" "lint-go" rec {
-    golangci-lint = let
+    _golangci-lint = let
       cfg = data.${pkgs.system}.ci.linters.golangci-lint;
       inherit
         (nixago.make {
@@ -28,8 +28,8 @@ in
       '';
     };
 
-    govulncheck = {
-      inherit (golangci-lint) enable;
+    _govulncheck = {
+      inherit (_golangci-lint) enable;
       attributes = ["positional-arguments"];
       groups = ["go"];
       parameters = [''+PACKAGES="./..."''];
