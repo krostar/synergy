@@ -5,7 +5,7 @@
   ...
 }:
 unit.lib.just.mkRecipe "linters" "lint-renovate" {
-  _renovate-diff = {
+  renovate-diff = {
     enable = true;
     recipe = lib.meta.getExe (pkgs.writeShellApplication {
       name = "lint-renovate";

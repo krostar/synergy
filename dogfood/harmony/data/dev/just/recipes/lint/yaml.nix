@@ -8,7 +8,7 @@
   inherit (unit.lib) nixago;
 in
   unit.lib.just.mkRecipe "linters" "lint-yaml" {
-    _yamllint = let
+    yamllint = let
       cfg = data.${pkgs.system}.ci.linters.yamllint;
 
       inherit
@@ -22,10 +22,9 @@ in
     in {
       inherit (cfg) enable;
       groups = ["yaml"];
-      attributes = ["positional-arguments"];
-      parameters = [''+FILES="."''];
+      parameters = ["*FILES"];
       recipe = ''
-        ${lib.meta.getExe pkgs.yamllint} -c ${configFile} "$@"
+        ${lib.meta.getExe pkgs.yamllint} -c ${configFile} {{ if FILES == "" { "." } else { FILES } }}
       '';
     };
   }

@@ -14,7 +14,7 @@ in [
     fileExtension = "*";
     workingDir = "$ProjectFileDir$";
     program = justExe;
-    arguments = "-- fmt $FileRelativePath$";
+    arguments = "fmt $FileRelativePath$";
     output = "$FileRelativePath$";
   }
   {

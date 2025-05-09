@@ -6,7 +6,7 @@
   ...
 }:
 unit.lib.just.mkRecipe "linters" "lint-editorconfig" {
-  _editorconfig-checker = let
+  editorconfig-checker = let
     inherit (unit.lib) nixago;
     cfg = data.${pkgs.system}.ci.linters.editorconfig-checker;
     inherit
@@ -19,10 +19,9 @@ unit.lib.just.mkRecipe "linters" "lint-editorconfig" {
       ;
   in {
     inherit (cfg) enable;
-    attributes = ["positional-arguments"];
     parameters = ["*FILES"];
     recipe = ''
-      ${lib.meta.getExe pkgs.editorconfig-checker} -config=${configFile} "$@"
+      ${lib.meta.getExe pkgs.editorconfig-checker} -config=${configFile} {{ FILES }}
     '';
   };
 }

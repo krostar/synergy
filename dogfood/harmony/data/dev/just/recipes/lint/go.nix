@@ -8,7 +8,7 @@
   inherit (unit.lib) nixago;
 in
   unit.lib.just.mkRecipe "linters" "lint-go" rec {
-    _golangci-lint = let
+    golangci-lint = let
       cfg = data.${pkgs.system}.ci.linters.golangci-lint;
       inherit
         (nixago.make {
@@ -20,21 +20,19 @@ in
         ;
     in {
       inherit (cfg) enable;
-      attributes = ["positional-arguments"];
       groups = ["go"];
-      parameters = [''+PACKAGES="./..."''];
+      parameters = ["*PACKAGES"];
       recipe = ''
-        ${lib.meta.getExe pkgs.golangci-lint} run --config ${configFile} --verbose "$@"
+        ${lib.meta.getExe pkgs.golangci-lint} run --config ${configFile} --verbose {{ if PACKAGES == "" { "./..." } else { PACKAGES } }}
       '';
     };
 
-    _govulncheck = {
-      inherit (_golangci-lint) enable;
-      attributes = ["positional-arguments"];
+    govulncheck = {
+      inherit (golangci-lint) enable;
       groups = ["go"];
-      parameters = [''+PACKAGES="./..."''];
+      parameters = ["*PACKAGES"];
       recipe = ''
-        ${lib.meta.getExe pkgs.govulncheck} "$@"
+        ${lib.meta.getExe pkgs.govulncheck} {{ if PACKAGES == "" { "./..." } else { PACKAGES } }}
       '';
     };
   }
