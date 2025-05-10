@@ -14,7 +14,7 @@ in
         (nixago.make {
           inherit pkgs;
           file = nixago.files.golangci-lint;
-          data = cfg.settings;
+          data = builtins.removeAttrs cfg ["enable"];
         })
         configFile
         ;
