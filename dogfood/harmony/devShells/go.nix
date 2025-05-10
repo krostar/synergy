@@ -19,7 +19,7 @@ in
     inherit (nixagoFiles) shellHook;
     nativeBuildInputs = with pkgs; [
       binsider
-      go_1_23
+      go_1_24
       gotools
       govulncheck
       jq
