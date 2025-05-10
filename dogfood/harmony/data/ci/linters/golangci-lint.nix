@@ -327,5 +327,7 @@
         paths = ["testdata/"];
       };
     };
+
+    run.relative-path-mode = "gomod";
   };
 }
