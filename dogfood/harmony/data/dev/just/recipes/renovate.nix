@@ -3,12 +3,11 @@
   pkgs,
   unit,
   ...
-}:
-unit.lib.just.mkRecipe "linters" "lint-renovate" {
-  renovate-diff = {
+}: {
+  renovate = {
     enable = true;
     recipe = lib.meta.getExe (pkgs.writeShellApplication {
-      name = "lint-renovate";
+      name = "renovate-diff";
 
       runtimeInputs = [unit.packages.renovate-diff pkgs.jq pkgs.renovate];
       checkPhase = "";
