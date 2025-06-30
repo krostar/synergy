@@ -1,27 +1,39 @@
 {lib}:
-/*
-Filter out empty attribute sets recursively.
-
-Example:
-  removeEmptySets { a = {}; b = { c = 1; }; }
-    => { b = { c = 1; }; }
-*/
-attr:
-lib.lists.foldr lib.attrsets.recursiveUpdate {} (
-  builtins.map (
-    item: lib.attrsets.setAttrByPath item.keys item.value
-  ) (
-    lib.attrsets.collect (
-      value: (builtins.isAttrs value) && (lib.attrsets.attrByPath ["_marker"] false value)
-    ) (
-      lib.attrsets.mapAttrsRecursive (keys: value: {
-        inherit keys value;
-        _marker =
-          if builtins.isAttrs value
-          then builtins.length (builtins.attrNames value) != 0
-          else true;
-      })
-      attr
-    )
-  )
-)
+# This function implements a cleaning algorithm that recursively traverses nested
+# attribute set structures and removes all empty attribute sets while preserving
+# the overall hierarchy and all meaningful content. It's designed to eliminate
+# structural noise from complex nested configurations.
+#
+# Examples:
+#     removeEmptySets {
+#       services = {
+#         web = { port = 80; ssl = {}; };
+#         api = {};
+#         database = {
+#           primary = { host = "localhost"; };
+#           replica = {};
+#         };
+#       };
+#       monitoring = {};
+#     }
+#     => {
+#          services = {
+#            web = { port = 80; };
+#            database = {
+#              primary = { host = "localhost"; };
+#            };
+#          };
+#        }
+attr: let
+  cleanAttrs = attrs:
+    lib.attrsets.filterAttrs (_: v: v != {}) (
+      lib.attrsets.mapAttrs (
+        _: value:
+          if builtins.isAttrs value && !lib.attrsets.isDerivation value
+          then cleanAttrs value
+          else value
+      )
+      attrs
+    );
+in
+  cleanAttrs attr

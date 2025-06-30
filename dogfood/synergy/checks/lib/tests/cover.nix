@@ -5,15 +5,15 @@
 }: let
   inherit (pkgs.testers) testBuildFailure;
   inherit (unit.lib.tests) cover;
-in {
-  empty = cover {
+in [
+  (cover {
     inherit pkgs;
     unit = {
       checks = {};
     };
-  };
+  })
 
-  notStrict = cover {
+  (cover {
     inherit pkgs;
     strict = false;
     unit = {
@@ -23,9 +23,9 @@ in {
         hello.world = null;
       };
     };
-  };
+  })
 
-  strict = cover {
+  (cover {
     inherit pkgs;
     unit = {
       foo = {a.b.c = "foo";};
@@ -35,10 +35,9 @@ in {
         hello.world = null;
       };
     };
-  };
+  })
 
-  ko =
-    pkgs.runCommand "cover-ko" {
+  (pkgs.runCommand "cover-ko" {
       failed = testBuildFailure (cover {
         inherit pkgs;
         unit = {
@@ -52,5 +51,5 @@ in {
       grep -F 'hello.world' $failed/testBuildFailure.log
       [[ 1 = $(cat $failed/testBuildFailure.exit) ]]
       touch $out
-    '';
-}
+    '')
+]

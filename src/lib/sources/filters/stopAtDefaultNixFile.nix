@@ -4,50 +4,66 @@
 }: let
   inherit (root.attrsets) removeEmptySets;
 in
-  /*
-  If a directory contains a regular Nix file named "default.nix", only keep that file.
-
-  This function recursively traverses a source tree and, for each directory,
-  checks if it contains a regular file named "default.nix". If it does, the
-  directory's contents are dropped, keeping only the "default.nix" file.
-
-  Example:
-    sources = {
-      dir1 = {
-        file1.nix = true;
-        default.nix = true;
-        dir2 = {
-          file2.nix = true;
-        };
-      };
-    };
-
-    stopAtDefaultNixFile sources
-      => {
-          dir1 = {
-            default.nix = true;
-          };
-        }
-    ```
-  */
+  # This function recursively traverses a source tree and implements the standard
+  # Nix convention where default.nix files serve as the canonical entry point for
+  # their containing directories. When such a file is found, the entire directory
+  # structure is replaced with just the default.nix file.
+  #
+  # default.nix detection criteria:
+  # - the attribute set must contain a "default.nix" key
+  # - the value must be a boolean (not a directory)
+  # - the boolean value must be true
+  #
+  # Examples:
+  #     sources = {
+  #       withDefault = {
+  #         "default.nix" = true;
+  #         "other.nix" = true;
+  #         submodule = {
+  #           "nested.nix" = true;
+  #         };
+  #       };
+  #       withoutDefault = {
+  #         "main.nix" = true;
+  #         "config.nix" = true;
+  #       };
+  #       outer = {
+  #         "default.nix" = false;
+  #         inner = {
+  #           "default.nix" = true;
+  #           "implementation.nix" = true;
+  #         };
+  #       };
+  #     };
+  #
+  #     stopAtDefaultNixFile sources
+  #     => {
+  #          withDefault = {
+  #            "default.nix" = true;
+  #          };
+  #          withoutDefault = {
+  #            "main.nix" = true;
+  #            "config.nix" = true;
+  #          };
+  #          outer = {
+  #            "default.nix" = false;
+  #            inner = {
+  #              "default.nix" = true;
+  #            };
+  #          };
+  #        }
   sources: let
-    replaceCond = attrs:
+    hasDefaultNixRegularFile = attrs:
       builtins.isAttrs attrs
       && builtins.hasAttr "default.nix" attrs
-      && builtins.isBool attrs."default.nix";
+      && builtins.isBool attrs."default.nix"
+      && attrs."default.nix";
+
+    walkThrough = attrs:
+      if hasDefaultNixRegularFile attrs
+      then {"default.nix" = attrs."default.nix";}
+      else if builtins.isAttrs attrs
+      then lib.attrsets.mapAttrs (_: walkThrough) attrs
+      else attrs;
   in
-    if replaceCond sources
-    then {"default.nix" = sources."default.nix";}
-    else
-      (
-        removeEmptySets (
-          lib.attrsets.mapAttrsRecursiveCond (attrs: !(builtins.hasAttr "default.nix" attrs)) (
-            _: value: (
-              if replaceCond value
-              then {"default.nix" = value."default.nix";}
-              else value
-            )
-          )
-          sources
-        )
-      )
+    removeEmptySets (walkThrough sources)

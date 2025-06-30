@@ -1,27 +1,53 @@
 {
   root,
   lib,
-  ...
-}: let
-  ## remove the ".nix" suffix from all keys in an attribute set.
-  removeDotNixFromKeys = root.attrsets.renameKeys (v: lib.strings.removeSuffix ".nix" v);
+}:
+# This function provides the core functionality for collecting and filtering
+# sources from the filesystem. It implements a filtering pipeline that transforms
+# raw directory structures into a clean, normalized representation suitable for module loading.
+#
+# The collection process transforms filesystem structures like:
+#   src/
+#     unit1/
+#       module1.nix
+#       module2/
+#         default.nix
+#     unit2/
+#       _private.nix (excluded)
+#       public.nix
+#
+# Into normalized attribute sets like:
+#   {
+#     unit1 = {
+#       module1 = <source>;
+#       module2 = <source>;
+#     };
+#     unit2 = {
+#       public = <source>;
+#     };
+#   }
+let
+  # removes the ".nix" suffix from all keys in an attribute set
+  # example: { "module.nix" = source; } -> { "module" = source; }
+  removeDotNixFromKeys = root.attrsets.renameAttrKeys (v: lib.strings.removeSuffix ".nix" v);
 in
-  /*
-  Recursively collect Nix source files from a directory and return them as an attribute set.
-
-  The function reads the contents of the directory specified by `src` and applies a series of filters to select the relevant files.
-  - only regular files ending with `.nix` are loaded
-  - if a file and a directory share the same name (except the file extension), the nix file takes precedence and the directory is not loaded
-  - if a `default.nix` file is present at any depth, only that file is loaded, other files at that depth and descendants from that point onward won't be loaded
-  */
   src:
+  # move "default" attribute value up one level in the hierarchy
+  # example: { dir = { default = source; }; } -> { dir = source; }
     root.attrsets.liftKey "default" (
-      removeDotNixFromKeys (root.sources.collect src (
-        lib.lists.foldr (a: a) (root.sources.read src) (with root.sources.filters; [
-          regularNixFilesOnly
-          (preferFilesOverDirectories "nix")
-          stopAtDefaultNixFile
-          dropPrefixedWithUnderscore
-        ])
-      ))
+      removeDotNixFromKeys (
+        root.sources.collect src (
+          # each filter transforms the source tree, building up the final structure
+          # the order matters - later filters operate on the results of earlier ones
+          lib.lists.foldr (a: a) (root.sources.read src) (
+            with root.sources.filters; [
+              # dropNonDirectoryRoots is not added here as this function is also used in autoimport
+              keepRegularFilesOnly
+              (preferFilesOverDirectories "nix")
+              stopAtDefaultNixFile
+              dropPrefixedWithUnderscore
+            ]
+          )
+        )
+      )
     )

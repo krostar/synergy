@@ -13,17 +13,17 @@ in
       (liftAll "-" {})
       (liftAll "-" {
         a.b.c = 4;
-        a.d.e = 3;
+        a.z = 3;
       })
-      (liftAll "-" {a.b = pkgs.hello;})
+      (liftAll "-" {a.z = pkgs.hello;})
     ];
 
     expected = formatJSON "expected.json" [
       {}
       {
         a-b-c = 4;
-        a-d-e = 3;
+        a-z = 3;
       }
-      {a-b = pkgs.hello;}
+      {a-z = pkgs.hello;}
     ];
   }

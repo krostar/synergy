@@ -76,7 +76,7 @@
             };
           };
           default = {};
-          apply = unit.lib.attrsets.removeNullAttrs;
+          apply = unit.lib.attrsets.removeNullOrEmptyAttrs;
         };
     };
   });

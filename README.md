@@ -1,141 +1,136 @@
 # Synergy
 
-Synergy is a Nix flake framework designed to enhance code organization, maintainability,
-and reusability in Nix projects. It promotes a modular approach, encouraging you to
-break down configurations into smaller, self-contained units that define or combine modules
-(packages, dev shells, NixOS configurations, etc.).
+**A modular Nix flake framework that makes your projects more organized, maintainable, and reusable.**
 
-## Benefits
+Synergy transforms how you structure Nix projects by breaking them into small, focused units and modules. Instead of monolithic configurations, you get clean separation of concerns, easy reusability across projects, and a scalable architecture that grows with your needs.
 
-- **Improved Organization:** Structured project layout for better maintainability.
-- **Increased Reusability:** Modular design allows easy reuse of configurations across projects.
-- **Reduced Boilerplate:** Avoid repetitive code.
-- **Scalability:** Easier to manage and extend configurations as projects grow.
-- **Consistency:** Helps providing consistent configurations across different environments.
+## Why Synergy?
 
-## Key Concepts
+**Before Synergy:** Large, unwieldy flake.nix files with everything mixed together. No clear project structure.
 
-- **Units:** Logical groupings of modules, often representing a specific component or feature.
-- **Modules:** Reusable configurations for packages, development environments, or system settings.
-- **Collectors:** Nix modules that gather and aggregate configuration data from different units and modules, simplifying the creation of unified flake outputs.
+**With Synergy:** Clean, modular structure where packages, dev shells, configurations, ... are organized into logical units. Easy reuse across projects. Consistent patterns everywhere.
 
-## Getting started
+## Core Concepts
 
-See the [Getting Started](./docs/1_getting-started.md) guide for detailed instructions on setting up Synergy in your project. Here's a quick overview:
+### Units
 
-1. **Setup your flake:**
+**Logical groupings** of related functionality that organize your project into cohesive, manageable pieces. Units represent bounded contexts or feature areas within your codebase, similar to how you might organize code into different services, applications, or functional domains.
+
+Each unit contains its own set of modules and can be developed, tested, and reasoned about independently while still being able to reference and build upon other units.
+
+**Examples:**
+
+- `backend`/`frontend` - for a stack-based split
+- `shared` - Common libraries, utilities, base configurations
+- `homelab` - Personal server configurations and services
+- `mycompany` - Organization-specific tools and standards
+- ...
+
+Choose unit names that make sense for your project's architecture and team structure.
+
+### Modules
+
+**Specific configurations** within a unit. Each module type serves a different purpose and corresponds to standard Nix flake outputs.
+
+- `packages` - Package definitions and derivations
+- `devShells` - Development environments and tooling
+- ...
+
+Modules can define any type of output, but they're most powerful when used (collected) by collectors to construct flake outputs. The specific modules that get collected depend on which collectors are configured.
+
+### Collectors
+
+**Automated output generation** that gathers modules of the same type across all units and transforms them into flake outputs.
+
+Collectors eliminate the tedious manual work of wiring up your modules. They automatically discover all modules of each type throughout your project structure and seamlessly combine them into the expected flake outputs that tools like `nix build`, `nix develop`, and `nix run` expect.
+
+- All `packages` modules across units → `packages` flake output
+- All `devShells` modules across units → `devShells` flake output
+- And so on for any module type you define
+
+The beauty is in the automation: add a new file in a package folder in your project, and it's immediately available as `nix build .#unit-name.package-name` without any manual configuration.
+
+## Example
+
+See the dogfood folder, it uses synergy to define the harmony unit, and check itself.
+
+## Module Communication
+
+Modules can reference each other for powerful composition:
 
 ```nix
-# flake.nix
-inputs.synergy.url = "github:krostar/synergy";
-
-outputs = {synergy,...}@inputs: {
-  inherit (synergy.lib.mkFlake {
-    inherit inputs;
-    src = ./nix;
-  });
-};
+# nix/frontend/devShell.nix
+{pkgs, unit, units, ...}:
+pkgs.mkShell {
+  nativeBuildInputs = [
+    unit.packages.web-app           # Same unit
+    units.backend.packages.api-cli  # Different unit
+    units.shared.lib.deploy-script  # Shared utilities
+  ];
+}
 ```
 
-- `src`: Specifies the directory containing your units and modules (e.g., `./nix`). See [Loading Sources](./docs/2_loading-sources.md) for more details.
-- `inputs`: Provides the flake's inputs to Synergy.
+## Working with Dependencies
 
-1. **Organize Your Source Code:** Structure your project into units and modules within the `src` directory.
-
-```
-nix/
-  unitA/
-    moduleA/
-      file1.nix
-      file2.nix
-    moduleB.nix
-  unitB/
-    moduleB.nix
-```
-
-This example defines two units (`unitA`, `unitB`). `unitA` contains two modules (`moduleA`, `moduleB`), and `unitB` contains one module (`moduleB`).
-
-## Understanding Synergy's core mechanics
-
-- **Loading Sources:** Synergy recursively loads all Nix files within the `src` directory. See [Loading Sources](./docs/2_loading-sources.md) for details on the loading process.
-
-- **Collectors:** Collectors aggregate configuration data from units and modules to generate flake outputs. See the [Collectors](./docs/4_collectors.md) documentation for details on available collectors and how to create new ones.
-
-- **The `_synergy` Attribute:** Synergy adds a `_synergy` attribute to your flake outputs, providing access to the internal configuration and loading mechanism.
-
-## Working with external dependencies
-
-If you want to use synergy modules defined in project A, like a package named `mypkg` defined in a unit named `myunit`, in a different project B:
+Reuse Synergy modules from other projects:
 
 ```nix
 # flake.nix
 inputs = {
   synergy.url = "github:krostar/synergy";
-  projectA = {
-    url = "github:example/projectA";
+  awesomeproject = {
+    url = "github:myorg/mylib";
     inputs.synergy.follows = "synergy";
-  }
-}
-
-outputs = {synergy,...}@inputs: {
-  inherit (synergy.lib.mkFlake {
-    inherit inputs;
-    src = ./nix;
-  });
+  };
 };
-```
 
-```nix
-# nix/repo/devShell.nix
-{
-  pkgs,
-  deps,
-  ...
-}:
-  pkgs.mkShellNoCC {
-    nativeBuildInputs = deps.projectB.result.packages.myunit.mypkg;
-  }
-```
-
-## Further Reading
-
-See `./docs/*.md`.
-
-## Harmony
-
-Harmony leverages Synergy's modular design to offer a convenient way to share and manage development tools and settings across multiple projects.
-Instead of replicating these configurations in each individual project, Harmony exposes them so you can use it directly, or extend it based on your needs.
-This simplifies maintenance, ensures consistency, and reduces boilerplate code.
-
-### Example
-
-```nix
-# flake.nix
-inputs.synergy.url = "github:krostar/synergy";
-outputs = inputs @ {synergy,...}: {
+outputs = {synergy, ...} @ inputs:
   synergy.lib.mkFlake {
     inherit inputs;
     src = ./nix;
-    eval.synergy.restrictDependenciesUnits.synergy = ["harmony"];
   };
-}
 ```
 
 ```nix
-# nix/repo/devShell.nix
-{
-  pkgs,
-  deps,
-  ...
-}:
-deps.harmony.result.devShells.harmony.go.overrideAttrs (_: prev: {
-  nativeBuildInputs = prev.nativeBuildInputs ++ (with pkgs; [http-server]);
-})
-```
-
-```nix
-# nix/repo/data.nix
-{
-  ci.linters.yamllint.ignore = [./custom-file-to-ignore.yaml];
+{pkgs, deps, ...}:
+pkgs.mkShell {
+  nativeBuildInputs = [
+      deps.awesomeproject.result.packages.backend.awesome-api
+  ];
 }
 ```
+
+## What You Get
+
+- ✅ **Automatic flake outputs:** No manual wiring needed
+- ✅ **Cross-references:** Modules can easily use each other
+- ✅ **Dependency management:** Import modules from other Synergy projects
+- ✅ **Consistent structure:** Same patterns across all projects
+
+## Documentation
+
+- **[Getting Started](./docs/1_getting-started.md)**
+- **[Loading Sources](./docs/2_loading-sources.md)**
+- **[Module Parameters](./docs/3_module-parameters.md)**
+- **[Collectors and Outputs](./docs/4_collectors-and-outputs.md)**
+
+## Harmony
+
+**Ready-to-use development tools and configurations.**
+
+Harmony is a Synergy-based project that provides opiniatred development tools, linters, formatters, and configurations. You can use synergy without harmony.
+
+## Story behind the project
+
+When I discovered Nix, I quickly realized that GitHub would be my best ally for learning from others' contributions. What I found while browsing projects was a striking lack of standardization. At first, this didn't seem like a big deal—until I discovered flakes: a single entry point that explicitly defines dependencies and exposes standardized outputs. The promise was clear, yet every flake project still looked completely different.
+
+As a beginner, it wasn't always smooth reading trying to make sense of various `flake.nix` files. When I started writing my own Nix code, I quickly discovered the truth: keeping flakes simple while maintaining project discoverability is genuinely hard. Questions started piling up: How do you test things properly? How do you propagate nixpkgs overlays cleanly? What is the best way to provide the nixpkgs instanciation everywhere ?
+
+The more Nix code I wrote, the more I found myself wondering: "Would the nix community understand this and think it is nix-idomatic ? What would onboarding look like if I work with someone else on this project?"
+
+As the projects grew, I began organizing things where they seemed to make the most sense: packages in a `packages/` directory, NixOS configurations in a `nixosConfigurations/` directory, writing small helpers to easily load things. But reusing components without passing crazy parameters everywhere quickly became messy.
+
+In my quest for standardization, I discovered [flake-parts](https://flake.parts/), [std](https://github.com/divnix/std), and [hive](https://github.com/divnix/hive). I used these projects for a while—I like the idea behind those projects, and I don't really have anything negative to say about them, but they never quite clicked for me.
+
+So here I am with Synergy: my humble attempt at finding peace in Nix projects.
+![https://xkcd.com/927/](https://imgs.xkcd.com/comics/standards.png)

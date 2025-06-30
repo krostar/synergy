@@ -64,7 +64,7 @@ in
             packages = ["unita" "unitb"];
           };
           args = {
-            names = ["_synergy" "data" "deps" "flake" "lib" "pkgs" "results" "synergy-lib" "unit" "units"];
+            names = ["data" "deps" "flake" "lib" "pkgs" "results" "synergy-lib" "unit" "units"];
             unit = ["lib" "packages"];
             units = ["unita" "unitb"];
           };

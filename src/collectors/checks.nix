@@ -5,8 +5,25 @@
   ...
 }: {
   options.checks = lib.mkOption {
-    type = with lib.types // synergy-lib.modules.types; attrsOf (attrsOf (attrsOfAnyDepthOf package));
-    default = lib.attrsets.filterAttrs (_: v: v != {}) (builtins.mapAttrs (_: m: m.checks or {}) config.synergy.result.systemized);
+    type = with lib.types // synergy-lib.modules.types; attrsOf (attrsOf (attrsOfAnyDepthOf (either package (listOf package))));
+    default = synergy-lib.attrsets.removeEmptySets (
+      let
+        walk = v:
+          if lib.attrsets.isDerivation v
+          then v
+          else if builtins.isList v
+          then
+            builtins.listToAttrs (
+              lib.lists.imap0
+              (i: v: lib.attrsets.nameValuePair (builtins.toString i) (walk v))
+              v
+            )
+          else if builtins.isAttrs v
+          then builtins.mapAttrs (_: walk) v
+          else {};
+      in
+        walk (builtins.mapAttrs (_: m: m.checks or {}) config.synergy.result.systemized)
+    );
     readOnly = true;
   };
 

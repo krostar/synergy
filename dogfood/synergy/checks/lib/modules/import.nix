@@ -14,15 +14,11 @@ in
     in {
       systemless = unit.lib.modules.import {
         inherit source;
-        unitName = "unit-systemless";
-        moduleName = "mymodule";
         args = {hello = "world";};
       };
 
       systemized = unit.lib.modules.import {
         inherit source;
-        unitName = "unit-systemized";
-        moduleName = "mymodule";
         args = {
           hello = "world";
           inherit pkgs;
@@ -31,8 +27,6 @@ in
 
       squashed = unit.lib.modules.import {
         inherit source;
-        unitName = "unit-squashed";
-        moduleName = "mymodule";
         args = {hello = "world";};
         squash = true;
       };
@@ -42,39 +36,21 @@ in
         a.a = true;
         b.b1.b1 = true;
         c.c = true;
-        debug.debug = {
-          args = ["_synergy" "hello"];
-          synergy = {
-            unitName = "unit-systemless";
-            moduleName = "mymodule";
-          };
-        };
+        debug.debug.args = ["hello"];
       };
 
       systemized = {
         a.a = true;
         b.b1.b1 = true;
         c.c = true;
-        debug.debug = {
-          args = ["_synergy" "hello" "pkgs"];
-          synergy = {
-            unitName = "unit-systemized";
-            moduleName = "mymodule";
-          };
-        };
+        debug.debug.args = ["hello" "pkgs"];
       };
 
       squashed = {
         a = true;
         b1 = true;
         c = true;
-        debug = {
-          args = ["_synergy" "hello"];
-          synergy = {
-            unitName = "unit-squashed";
-            moduleName = "mymodule";
-          };
-        };
+        debug.args = ["hello"];
       };
     };
   }

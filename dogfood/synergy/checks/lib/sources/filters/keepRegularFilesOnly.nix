@@ -8,8 +8,8 @@
   inherit (unit.lib.sources) read filters;
 in
   testEqualContents {
-    assertion = "lib.sources.filters.regularNixFilesOnly";
-    actual = formatJSON "actual.json" (filters.regularNixFilesOnly (read ../_testdata));
+    assertion = "lib.sources.filters.keepRegularFilesOnly";
+    actual = formatJSON "actual.json" (filters.keepRegularFilesOnly (read ../_testdata));
 
     expected = formatJSON "expected.json" {
       "foo.nix" = true;

@@ -3,17 +3,12 @@
   flake,
   lib,
   synergy-lib,
+  synergy-sources,
   ...
 }: let
   cfg = config.synergy;
 in {
   options = {
-    data = lib.mkOption {
-      type = lib.types.submodule {freeformType = with lib.types; lazyAttrsOf anything;};
-      description = "data model is extensible through custom collectors ; evaluated configuration is an argument provided to synergy modules";
-      default = {};
-    };
-
     flake = lib.mkOption {
       type = lib.types.submodule {freeformType = with lib.types; lazyAttrsOf raw;};
       description = "attributes that should be exposed to flake ; its the equivalent of the 'outputs' attribute in a flake.nix file";
@@ -59,8 +54,9 @@ in {
         };
         apply = deps: let
           filter = set:
-            builtins.mapAttrs (name: input: builtins.mapAttrs (_: units: builtins.removeAttrs units (lib.lists.subtractLists cfg.restrictDependenciesUnits.${name} (builtins.attrNames units))) input.result)
-            (builtins.removeAttrs set (lib.lists.subtractLists (builtins.attrNames cfg.restrictDependenciesUnits) (builtins.attrNames set)));
+            builtins.mapAttrs (inputName: input: builtins.mapAttrs (_: units: builtins.removeAttrs units (lib.lists.subtractLists cfg.restrictDependenciesUnits.${inputName} (builtins.attrNames units))) input.result) (
+              builtins.removeAttrs set (lib.lists.subtractLists (builtins.attrNames cfg.restrictDependenciesUnits) (builtins.attrNames set))
+            );
         in {
           systemless = filter deps.systemless;
           systemized = builtins.mapAttrs (_: filter) deps.systemized;
@@ -156,26 +152,13 @@ in {
   };
 
   config = {
-    data = builtins.listToAttrs (builtins.map (
-        system:
-          lib.attrsets.nameValuePair system (
-            lib.mkMerge (lib.lists.flatten (
-              builtins.attrValues (cfg.result.systemized.${system}.data or {})
-              ++ builtins.attrValues (builtins.mapAttrs (_: modules: builtins.attrValues (modules.data or {})) (cfg.dependencies.systemized.${system} or {}))
-            ))
-          )
-      )
-      cfg.systems);
-
     flake._synergy = {
       config = builtins.removeAttrs config ["_module" "assertions" "flake" "warnings"];
+      units = builtins.attrNames synergy-sources;
       inherit (cfg) load;
     };
 
-    synergy.collected = {
-      collectors.systemless = true;
-      data.systemized = true;
-    };
+    synergy.collected.collectors.systemless = true;
 
     assertions = lib.lists.flatten (
       lib.attrsets.mapAttrsToList (_: v: v) (

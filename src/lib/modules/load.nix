@@ -2,69 +2,44 @@
   lib,
   root,
 }:
-/*
-Loads all sources and provides them with a set of arguments.
-
-This function is responsible for importing all the source files collected by the
-sources.collect function and providing them with a standardized set of arguments.
-It distinguishes between systemized (with pkgs) and systemless loading contexts.
-
-Parameters:
-  - `sources`: The result of calling sources.collect function, containing unit modules to load
-  - `args`: Custom arguments to provide to loaded sources
-  - `pkgs`: Nixpkgs instance for systemized loading, or null for systemless operation
-
-The following arguments are provided to loaded sources if they are functions:
-  - `_synergy`: Attribute used internally by synergy, it is not advised to use it
-  - `args`: All provided `args` attributes are passed through
-  - `pkgs`: Provided only if the `pkgs` argument is not `null` (systemized context)
-  - `synergy-lib`: The complete Synergy library for access to all its functions
-  - `unit`: The current unit's modules
-  - `units`: All units' modules, allowing cross-unit references
-
-If a loaded source is not a function, it is loaded without any arguments.
-
-This function uses circular references to allow modules to reference other modules
-in the same unit and across units. A unit can access its own modules via `unit` and
-all units via `units`.
-
-Returns:
-  An attribute set with the structure: { $unitName = { $moduleName = loadedModule; }; }
-  where each loadedModule is the result of importing the source with appropriate arguments.
-
-Errors:
-  - If a source requires pkgs but is loaded in a systemless context, the error will be
-    raised by the modules.import function with detailed troubleshooting information.
-```
-*/
+# This function provides the core functionality for loading and instantiating
+# synergy modules across different units. It creates a hierarchical structure
+# where units contain modules, and each module is properly instantiated with
+# the necessary context and dependencies.
 {
-  sources, # result of calling sources.collect
-  args, # arguments to provide to loaded sources
+  sources, # result of calling sources.collect - nested attrset of unit -> module -> source
+  args, # base arguments to provide to all loaded modules
 }:
-# instanciated nixpkgs, or null for systemless instance
+# nixpkgs instance for systemized loading, or null for systemless instance
 pkgs: let
   systemized = pkgs != null;
 
-  # units contains modules for all units
-  units = builtins.mapAttrs (unitName: modules: (let
-    # unit contains all modules for current unit
+  units = builtins.mapAttrs (_: modules: (let
     unit =
       builtins.mapAttrs (
-        moduleName: source:
+        _: source: (
           root.modules.import {
-            inherit unitName moduleName source;
+            inherit source;
+
             args =
               args
               // {
+                # provide access to itself (unit)
+                # and other units for cross-units dependencies (units)
                 inherit units unit;
+                # provide access to synergy library functions
                 synergy-lib = root;
               }
+              # conditionally add nixpkgs in systemized mode
               // (lib.attrsets.optionalAttrs systemized {inherit pkgs;});
           }
+        )
       )
       modules;
   in
     unit))
   sources;
 in
+  # return the complete hierarchy of instantiated modules
+  # final structure: { <unitName> = { <moduleName> = <module>; }; }
   units

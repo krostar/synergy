@@ -12,17 +12,16 @@ in
     assertion = "lib.mkFlake";
     actual =
       formatJSON "actual.json"
-      (builtins.attrNames
+      (
+        builtins.attrNames
         (mkFlake {
           src = ./modules/_testdata/test-load;
           inputs = {
             inherit (flake.inputs) nixpkgs;
-            self = 42;
+            self = {};
           };
-        })
-        ._synergy
-        .config
-        .synergy
-        .result);
-    expected = formatJSON "expected.json" ["systemized" "systemless"];
+        })._synergy or {
+        }
+      );
+    expected = formatJSON "expected.json" ["config" "load" "units"];
   }

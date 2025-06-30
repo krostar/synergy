@@ -19,7 +19,6 @@ in
     actual = formatJSON "actual.json" {
       units = builtins.attrNames loaded;
       modules = builtins.mapAttrs (_: value: builtins.attrNames value) loaded;
-      synergy = loaded.unitb.lib.debug._synergy;
       args = {
         names = builtins.attrNames loaded.unitb.lib.debug;
         units = loaded.unitb.lib.debug.units == loaded;
@@ -34,13 +33,8 @@ in
         unita = ["formatter" "lib" "packages"];
         unitb = ["lib" "packages"];
       };
-      synergy = {
-        unitName = "unitb";
-        moduleName = "lib";
-      };
       args = {
         names = [
-          "_synergy"
           "hello"
           "synergy-lib"
           "unit"

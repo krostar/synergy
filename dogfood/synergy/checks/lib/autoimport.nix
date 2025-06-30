@@ -8,28 +8,16 @@
   inherit (unit.lib) autoimport;
 in
   testEqualContents {
-    assertion = "lib.modules.import";
+    assertion = "lib.autoimport";
     actual = formatJSON "actual.json" {
       not-squashed = autoimport {
         source = ./modules/_testdata/test-import;
-        args = {
-          hello = "workd";
-          _synergy = {
-            unitName = "unit-not-squashed";
-            moduleName = "mymodule";
-          };
-        };
+        args.hello = "world";
       };
 
       squashed = autoimport {
         source = ./modules/_testdata/test-import;
-        args = {
-          hello = "workd";
-          _synergy = {
-            unitName = "unit-squashed";
-            moduleName = "mymodule";
-          };
-        };
+        args.hello = "world";
         squash = true;
       };
     };
@@ -38,26 +26,14 @@ in
         a.a = true;
         b.b1.b1 = true;
         c.c = true;
-        debug.debug = {
-          args = ["_synergy" "hello"];
-          synergy = {
-            unitName = "unit-not-squashed";
-            moduleName = "mymodule";
-          };
-        };
+        debug.debug.args = ["hello"];
       };
 
       squashed = {
         a = true;
         b1 = true;
         c = true;
-        debug = {
-          args = ["_synergy" "hello"];
-          synergy = {
-            unitName = "unit-squashed";
-            moduleName = "mymodule";
-          };
-        };
+        debug.args = ["hello"];
       };
     };
   }

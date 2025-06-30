@@ -5,14 +5,14 @@
 }: let
   formatJSON = (pkgs.formats.json {}).generate;
   inherit (pkgs.testers) testEqualContents;
-  inherit (unit.lib.attrsets) renameKeys;
+  inherit (unit.lib.attrsets) renameAttrKeys;
   renamer = key: "-${key}-";
 in
   testEqualContents {
-    assertion = "lib.attrsets.renameKeys";
+    assertion = "lib.attrsets.renameAttrKeys";
     actual = formatJSON "actual.json" [
-      (renameKeys renamer {})
-      (renameKeys renamer {
+      (renameAttrKeys renamer {})
+      (renameAttrKeys renamer {
         a = {
           foo = 1;
         };
