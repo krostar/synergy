@@ -1,26 +1,15 @@
 {
   pkgs,
-  data,
-  units,
+  unit,
   ...
-}: let
-  nixagoFiles = units.harmony.lib.nixago.makeAll {
-    inherit pkgs;
-    configs = [
-      (units.harmony.lib.nixago.files.justfile data.${pkgs.system}.dev.just pkgs)
-      (units.harmony.lib.nixago.files.editorconfig data.${pkgs.system}.dev.editorconfig pkgs)
-      (units.harmony.lib.nixago.files.intellij-idea.file-watchers data.${pkgs.system}.dev.intellij-idea.file-watchers pkgs)
-    ];
-    log = false;
-  };
-in
-  pkgs.mkShellNoCC
-  {
-    inherit (nixagoFiles) shellHook;
-    nativeBuildInputs = with pkgs; [
-      jq
-      just
-      nix-diff
-      nix-tree
-    ];
-  }
+}:
+pkgs.mkShellNoCC
+{
+  shellHook = unit.lib.nixago.appendToShellHooks pkgs "";
+  nativeBuildInputs = with pkgs; [
+    jq
+    just
+    nix-diff
+    nix-tree
+  ];
+}
