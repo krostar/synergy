@@ -134,3 +134,7 @@ In my quest for standardization, I discovered [flake-parts](https://flake.parts/
 
 So here I am with Synergy: my humble attempt at finding peace in Nix projects.
 ![https://xkcd.com/927/](https://imgs.xkcd.com/comics/standards.png)
+
+## License
+
+This project is licensed under the GNU Lesser General Public License v3.0.

@@ -16,6 +16,7 @@ in {
     shellcheck.settings.include = shellFilesToInclude;
     shellharden.settings.include = shellFilesToInclude;
     alejandra.settings.exclude = builtins.map (f: "./${f}") alejandraSlowNixFiles;
+    editorconfig-checker.settings.Exclude = ["COPYING" "COPYING.LESSER"];
   };
 
   dev.formatters.treefmt = {
