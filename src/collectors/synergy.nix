@@ -100,18 +100,7 @@ in {
       mkPkgsForSystem = lib.mkOption {
         type = with lib.types; nullOr (functionTo pkgs);
         description = "allows the customization of the nixpkgs instance (pkgs argument) provided to systemized results";
-        default = let
-          nixpkgs = synergy-lib.mustFindOneNixpkgs flake.inputs;
-        in
-          if nixpkgs != null
-          then
-            (system: let
-              overlays = cfg.synergy.result.systemless.overlays.default or null;
-            in
-              if overlays != null
-              then import nixpkgs {inherit system overlays;}
-              else nixpkgs.legacyPackages.${system})
-          else null;
+        default = system: (synergy-lib.mustFindOneNixpkgs flake.inputs).legacyPackages.${system};
       };
 
       export = lib.mkOption {

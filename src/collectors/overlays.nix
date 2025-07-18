@@ -5,8 +5,15 @@
   ...
 }: {
   options.overlays = lib.mkOption {
-    type = with (lib.types // synergy-lib.modules.types); attrsOf (attrsOfAnyDepthOf (functionTo (functionTo (attrsOf raw))));
-    default = config.synergy.result.systemless.overlays or {};
+    type = with lib.types; attrsOf (attrsOf (functionTo (functionTo (attrsOf raw))));
+    default = let
+      overlays = config.synergy.result.systemless.overlays or {};
+    in
+      builtins.mapAttrs (_: overlay:
+        if builtins.isFunction overlay
+        then {default = overlay;}
+        else overlay)
+      overlays;
     readOnly = true;
   };
 
@@ -16,6 +23,6 @@
     output = export cfg;
   in {
     synergy.collected.overlays.systemless = true;
-    flake = lib.mkIf (output != {}) {lib = output;};
+    flake = lib.mkIf (output != {}) {overlays = output;};
   };
 }

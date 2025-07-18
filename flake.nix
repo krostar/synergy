@@ -56,6 +56,7 @@
       eval = {lib, ...}: {
         synergy.export = {
           lib = v: v.synergy;
+
           devShells = cfg: (builtins.mapAttrs (
               system: units:
                 {inherit (cfg.${system}.repo) default;}
