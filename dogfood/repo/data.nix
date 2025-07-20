@@ -12,11 +12,12 @@ in {
       ]);
     };
   in {
+    commitlint.enable = true;
     bashate.settings.include = shellFilesToInclude;
     shellcheck.settings.include = shellFilesToInclude;
     shellharden.settings.include = shellFilesToInclude;
-    alejandra.settings.exclude = builtins.map (f: "./${f}") alejandraSlowNixFiles;
     editorconfig-checker.settings.Exclude = ["COPYING" "COPYING.LESSER"];
+    alejandra.settings.exclude = builtins.map (f: "./${f}") alejandraSlowNixFiles;
   };
 
   dev.formatters.treefmt = {
