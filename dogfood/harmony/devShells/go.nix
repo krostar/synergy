@@ -1,19 +1,15 @@
 {
-  pkgs,
   unit,
+  pkgs,
   ...
 }:
-pkgs.mkShellNoCC
-{
-  shellHook = unit.lib.nixago.appendToShellHooks pkgs "";
-  nativeBuildInputs = with pkgs; [
-    binsider
-    go_1_24
-    gotools
-    govulncheck
-    jq
-    just
-    nix-diff
-    nix-tree
-  ];
-}
+unit.devShells.base.overrideAttrs (_: prev: {
+  nativeBuildInputs =
+    prev.nativeBuildInputs
+    ++ (with pkgs; [
+      binsider
+      go_1_24
+      gotools
+      govulncheck
+    ]);
+})
