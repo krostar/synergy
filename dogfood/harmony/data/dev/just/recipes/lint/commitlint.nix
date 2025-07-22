@@ -21,6 +21,6 @@ in
         ;
     in {
       inherit (cfg) enable;
-      recipe = "${lib.meta.getExe unit.packages.commitlint} --config ${configFile} --last";
+      recipe = "${lib.meta.getExe unit.packages.commitlint} --config ${configFile} --strict --last";
     };
   }
