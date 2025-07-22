@@ -5,16 +5,21 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+  workflow_call: {}
+  workflow_dispatch: {}
+
 env:
   GITHUB_COM_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 jobs:
-  check-quality:
+  ci:
+    name: "Quality Checks (lint and test)"
     permissions:
+      contents: "read"
       actions: "write"
     runs-on: "ubuntu-latest"
+    timeout-minutes: 10
     steps:
       - uses: "nixbuild/nix-quick-install-action@63ca48f939ee3b8d835f4126562537df0fee5b91" # v32
-      - uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
       - uses: "nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a" # v6
         with:
           primary-key: "cache-nix-store-${{ runner.os }}-${{ hashFiles('flake.nix', 'flake.lock') }}"
@@ -28,6 +33,7 @@ jobs:
         with:
           name: "krostar"
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4
       - name: "Print nix version"
         run: "nix --version"
       - name: "Print flake metadata"
