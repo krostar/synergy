@@ -20,13 +20,16 @@ in {
     alejandra.settings.exclude = builtins.map (f: "./${f}") alejandraSlowNixFiles;
   };
 
-  dev.formatters.treefmt = {
-    programs = {
-      alejandra.excludes = alejandraSlowNixFiles;
-      nixfmt = {
-        enable = true;
-        includes = alejandraSlowNixFiles;
-        strict = true;
+  dev = {
+    git-cliff.enable = true;
+    formatters.treefmt = {
+      programs = {
+        alejandra.excludes = alejandraSlowNixFiles;
+        nixfmt = {
+          enable = true;
+          includes = alejandraSlowNixFiles;
+          strict = true;
+        };
       };
     };
   };
