@@ -6,5 +6,5 @@
 units.harmony.devShells.nix.overrideAttrs (_: prev: {
   nativeBuildInputs =
     prev.nativeBuildInputs
-    ++ (with pkgs; [cue]);
+    ++ (with pkgs; [cue scorecard]);
 })
