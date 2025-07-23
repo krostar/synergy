@@ -1,5 +1,6 @@
 ---
 name: "Scheduled Quality"
+
 on:
   schedule:
     - cron: "0 4 1 * *"
@@ -19,13 +20,14 @@ env:
   GITHUB_COM_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
   ACTIVITY_DAYS_THRESHOLD: "${{ inputs.activity_days_threshold || 30 }}"
 
+permissions:
+  contents: "read"
+
 jobs:
   get-activity:
     name: "Check Repository Activity"
     runs-on: "ubuntu-latest"
     timeout-minutes: 1
-    permissions:
-      contents: "read"
     outputs:
       have-recent-commits: "${{ steps.get-activity.outputs.have-recent-commits }}"
     steps:
@@ -54,5 +56,5 @@ jobs:
     uses: "./.github/workflows/quality.yml"
     secrets: "inherit"
     permissions:
-      contents: "read"
       actions: "write"
+      contents: "read"

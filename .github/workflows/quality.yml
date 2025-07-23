@@ -1,5 +1,6 @@
 ---
 name: "Quality"
+
 on:
   push:
     branches: ["main"]
@@ -10,12 +11,16 @@ on:
 
 env:
   GITHUB_COM_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+permissions:
+  contents: "read"
+
 jobs:
   ci:
     name: "Quality Checks (lint and test)"
     permissions:
-      contents: "read"
       actions: "write"
+      contents: "read"
     runs-on: "ubuntu-latest"
     timeout-minutes: 10
     steps:
