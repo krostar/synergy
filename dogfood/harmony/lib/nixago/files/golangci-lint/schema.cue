@@ -1,9 +1,8 @@
 import "list"
 
 @jsonschema(schema="http://json-schema.org/draft-07/schema#")
-
+@jsonschema(id="https://json.schemastore.org/golangci-lint.json")
 close({
-	@jsonschema(id="https://json.schemastore.org/golangci-lint.json")
 	version!: string
 
 	// Options for analysis running,
@@ -67,6 +66,7 @@ close({
 			teamcity?: #."simple-format"
 			sarif?:    #."simple-format"
 		})
+		"path-mode"?: string
 
 		// Add a prefix to the output file references.
 		"path-prefix"?: string
@@ -75,7 +75,6 @@ close({
 		"show-stats"?: bool
 		"sort-order"?: [..."linter" | "severity" | "file"]
 	})
-
 	linters?: close({
 		default?: "standard" | "all" | "none" | "fast"
 
@@ -87,86 +86,88 @@ close({
 
 		// All available settings of specific linters.
 		settings?: close({
-			dupword?:         _#defs."/definitions/settings/definitions/dupwordSettings"
-			asasalint?:       _#defs."/definitions/settings/definitions/asasalintSettings"
-			bidichk?:         _#defs."/definitions/settings/definitions/bidichkSettings"
-			cyclop?:          _#defs."/definitions/settings/definitions/cyclopSettings"
-			decorder?:        _#defs."/definitions/settings/definitions/decorderSettings"
-			depguard?:        _#defs."/definitions/settings/definitions/depguardSettings"
-			dogsled?:         _#defs."/definitions/settings/definitions/dogsledSettings"
-			dupl?:            _#defs."/definitions/settings/definitions/duplSettings"
-			errcheck?:        _#defs."/definitions/settings/definitions/errcheckSettings"
-			errchkjson?:      _#defs."/definitions/settings/definitions/errchkjsonSettings"
-			errorlint?:       _#defs."/definitions/settings/definitions/errorlintSettings"
-			exhaustive?:      _#defs."/definitions/settings/definitions/exhaustiveSettings"
-			exhaustruct?:     _#defs."/definitions/settings/definitions/exhaustructSettings"
-			fatcontext?:      _#defs."/definitions/settings/definitions/fatcontextSettings"
-			forbidigo?:       _#defs."/definitions/settings/definitions/forbidigoSettings"
-			funlen?:          _#defs."/definitions/settings/definitions/funlenSettings"
-			ginkgolinter?:    _#defs."/definitions/settings/definitions/ginkgolinterSettings"
-			gochecksumtype?:  _#defs."/definitions/settings/definitions/gochecksumtypeSettings"
-			gocognit?:        _#defs."/definitions/settings/definitions/gocognitSettings"
-			goconst?:         _#defs."/definitions/settings/definitions/goconstSettings"
-			gocritic?:        _#defs."/definitions/settings/definitions/gocriticSettings"
-			gocyclo?:         _#defs."/definitions/settings/definitions/gocycloSettings"
-			godot?:           _#defs."/definitions/settings/definitions/godotSettings"
-			godox?:           _#defs."/definitions/settings/definitions/godoxSettings"
-			interfacebloat?:  _#defs."/definitions/settings/definitions/interfacebloatSettings"
-			goheader?:        _#defs."/definitions/settings/definitions/goheaderSettings"
-			gomoddirectives?: _#defs."/definitions/settings/definitions/gomoddirectivesSettings"
-			gomodguard?:      _#defs."/definitions/settings/definitions/gomodguardSettings"
-			gosec?:           _#defs."/definitions/settings/definitions/gosecSettings"
-			gosmopolitan?:    _#defs."/definitions/settings/definitions/gosmopolitanSettings"
-			govet?:           _#defs."/definitions/settings/definitions/govetSettings"
-			grouper?:         _#defs."/definitions/settings/definitions/grouperSettings"
-			iface?:           _#defs."/definitions/settings/definitions/ifaceSettings"
-			importas?:        _#defs."/definitions/settings/definitions/importasSettings"
-			inamedparam?:     _#defs."/definitions/settings/definitions/inamedparamSettings"
-			ireturn?:         _#defs."/definitions/settings/definitions/ireturnSettings"
-			lll?:             _#defs."/definitions/settings/definitions/lllSettings"
-			maintidx?:        _#defs."/definitions/settings/definitions/maintidxSettings"
-			makezero?:        _#defs."/definitions/settings/definitions/makezeroSettings"
-			loggercheck?:     _#defs."/definitions/settings/definitions/loggercheckSettings"
-			misspell?:        _#defs."/definitions/settings/definitions/misspellSettings"
-			musttag?:         _#defs."/definitions/settings/definitions/musttagSettings"
-			nakedret?:        _#defs."/definitions/settings/definitions/nakedretSettings"
-			nestif?:          _#defs."/definitions/settings/definitions/nestifSettings"
-			nilnil?:          _#defs."/definitions/settings/definitions/nilnilSettings"
-			nlreturn?:        _#defs."/definitions/settings/definitions/nlreturnSettings"
-			mnd?:             _#defs."/definitions/settings/definitions/mndSettings"
-			nolintlint?:      _#defs."/definitions/settings/definitions/nolintlintSettings"
-			reassign?:        _#defs."/definitions/settings/definitions/reassignSettings"
-			recvcheck?:       _#defs."/definitions/settings/definitions/recvcheckSettings"
-			nonamedreturns?:  _#defs."/definitions/settings/definitions/nonamedreturnsSettings"
-			paralleltest?:    _#defs."/definitions/settings/definitions/paralleltestSettings"
-			perfsprint?:      _#defs."/definitions/settings/definitions/perfsprintSettings"
-			prealloc?:        _#defs."/definitions/settings/definitions/preallocSettings"
-			predeclared?:     _#defs."/definitions/settings/definitions/predeclaredSettings"
-			promlinter?:      _#defs."/definitions/settings/definitions/promlinterSettings"
-			protogetter?:     _#defs."/definitions/settings/definitions/protogetterSettings"
-			revive?:          _#defs."/definitions/settings/definitions/reviveSettings"
-			rowserrcheck?:    _#defs."/definitions/settings/definitions/rowserrcheckSettings"
-			sloglint?:        _#defs."/definitions/settings/definitions/sloglintSettings"
-			spancheck?:       _#defs."/definitions/settings/definitions/spancheckSettings"
-			staticcheck?:     _#defs."/definitions/settings/definitions/staticcheckSettings"
-			tagalign?:        _#defs."/definitions/settings/definitions/tagalignSettings"
-			tagliatelle?:     _#defs."/definitions/settings/definitions/tagliatelleSettings"
-			testifylint?:     _#defs."/definitions/settings/definitions/testifylintSettings"
-			testpackage?:     _#defs."/definitions/settings/definitions/testpackageSettings"
-			thelper?:         _#defs."/definitions/settings/definitions/thelperSettings"
-			usestdlibvars?:   _#defs."/definitions/settings/definitions/usestdlibvarsSettings"
-			usetesting?:      _#defs."/definitions/settings/definitions/usetestingSettings"
-			unconvert?:       _#defs."/definitions/settings/definitions/unconvertSettings"
-			unparam?:         _#defs."/definitions/settings/definitions/unparamSettings"
-			unused?:          _#defs."/definitions/settings/definitions/unusedSettings"
-			varnamelen?:      _#defs."/definitions/settings/definitions/varnamelenSettings"
-			whitespace?:      _#defs."/definitions/settings/definitions/whitespaceSettings"
-			wrapcheck?:       _#defs."/definitions/settings/definitions/wrapcheckSettings"
-			wsl?:             _#defs."/definitions/settings/definitions/wslSettings"
-			copyloopvar?:     _#defs."/definitions/settings/definitions/copyloopvarSettings"
-			custom?:          _#defs."/definitions/settings/definitions/customSettings"
+			dupword?:                  _#defs."/definitions/settings/definitions/dupwordSettings"
+			asasalint?:                _#defs."/definitions/settings/definitions/asasalintSettings"
+			bidichk?:                  _#defs."/definitions/settings/definitions/bidichkSettings"
+			cyclop?:                   _#defs."/definitions/settings/definitions/cyclopSettings"
+			decorder?:                 _#defs."/definitions/settings/definitions/decorderSettings"
+			depguard?:                 _#defs."/definitions/settings/definitions/depguardSettings"
+			dogsled?:                  _#defs."/definitions/settings/definitions/dogsledSettings"
+			dupl?:                     _#defs."/definitions/settings/definitions/duplSettings"
+			embeddedstructfieldcheck?: _#defs."/definitions/settings/definitions/embeddedstructfieldcheckSettings"
+			errcheck?:                 _#defs."/definitions/settings/definitions/errcheckSettings"
+			errchkjson?:               _#defs."/definitions/settings/definitions/errchkjsonSettings"
+			errorlint?:                _#defs."/definitions/settings/definitions/errorlintSettings"
+			exhaustive?:               _#defs."/definitions/settings/definitions/exhaustiveSettings"
+			exhaustruct?:              _#defs."/definitions/settings/definitions/exhaustructSettings"
+			fatcontext?:               _#defs."/definitions/settings/definitions/fatcontextSettings"
+			forbidigo?:                _#defs."/definitions/settings/definitions/forbidigoSettings"
+			funcorder?:                _#defs."/definitions/settings/definitions/funcorderSettings"
+			funlen?:                   _#defs."/definitions/settings/definitions/funlenSettings"
+			ginkgolinter?:             _#defs."/definitions/settings/definitions/ginkgolinterSettings"
+			gochecksumtype?:           _#defs."/definitions/settings/definitions/gochecksumtypeSettings"
+			gocognit?:                 _#defs."/definitions/settings/definitions/gocognitSettings"
+			goconst?:                  _#defs."/definitions/settings/definitions/goconstSettings"
+			gocritic?:                 _#defs."/definitions/settings/definitions/gocriticSettings"
+			gocyclo?:                  _#defs."/definitions/settings/definitions/gocycloSettings"
+			godot?:                    _#defs."/definitions/settings/definitions/godotSettings"
+			godox?:                    _#defs."/definitions/settings/definitions/godoxSettings"
+			interfacebloat?:           _#defs."/definitions/settings/definitions/interfacebloatSettings"
+			goheader?:                 _#defs."/definitions/settings/definitions/goheaderSettings"
+			gomoddirectives?:          _#defs."/definitions/settings/definitions/gomoddirectivesSettings"
+			gomodguard?:               _#defs."/definitions/settings/definitions/gomodguardSettings"
+			gosec?:                    _#defs."/definitions/settings/definitions/gosecSettings"
+			gosmopolitan?:             _#defs."/definitions/settings/definitions/gosmopolitanSettings"
+			govet?:                    _#defs."/definitions/settings/definitions/govetSettings"
+			grouper?:                  _#defs."/definitions/settings/definitions/grouperSettings"
+			iface?:                    _#defs."/definitions/settings/definitions/ifaceSettings"
+			importas?:                 _#defs."/definitions/settings/definitions/importasSettings"
+			inamedparam?:              _#defs."/definitions/settings/definitions/inamedparamSettings"
+			ireturn?:                  _#defs."/definitions/settings/definitions/ireturnSettings"
+			lll?:                      _#defs."/definitions/settings/definitions/lllSettings"
+			maintidx?:                 _#defs."/definitions/settings/definitions/maintidxSettings"
+			makezero?:                 _#defs."/definitions/settings/definitions/makezeroSettings"
+			loggercheck?:              _#defs."/definitions/settings/definitions/loggercheckSettings"
+			misspell?:                 _#defs."/definitions/settings/definitions/misspellSettings"
+			musttag?:                  _#defs."/definitions/settings/definitions/musttagSettings"
+			nakedret?:                 _#defs."/definitions/settings/definitions/nakedretSettings"
+			nestif?:                   _#defs."/definitions/settings/definitions/nestifSettings"
+			nilnil?:                   _#defs."/definitions/settings/definitions/nilnilSettings"
+			nlreturn?:                 _#defs."/definitions/settings/definitions/nlreturnSettings"
+			mnd?:                      _#defs."/definitions/settings/definitions/mndSettings"
+			nolintlint?:               _#defs."/definitions/settings/definitions/nolintlintSettings"
+			reassign?:                 _#defs."/definitions/settings/definitions/reassignSettings"
+			recvcheck?:                _#defs."/definitions/settings/definitions/recvcheckSettings"
+			nonamedreturns?:           _#defs."/definitions/settings/definitions/nonamedreturnsSettings"
+			paralleltest?:             _#defs."/definitions/settings/definitions/paralleltestSettings"
+			perfsprint?:               _#defs."/definitions/settings/definitions/perfsprintSettings"
+			prealloc?:                 _#defs."/definitions/settings/definitions/preallocSettings"
+			predeclared?:              _#defs."/definitions/settings/definitions/predeclaredSettings"
+			promlinter?:               _#defs."/definitions/settings/definitions/promlinterSettings"
+			protogetter?:              _#defs."/definitions/settings/definitions/protogetterSettings"
+			revive?:                   _#defs."/definitions/settings/definitions/reviveSettings"
+			rowserrcheck?:             _#defs."/definitions/settings/definitions/rowserrcheckSettings"
+			sloglint?:                 _#defs."/definitions/settings/definitions/sloglintSettings"
+			spancheck?:                _#defs."/definitions/settings/definitions/spancheckSettings"
+			staticcheck?:              _#defs."/definitions/settings/definitions/staticcheckSettings"
+			tagalign?:                 _#defs."/definitions/settings/definitions/tagalignSettings"
+			tagliatelle?:              _#defs."/definitions/settings/definitions/tagliatelleSettings"
+			testifylint?:              _#defs."/definitions/settings/definitions/testifylintSettings"
+			testpackage?:              _#defs."/definitions/settings/definitions/testpackageSettings"
+			thelper?:                  _#defs."/definitions/settings/definitions/thelperSettings"
+			usestdlibvars?:            _#defs."/definitions/settings/definitions/usestdlibvarsSettings"
+			usetesting?:               _#defs."/definitions/settings/definitions/usetestingSettings"
+			unconvert?:                _#defs."/definitions/settings/definitions/unconvertSettings"
+			unparam?:                  _#defs."/definitions/settings/definitions/unparamSettings"
+			unused?:                   _#defs."/definitions/settings/definitions/unusedSettings"
+			varnamelen?:               _#defs."/definitions/settings/definitions/varnamelenSettings"
+			whitespace?:               _#defs."/definitions/settings/definitions/whitespaceSettings"
+			wrapcheck?:                _#defs."/definitions/settings/definitions/wrapcheckSettings"
+			wsl?:                      _#defs."/definitions/settings/definitions/wslSettings"
+			wsl_v5?:                   _#defs."/definitions/settings/definitions/wslSettingsV5"
+			copyloopvar?:              _#defs."/definitions/settings/definitions/copyloopvarSettings"
+			custom?:                   _#defs."/definitions/settings/definitions/customSettings"
 		})
-
 		exclusions?: close({
 			generated?:     "strict" | "lax" | "disable"
 			"warn-unused"?: bool
@@ -198,7 +199,6 @@ close({
 			"paths-except"?: [...string]
 		})
 	})
-
 	formatters?: close({
 		// List of enabled formatters.
 		enable?: [...#."formatter-names"]
@@ -212,9 +212,9 @@ close({
 		exclusions?: close({
 			generated?: "strict" | "lax" | "disable"
 			paths?: [...string]
+			"warn-unused"?: bool
 		})
 	})
-
 	issues?: close({
 		// Maximum issues count per one linter. Set to 0 to disable.
 		"max-issues-per-linter"?: int & >=0
@@ -248,7 +248,6 @@ close({
 		// or new-from-patch).
 		"whole-files"?: bool
 	})
-
 	severity?: close({
 		// Set the default severity for issues. If severity rules are
 		// defined and the issues do not match or no severity is provided
@@ -292,24 +291,24 @@ close({
 #: "formats-path": matchN(>=1, ["stdout" | "stderr", string])
 
 // Usable formatter names.
-#: "formatter-names": "gci" | "gofmt" | "gofumpt" | "goimports" | "golines"
+#: "formatter-names": "gci" | "gofmt" | "gofumpt" | "goimports" | "golines" | "swaggo"
 
 #: "gocritic-checks": "appendAssign" | "appendCombine" | "argOrder" | "assignOp" | "badCall" | "badCond" | "badLock" | "badRegexp" | "badSorting" | "badSyncOnceFunc" | "boolExprSimplify" | "builtinShadow" | "builtinShadowDecl" | "captLocal" | "caseOrder" | "codegenComment" | "commentFormatting" | "commentedOutCode" | "commentedOutImport" | "defaultCaseOrder" | "deferInLoop" | "deferUnlambda" | "deprecatedComment" | "docStub" | "dupArg" | "dupBranchBody" | "dupCase" | "dupImport" | "dupSubExpr" | "dynamicFmtString" | "elseif" | "emptyDecl" | "emptyFallthrough" | "emptyStringTest" | "equalFold" | "evalOrder" | "exitAfterDefer" | "exposedSyncMutex" | "externalErrorReassign" | "filepathJoin" | "flagDeref" | "flagName" | "hexLiteral" | "httpNoBody" | "hugeParam" | "ifElseChain" | "importShadow" | "indexAlloc" | "initClause" | "ioutilDeprecated" | "mapKey" | "methodExprCall" | "nestingReduce" | "newDeref" | "nilValReturn" | "octalLiteral" | "offBy1" | "paramTypeCombine" | "preferDecodeRune" | "preferFilepathJoin" | "preferFprint" | "preferStringWriter" | "preferWriteByte" | "ptrToRefParam" | "rangeAppendAll" | "rangeExprCopy" | "rangeValCopy" | "redundantSprint" | "regexpMust" | "regexpPattern" | "regexpSimplify" | "returnAfterHttpError" | "ruleguard" | "singleCaseSwitch" | "sliceClear" | "sloppyLen" | "sloppyReassign" | "sloppyTypeAssert" | "sortSlice" | "sprintfQuotedString" | "sqlQuery" | "stringConcatSimplify" | "stringXbytes" | "stringsCompare" | "switchTrue" | "syncMapLoadAndDelete" | "timeExprSimplify" | "todoCommentWithoutDetail" | "tooManyResultsChecker" | "truncateCmp" | "typeAssertChain" | "typeDefFirst" | "typeSwitchVar" | "typeUnparen" | "uncheckedInlineErr" | "underef" | "unlabelStmt" | "unlambda" | "unnamedResult" | "unnecessaryBlock" | "unnecessaryDefer" | "unslice" | "valSwap" | "weakCond" | "whyNoLint" | "wrapperFunc" | "yodaStyleExpr"
 
 #: "gocritic-tags": "diagnostic" | "style" | "performance" | "experimental" | "opinionated" | "security"
 
-#: "gosec-rules": "G101" | "G102" | "G103" | "G104" | "G106" | "G107" | "G108" | "G109" | "G110" | "G111" | "G112" | "G113" | "G114" | "G115" | "G201" | "G202" | "G203" | "G204" | "G301" | "G302" | "G303" | "G304" | "G305" | "G306" | "G307" | "G401" | "G402" | "G403" | "G404" | "G405" | "G406" | "G501" | "G502" | "G503" | "G504" | "G505" | "G506" | "G507" | "G601" | "G602"
+#: "gosec-rules": "G101" | "G102" | "G103" | "G104" | "G106" | "G107" | "G108" | "G109" | "G110" | "G111" | "G112" | "G114" | "G115" | "G201" | "G202" | "G203" | "G204" | "G301" | "G302" | "G303" | "G304" | "G305" | "G306" | "G307" | "G401" | "G402" | "G403" | "G404" | "G405" | "G406" | "G501" | "G502" | "G503" | "G504" | "G505" | "G506" | "G507" | "G601" | "G602"
 
-#: "govet-analyzers": "appends" | "asmdecl" | "assign" | "atomic" | "atomicalign" | "bools" | "buildtag" | "cgocall" | "composites" | "copylocks" | "deepequalerrors" | "defers" | "directive" | "errorsas" | "fieldalignment" | "findcall" | "framepointer" | "httpresponse" | "ifaceassert" | "loopclosure" | "lostcancel" | "nilfunc" | "nilness" | "printf" | "reflectvaluecompare" | "shadow" | "shift" | "sigchanyzer" | "slog" | "sortslice" | "stdmethods" | "stdversion" | "stringintconv" | "structtag" | "testinggoroutine" | "tests" | "timeformat" | "unmarshal" | "unreachable" | "unsafeptr" | "unusedresult" | "unusedwrite" | "waitgroup"
+#: "govet-analyzers": "appends" | "asmdecl" | "assign" | "atomic" | "atomicalign" | "bools" | "buildtag" | "cgocall" | "composites" | "copylocks" | "deepequalerrors" | "defers" | "directive" | "errorsas" | "fieldalignment" | "findcall" | "framepointer" | "hostport" | "httpmux" | "httpresponse" | "ifaceassert" | "loopclosure" | "lostcancel" | "nilfunc" | "nilness" | "printf" | "reflectvaluecompare" | "shadow" | "shift" | "sigchanyzer" | "slog" | "sortslice" | "stdmethods" | "stdversion" | "stringintconv" | "structtag" | "testinggoroutine" | "tests" | "timeformat" | "unmarshal" | "unreachable" | "unsafeptr" | "unusedresult" | "unusedwrite" | "waitgroup"
 
-#: "iface-analyzers": "identical" | "unused" | "opaque"
+#: "iface-analyzers": "identical" | "unused" | "opaque" | "unexported"
 
 // Usable linter names.
-#: "linter-names": matchN(>=1, ["asasalint" | "asciicheck" | "bidichk" | "bodyclose" | "canonicalheader" | "containedctx" | "contextcheck" | "copyloopvar" | "cyclop" | "decorder" | "depguard" | "dogsled" | "dupl" | "dupword" | "durationcheck" | "errcheck" | "errchkjson" | "errname" | "errorlint" | "exhaustive" | "exhaustruct" | "exptostd" | "fatcontext" | "forbidigo" | "forcetypeassert" | "funlen" | "ginkgolinter" | "gocheckcompilerdirectives" | "gochecknoglobals" | "gochecknoinits" | "gochecksumtype" | "gocognit" | "goconst" | "gocritic" | "gocyclo" | "godot" | "godox" | "err113" | "goheader" | "gomoddirectives" | "gomodguard" | "goprintffuncname" | "gosec" | "gosimple" | "gosmopolitan" | "govet" | "grouper" | "iface" | "importas" | "inamedparam" | "ineffassign" | "interfacebloat" | "intrange" | "ireturn" | "lll" | "loggercheck" | "maintidx" | "makezero" | "mirror" | "misspell" | "mnd" | "musttag" | "nakedret" | "nestif" | "nilerr" | "nilnesserr" | "nilnil" | "nlreturn" | "noctx" | "nolintlint" | "nonamedreturns" | "nosprintfhostport" | "paralleltest" | "perfsprint" | "prealloc" | "predeclared" | "promlinter" | "protogetter" | "reassign" | "recvcheck" | "revive" | "rowserrcheck" | "sloglint" | "sqlclosecheck" | "staticcheck" | "stylecheck" | "tagalign" | "tagliatelle" | "testableexamples" | "testifylint" | "testpackage" | "thelper" | "tparallel" | "unconvert" | "unparam" | "unused" | "usestdlibvars" | "usetesting" | "varnamelen" | "wastedassign" | "whitespace" | "wrapcheck" | "wsl" | "zerologlint", string])
+#: "linter-names": matchN(>=1, ["arangolint" | "asasalint" | "asciicheck" | "bidichk" | "bodyclose" | "canonicalheader" | "containedctx" | "contextcheck" | "copyloopvar" | "cyclop" | "decorder" | "depguard" | "dogsled" | "dupl" | "dupword" | "durationcheck" | "embeddedstructfieldcheck" | "errcheck" | "errchkjson" | "errname" | "errorlint" | "exhaustive" | "exhaustruct" | "exptostd" | "fatcontext" | "forbidigo" | "forcetypeassert" | "funcorder" | "funlen" | "ginkgolinter" | "gocheckcompilerdirectives" | "gochecknoglobals" | "gochecknoinits" | "gochecksumtype" | "gocognit" | "goconst" | "gocritic" | "gocyclo" | "godot" | "godox" | "err113" | "goheader" | "gomoddirectives" | "gomodguard" | "goprintffuncname" | "gosec" | "gosimple" | "gosmopolitan" | "govet" | "grouper" | "iface" | "importas" | "inamedparam" | "ineffassign" | "interfacebloat" | "intrange" | "ireturn" | "lll" | "loggercheck" | "maintidx" | "makezero" | "mirror" | "misspell" | "mnd" | "musttag" | "nakedret" | "nestif" | "nilerr" | "nilnesserr" | "nilnil" | "nlreturn" | "noctx" | "noinlineerr" | "nolintlint" | "nonamedreturns" | "nosprintfhostport" | "paralleltest" | "perfsprint" | "prealloc" | "predeclared" | "promlinter" | "protogetter" | "reassign" | "recvcheck" | "revive" | "rowserrcheck" | "sloglint" | "sqlclosecheck" | "staticcheck" | "stylecheck" | "tagalign" | "tagliatelle" | "testableexamples" | "testifylint" | "testpackage" | "thelper" | "tparallel" | "unconvert" | "unparam" | "unused" | "usestdlibvars" | "usetesting" | "varnamelen" | "wastedassign" | "whitespace" | "wrapcheck" | "wsl" | "wsl_v5" | "zerologlint", string])
 
 #: "relative-path-modes": "gomod" | "gitroot" | "cfg" | "wd"
 
-#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-stmt" | "unreachable-code" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "useless-break" | "var-declaration" | "var-naming" | "waitgroup-by-value"
+#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "enforce-switch-style" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-date" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-format" | "unnecessary-stmt" | "unreachable-code" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "use-fmt-print" | "useless-break" | "var-declaration" | "var-naming" | "waitgroup-by-value"
 
 #: "simple-format": close({
 	path?: #."formats-path"
@@ -317,7 +316,9 @@ close({
 
 #: "staticcheck-checks": "*" | "all" | "SA*" | "-SA*" | "SA1*" | "-SA1*" | "SA1000" | "-SA1000" | "SA1001" | "-SA1001" | "SA1002" | "-SA1002" | "SA1003" | "-SA1003" | "SA1004" | "-SA1004" | "SA1005" | "-SA1005" | "SA1006" | "-SA1006" | "SA1007" | "-SA1007" | "SA1008" | "-SA1008" | "SA1010" | "-SA1010" | "SA1011" | "-SA1011" | "SA1012" | "-SA1012" | "SA1013" | "-SA1013" | "SA1014" | "-SA1014" | "SA1015" | "-SA1015" | "SA1016" | "-SA1016" | "SA1017" | "-SA1017" | "SA1018" | "-SA1018" | "SA1019" | "-SA1019" | "SA1020" | "-SA1020" | "SA1021" | "-SA1021" | "SA1023" | "-SA1023" | "SA1024" | "-SA1024" | "SA1025" | "-SA1025" | "SA1026" | "-SA1026" | "SA1027" | "-SA1027" | "SA1028" | "-SA1028" | "SA1029" | "-SA1029" | "SA1030" | "-SA1030" | "SA1031" | "-SA1031" | "SA1032" | "-SA1032" | "SA2*" | "-SA2*" | "SA2000" | "-SA2000" | "SA2001" | "-SA2001" | "SA2002" | "-SA2002" | "SA2003" | "-SA2003" | "SA3*" | "-SA3*" | "SA3000" | "-SA3000" | "SA3001" | "-SA3001" | "SA4*" | "-SA4*" | "SA4000" | "-SA4000" | "SA4001" | "-SA4001" | "SA4003" | "-SA4003" | "SA4004" | "-SA4004" | "SA4005" | "-SA4005" | "SA4006" | "-SA4006" | "SA4008" | "-SA4008" | "SA4009" | "-SA4009" | "SA4010" | "-SA4010" | "SA4011" | "-SA4011" | "SA4012" | "-SA4012" | "SA4013" | "-SA4013" | "SA4014" | "-SA4014" | "SA4015" | "-SA4015" | "SA4016" | "-SA4016" | "SA4017" | "-SA4017" | "SA4018" | "-SA4018" | "SA4019" | "-SA4019" | "SA4020" | "-SA4020" | "SA4021" | "-SA4021" | "SA4022" | "-SA4022" | "SA4023" | "-SA4023" | "SA4024" | "-SA4024" | "SA4025" | "-SA4025" | "SA4026" | "-SA4026" | "SA4027" | "-SA4027" | "SA4028" | "-SA4028" | "SA4029" | "-SA4029" | "SA4030" | "-SA4030" | "SA4031" | "-SA4031" | "SA4032" | "-SA4032" | "SA5*" | "-SA5*" | "SA5000" | "-SA5000" | "SA5001" | "-SA5001" | "SA5002" | "-SA5002" | "SA5003" | "-SA5003" | "SA5004" | "-SA5004" | "SA5005" | "-SA5005" | "SA5007" | "-SA5007" | "SA5008" | "-SA5008" | "SA5009" | "-SA5009" | "SA5010" | "-SA5010" | "SA5011" | "-SA5011" | "SA5012" | "-SA5012" | "SA6*" | "-SA6*" | "SA6000" | "-SA6000" | "SA6001" | "-SA6001" | "SA6002" | "-SA6002" | "SA6003" | "-SA6003" | "SA6005" | "-SA6005" | "SA6006" | "-SA6006" | "SA9*" | "-SA9*" | "SA9001" | "-SA9001" | "SA9002" | "-SA9002" | "SA9003" | "-SA9003" | "SA9004" | "-SA9004" | "SA9005" | "-SA9005" | "SA9006" | "-SA9006" | "SA9007" | "-SA9007" | "SA9008" | "-SA9008" | "SA9009" | "-SA9009" | "ST*" | "-ST*" | "ST1*" | "-ST1*" | "ST1000" | "-ST1000" | "ST1001" | "-ST1001" | "ST1003" | "-ST1003" | "ST1005" | "-ST1005" | "ST1006" | "-ST1006" | "ST1008" | "-ST1008" | "ST1011" | "-ST1011" | "ST1012" | "-ST1012" | "ST1013" | "-ST1013" | "ST1015" | "-ST1015" | "ST1016" | "-ST1016" | "ST1017" | "-ST1017" | "ST1018" | "-ST1018" | "ST1019" | "-ST1019" | "ST1020" | "-ST1020" | "ST1021" | "-ST1021" | "ST1022" | "-ST1022" | "ST1023" | "-ST1023" | "S*" | "-S*" | "S1*" | "-S1*" | "S1000" | "-S1000" | "S1001" | "-S1001" | "S1002" | "-S1002" | "S1003" | "-S1003" | "S1004" | "-S1004" | "S1005" | "-S1005" | "S1006" | "-S1006" | "S1007" | "-S1007" | "S1008" | "-S1008" | "S1009" | "-S1009" | "S1010" | "-S1010" | "S1011" | "-S1011" | "S1012" | "-S1012" | "S1016" | "-S1016" | "S1017" | "-S1017" | "S1018" | "-S1018" | "S1019" | "-S1019" | "S1020" | "-S1020" | "S1021" | "-S1021" | "S1023" | "-S1023" | "S1024" | "-S1024" | "S1025" | "-S1025" | "S1028" | "-S1028" | "S1029" | "-S1029" | "S1030" | "-S1030" | "S1031" | "-S1031" | "S1032" | "-S1032" | "S1033" | "-S1033" | "S1034" | "-S1034" | "S1035" | "-S1035" | "S1036" | "-S1036" | "S1037" | "-S1037" | "S1038" | "-S1038" | "S1039" | "-S1039" | "S1040" | "-S1040" | "QF*" | "-QF*" | "QF1*" | "-QF1*" | "QF1001" | "-QF1001" | "QF1002" | "-QF1002" | "QF1003" | "-QF1003" | "QF1004" | "-QF1004" | "QF1005" | "-QF1005" | "QF1006" | "-QF1006" | "QF1007" | "-QF1007" | "QF1008" | "-QF1008" | "QF1009" | "-QF1009" | "QF1010" | "-QF1010" | "QF1011" | "-QF1011" | "QF1012" | "-QF1012"
 
-#: "tagliatelle-cases": "camel" | "pascal" | "kebab" | "snake" | "goCamel" | "goPascal" | "goKebab" | "goSnake" | "upper" | "upperSnake" | "lower" | "header"
+#: "tagliatelle-cases": "" | "camel" | "pascal" | "kebab" | "snake" | "goCamel" | "goPascal" | "goKebab" | "goSnake" | "upper" | "upperSnake" | "lower" | "header"
+
+#: "wsl-checks": "assign" | "branch" | "decl" | "defer" | "expr" | "for" | "go" | "if" | "inc-dec" | "label" | "range" | "return" | "select" | "send" | "switch" | "type-switch" | "append" | "assign-exclusive" | "assign-expr" | "err" | "leading-whitespace" | "trailing-whitespace"
 
 #settings: _
 
@@ -478,6 +479,12 @@ _#defs: "/definitions/settings/definitions/dupwordSettings": close({
 	ignore?: list.UniqueItems() & [...string]
 })
 
+_#defs: "/definitions/settings/definitions/embeddedstructfieldcheckSettings": close({
+	// Checks that sync.Mutex and sync.RWMutex are not used as
+	// embedded fields.
+	"forbid-mutex"?: bool
+})
+
 _#defs: "/definitions/settings/definitions/errcheckSettings": close({
 	// Report about not checking errors in type assertions, i.e.: `a
 	// := b.(MyStruct)`
@@ -492,6 +499,9 @@ _#defs: "/definitions/settings/definitions/errcheckSettings": close({
 
 	// To disable the errcheck built-in exclude list
 	"disable-default-exclusions"?: bool
+
+	// Display function signature instead of selector
+	verbose?: bool
 })
 
 _#defs: "/definitions/settings/definitions/errchkjsonSettings": close({
@@ -590,6 +600,20 @@ _#defs: "/definitions/settings/definitions/forbidigoSettings": close({
 	})]
 })
 
+_#defs: "/definitions/settings/definitions/funcorderSettings": close({
+	// Checks that constructors are placed after the structure
+	// declaration.
+	constructor?: bool
+
+	// Checks if the exported methods of a structure are placed before
+	// the non-exported ones.
+	"struct-method"?: bool
+
+	// Checks if the constructors and/or structure methods are sorted
+	// alphabetically.
+	alphabetical?: bool
+})
+
 _#defs: "/definitions/settings/definitions/funlenSettings": close({
 	// Limit lines number per function.
 	lines?: int
@@ -661,6 +685,9 @@ _#defs: "/definitions/settings/definitions/ginkgolinterSettings": close({
 	// Force using the Succeed matcher for error functions, and the
 	// HaveOccurred matcher for non-function error values.
 	"force-succeed"?: bool
+
+	// Force adding assertion descriptions to gomega matchers.
+	"force-assertion-description"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/gochecksumtypeSettings": close({
@@ -691,7 +718,7 @@ _#defs: "/definitions/settings/definitions/goconstSettings": close({
 	"ignore-calls"?: bool
 
 	// Exclude strings matching the given regular expression
-	"ignore-strings"?: string
+	"ignore-string-values"?: [...string]
 
 	// Search also for duplicated numbers.
 	numbers?: bool
@@ -701,6 +728,12 @@ _#defs: "/definitions/settings/definitions/goconstSettings": close({
 
 	// Maximum value, only works with `numbers`
 	max?: int
+
+	// Detects constants with identical values
+	"find-duplicates"?: bool
+
+	// Evaluates of constant expressions like Prefix + "suffix"
+	"eval-const-expressions"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/gocriticSettings": close({
@@ -780,7 +813,7 @@ _#defs: "/definitions/settings/definitions/gocycloSettings": close({
 
 _#defs: "/definitions/settings/definitions/godotSettings": close({
 	// Comments to be checked.
-	scope?: "declarations" | "toplevel" | "all"
+	scope?: "declarations" | "toplevel" | "all" | "noinline"
 
 	// List of regexps for excluding particular comment lines from
 	// check.
@@ -877,6 +910,9 @@ _#defs: "/definitions/settings/definitions/gomoddirectivesSettings": close({
 
 	// Forbid the use of the `exclude` directives.
 	"exclude-forbidden"?: bool
+
+	// Forbid the use of the `ignore` directives. (>= go1.25)
+	"ignore-forbidden"?: bool
 
 	// Forbid the use of the `toolchain` directive.
 	"toolchain-forbidden"?: bool
@@ -1340,6 +1376,9 @@ _#defs: "/definitions/settings/definitions/sloglintSettings": close({
 	// Enforce using static values for log messages.
 	"static-msg"?: bool
 
+	// Enforce message style.
+	"msg-style"?: "" | "lowercased" | "capitalized"
+
 	// Enforce a single key naming convention.
 	"key-naming-case"?: "snake" | "kebab" | "camel" | "pascal"
 
@@ -1609,6 +1648,9 @@ _#defs: "/definitions/settings/definitions/usestdlibvarsSettings": close({
 	// Suggest the use of time.Layout.
 	"time-layout"?: bool
 
+	// Suggest the use of time.Month in time.Date.
+	"time-date-month"?: bool
+
 	// Suggest the use of crypto.Hash.String().
 	"crypto-hash"?: bool
 
@@ -1705,6 +1747,10 @@ _#defs: "/definitions/settings/definitions/wrapcheckSettings": close({
 	// interface name, will ignore unwrapped errors returned from a
 	// function whose call is defined on the given interface.
 	"ignore-interface-regexps"?: [...string]
+
+	// Determines whether wrapcheck should report errors returned from
+	// inside the package.
+	"report-internal-errors"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/wslSettings": close({
@@ -1757,4 +1803,14 @@ _#defs: "/definitions/settings/definitions/wslSettings": close({
 	// If true, append is only allowed to be cuddled if appending
 	// value is matching variables, fields or types on line above.
 	"strict-append"?: bool
+})
+
+_#defs: "/definitions/settings/definitions/wslSettingsV5": close({
+	"allow-first-in-block"?: bool
+	"allow-whole-block"?:    bool
+	"branch-max-lines"?:     int
+	"case-max-lines"?:       int
+	default?:                "all" | "none" | "default" | ""
+	enable?: [...#."wsl-checks"]
+	disable?: [...#."wsl-checks"]
 })

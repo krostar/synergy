@@ -32,6 +32,7 @@
       "makezero"
       "mnd"
       "nlreturn"
+      "noinlineerr"
       "prealloc"
       "promlinter"
       "testpackage"

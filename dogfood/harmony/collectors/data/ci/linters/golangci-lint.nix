@@ -9,6 +9,7 @@
           options =
             let
               linterNames = [
+                "arangolint"
                 "asasalint"
                 "asciicheck"
                 "bidichk"
@@ -24,6 +25,7 @@
                 "dupl"
                 "dupword"
                 "durationcheck"
+                "embeddedstructfieldcheck"
                 "errcheck"
                 "errchkjson"
                 "errname"
@@ -34,6 +36,7 @@
                 "fatcontext"
                 "forbidigo"
                 "forcetypeassert"
+                "funcorder"
                 "funlen"
                 "ginkgolinter"
                 "gocheckcompilerdirectives"
@@ -78,6 +81,7 @@
                 "nilnil"
                 "nlreturn"
                 "noctx"
+                "noinlineerr"
                 "nolintlint"
                 "nonamedreturns"
                 "nosprintfhostport"
@@ -112,6 +116,7 @@
                 "whitespace"
                 "wrapcheck"
                 "wsl"
+                "wsl_v5"
                 "zerologlint"
               ];
             in
@@ -680,6 +685,22 @@
                                 description = "Settings for the dupl linter";
                               };
 
+                              embeddedstructfieldcheck = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      forbid-mutex = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Checks that sync.Mutex and sync.RWMutex are not used as embedded fields";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                                description = "Settings for the embeddedstructfieldcheck linter";
+                              };
+
                               errcheck = lib.mkOption {
                                 type = types.nullOr (
                                   types.submodule {
@@ -948,6 +969,32 @@
                                   }
                                 );
                                 default = null;
+                              };
+
+                              funcorder = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      constructor = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Checks that constructors are placed after the structure declaration";
+                                      };
+                                      struct-method = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Checks if the exported methods of a structure are placed before the non-exported ones";
+                                      };
+                                      alphabetical = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Checks if the constructors and/or structure methods are sorted alphabetically";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                                description = "Settings for the funcorder linter";
                               };
 
                               funlen = lib.mkOption {
@@ -4447,6 +4494,47 @@
                                 default = null;
                               };
 
+                              wsl_v5 = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      default = lib.mkOption {
+                                        type = types.nullOr types.str;
+                                        default = null;
+                                        description = "default mode setting";
+                                      };
+                                      enable = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "list of enabled checks";
+                                      };
+                                      allow-first-in-block = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "allow first in block";
+                                      };
+                                      allow-whole-block = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "allow whole block";
+                                      };
+                                      branch-max-lines = lib.mkOption {
+                                        type = types.nullOr types.int;
+                                        default = null;
+                                        description = "branch max lines";
+                                      };
+                                      case-max-lines = lib.mkOption {
+                                        type = types.nullOr types.int;
+                                        default = null;
+                                        description = "case max lines";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                                description = "Settings for the wsl_v5 linter";
+                              };
+
                               copyloopvar = lib.mkOption {
                                 type = types.nullOr (
                                   types.submodule {
@@ -4620,6 +4708,7 @@
                               "gofumpt"
                               "goimports"
                               "golines"
+                              "swaggo"
                             ]
                           )
                         );
