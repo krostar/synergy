@@ -27,8 +27,8 @@
       "provided inputs does not contains self, please provide all flake's output function arguments"
       inputs.self;
   in {
-    # extract core flake metadata for identification and validation
-    inherit (self') outPath narHash;
+    # extract flake source metadata for identification and validation
+    source = self'.sourceInfo;
 
     # separate regular inputs from the special 'self' input
     # This provides clean access to dependency flakes
@@ -63,7 +63,7 @@ in {
     # retrieve final synergy evaluation from flake output to provide it as a parameter of the synergy module
     results = let
       find = set:
-        if flake.narHash == set.flake.narHash
+        if flake.source.narHash == set.flake.source.narHash
         then set.result
         else lib.lists.findFirst builtins.isAttrs null (lib.lists.flatten (builtins.map find (builtins.attrValues set.dependencies)));
     in {

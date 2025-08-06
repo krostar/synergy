@@ -11,6 +11,7 @@
     src = ./_testdata/test-load;
     inputs = {
       self = {
+        sourceInfo = {};
         outPath = "myOutPath";
         narHash = "myNarHash";
         something = 42;
@@ -44,15 +45,12 @@ in
     };
     expected = formatJSON "expected.json" {
       flake = {
-        outPath = "myOutPath";
-        narHash = "myNarHash";
         inputs = {
           foo._synergy = {};
         };
-        outputs = {
-          outPath = "myOutPath";
-          something = 42;
-        };
+        outputs = "myOutPath";
+        source = {};
+        synergies = {};
       };
 
       load = {
