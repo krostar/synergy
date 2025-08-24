@@ -89,10 +89,11 @@
         check-type-assertions = true;
         check-blank = true;
         exclude-functions = [
-          "io.ReadAll"
           "(io.ReadCloser).Close"
+          "(*os.File).Close"
           "encoding/json.Marshal"
           "encoding/json.MarshalIndent"
+          "io.ReadAll"
         ];
       };
 
