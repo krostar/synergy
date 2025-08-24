@@ -1,7 +1,7 @@
 [![](https://img.shields.io/badge/nix-flake-blue?style=for-the-badge&logo=nixos&logoColor=white&logoSize=auto)](#)
 [![](https://img.shields.io/github/actions/workflow/status/krostar/synergy/quality.yml?branch=main&style=for-the-badge)](#)
 [![](https://img.shields.io/github/v/tag/krostar/synergy?sort=semver&style=for-the-badge)](#)
-[![](https://img.shields.io/cii/percentage/10925?style=for-the-badge)]((https://www.bestpractices.dev/projects/10925))
+[![](https://img.shields.io/cii/percentage/10925?style=for-the-badge)](<(https://www.bestpractices.dev/projects/10925)>)
 [![](https://img.shields.io/github/license/krostar/synergy?style=for-the-badge)](#)
 
 # Synergy
