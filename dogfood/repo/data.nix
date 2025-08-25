@@ -2,6 +2,7 @@
   alejandraSlowNixFiles = [
     # alejandra for some reasons is extremely slow when dealing with those files
     "dogfood/harmony/collectors/data/ci/linters/golangci-lint.nix"
+    "dogfood/harmony/collectors/data/dev/sops.nix"
   ];
 in {
   ci.linters = let

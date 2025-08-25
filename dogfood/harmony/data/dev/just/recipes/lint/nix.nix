@@ -41,7 +41,7 @@ unit.lib.just.mkRecipe "linters" "lint-nix" {
     groups = ["nix"];
     parameters = ["*FILES"];
     recipe = ''
-      ${lib.meta.getExe' pkgs.nixfmt-rfc-style "nixfmt"} --check --verify --strict -- {{ if FILES == "" { ${builtins.concatStringsSep " " (builtins.map (v: ''"'' + lib.strings.escapeShellArg v + ''"'') cfg.settings.include)} } else { FILES } }}
+      ${lib.meta.getExe' pkgs.nixfmt-rfc-style "nixfmt"} --check --verify --strict -- {{ if FILES == "" { "${builtins.concatStringsSep " " (builtins.map (v: lib.strings.escapeShellArg v) cfg.settings.include)}" } else { FILES } }}
     '';
   };
 
