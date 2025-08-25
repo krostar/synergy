@@ -213,6 +213,10 @@
             disabled = true;
           }
           {
+            name = "enforce-switch-style";
+            disabled = true;
+          }
+          {
             name = "file-header";
             disabled = true;
           }
@@ -278,6 +282,15 @@
 
       whitespace = {
         multi-func = true;
+      };
+
+      wsl_v5 = {
+        allow-whole-block = true;
+        branch-max-lines = 12;
+        disable = [
+          "assign-exclusive"
+          "assign-expr"
+        ];
       };
     };
 
