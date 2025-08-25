@@ -325,6 +325,12 @@
                           description = "Output formats";
                         };
 
+                      path-mode = lib.mkOption {
+                        type = types.nullOr types.str;
+                        default = null;
+                        description = "Path mode for output";
+                      };
+
                       path-prefix = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
@@ -900,6 +906,30 @@
                                         default = null;
                                         description = "List of regular expressions to exclude struct packages and names from check";
                                       };
+
+                                      allow-empty = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allows empty structures, effectively excluding them from the check";
+                                      };
+
+                                      allow-empty-rx = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "List of regular expressions to match type names that should be allowed to be empty";
+                                      };
+
+                                      allow-empty-returns = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allows empty structures in return statements";
+                                      };
+
+                                      allow-empty-declarations = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allows empty structures in variable declarations";
+                                      };
                                     };
                                   }
                                 );
@@ -1175,6 +1205,12 @@
                                         description = "Exclude strings matching the given regular expression";
                                       };
 
+                                      ignore-string-values = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "Exclude strings matching the given regular expressions";
+                                      };
+
                                       numbers = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
@@ -1191,6 +1227,18 @@
                                         type = types.nullOr types.int;
                                         default = null;
                                         description = "Maximum value, only works with `numbers`";
+                                      };
+
+                                      find-duplicates = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Detects constants with identical values";
+                                      };
+
+                                      eval-const-expressions = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Evaluates of constant expressions like Prefix + \"suffix\"";
                                       };
                                     };
                                   }
@@ -1746,6 +1794,12 @@
                                         description = "Forbid the use of the `exclude` directives";
                                       };
 
+                                      ignore-forbidden = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Forbid the use of the `ignore` directives (>= go1.25)";
+                                      };
+
                                       toolchain-forbidden = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
@@ -1860,7 +1914,7 @@
                                                 description = "List of blocked module version constraints";
                                               };
 
-                                              local_replace_directives = lib.mkOption {
+                                              local-replace-directives = lib.mkOption {
                                                 type = types.nullOr types.bool;
                                                 default = null;
                                                 description = "Raise lint issues if loading local path with replace directive";
@@ -2404,6 +2458,12 @@
                                         description = "List of words to ignore";
                                       };
 
+                                      ignore-rules = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "List of rules to ignore";
+                                      };
+
                                       mode = lib.mkOption {
                                         type = types.nullOr (
                                           types.enum [
@@ -2918,6 +2978,7 @@
                                     "enforce-map-style"
                                     "enforce-repeated-arg-type-style"
                                     "enforce-slice-style"
+                                    "enforce-switch-style"
                                     "error-naming"
                                     "error-return"
                                     "error-strings"
@@ -2957,6 +3018,7 @@
                                     "string-of-int"
                                     "struct-tag"
                                     "superfluous-else"
+                                    "time-date"
                                     "time-equal"
                                     "time-naming"
                                     "unchecked-type-assertion"
@@ -2964,12 +3026,14 @@
                                     "unexported-naming"
                                     "unexported-return"
                                     "unhandled-error"
+                                    "unnecessary-format"
                                     "unnecessary-stmt"
                                     "unreachable-code"
                                     "unused-parameter"
                                     "unused-receiver"
                                     "use-any"
                                     "use-errors-new"
+                                    "use-fmt-print"
                                     "useless-break"
                                     "var-declaration"
                                     "var-naming"
@@ -3146,6 +3210,17 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Enforce using static values for log messages";
+                                      };
+
+                                      msg-style = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.enum [
+                                            "lowercased"
+                                            "capitalized"
+                                          ]
+                                        );
+                                        default = null;
+                                        description = "Enforce message style";
                                       };
 
                                       key-naming-case = lib.mkOption {
@@ -4508,6 +4583,11 @@
                                         default = null;
                                         description = "list of enabled checks";
                                       };
+                                      disable = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "list of disabled checks";
+                                      };
                                       allow-first-in-block = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
@@ -4899,10 +4979,17 @@
                                 default = null;
                                 description = "Path patterns to exclude from formatting";
                               };
+
+                              warn-unused = lib.mkOption {
+                                type = types.nullOr types.bool;
+                                default = null;
+                                description = "Warn about unused exclusions";
+                              };
                             };
                           }
                         );
                         default = null;
+                        description = "Formatter exclusion configuration";
                       };
                     };
                   }

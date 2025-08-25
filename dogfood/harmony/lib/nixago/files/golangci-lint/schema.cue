@@ -571,6 +571,20 @@ _#defs: "/definitions/settings/definitions/exhaustructSettings": close({
 	// List of regular expressions to exclude struct packages and
 	// names from check.
 	exclude?: [...string]
+
+	// Allows empty structures, effectively excluding them from the
+	// check.
+	"allow-empty"?: bool
+
+	// List of regular expressions to match type names that should be
+	// allowed to be empty.
+	"allow-empty-rx"?: [...string]
+
+	// Allows empty structures in return statements.
+	"allow-empty-returns"?: bool
+
+	// Allows empty structures in variable declarations.
+	"allow-empty-declarations"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/fatcontextSettings": close({
