@@ -3,17 +3,18 @@
   lib,
   synergy-lib,
   ...
-}: {
+}: let
+  # source: https://github.com/NixOS/nixpkgs/blob/nixos-25.05/nixos/modules/misc/nixpkgs.nix#L47-L52
+  overlayType = lib.mkOptionType {
+    name = "nixpkgs-overlay";
+    description = "nixpkgs overlay";
+    check = lib.isFunction;
+    merge = lib.mergeOneOption;
+  };
+in {
   options.overlays = lib.mkOption {
-    type = with lib.types; attrsOf (attrsOf (functionTo (functionTo (attrsOf raw))));
-    default = let
-      overlays = config.synergy.result.systemless.overlays or {};
-    in
-      builtins.mapAttrs (_: overlay:
-        if builtins.isFunction overlay
-        then {default = overlay;}
-        else overlay)
-      overlays;
+    type = with lib.types; attrsOf (attrsOf overlayType);
+    default = config.synergy.result.systemless.overlays or {};
     readOnly = true;
   };
 
