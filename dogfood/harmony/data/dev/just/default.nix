@@ -6,6 +6,7 @@
   recipes = synergy-lib.autoimport {
     inherit args;
     source = ./recipes;
-    squash = true;
+    flatten = true;
+    merge = true;
   };
 }

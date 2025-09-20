@@ -25,10 +25,17 @@ in
         };
       };
 
-      squashed = unit.lib.modules.import {
+      flattened = unit.lib.modules.import {
         inherit source;
         args = {hello = "world";};
-        squash = true;
+        flatten = true;
+      };
+
+      merged = unit.lib.modules.import {
+        inherit source;
+        args = {hello = "world";};
+        flatten = true;
+        merge = true;
       };
     });
     expected = formatJSON "expected.json" {
@@ -46,7 +53,26 @@ in
         debug.debug.args = ["hello" "pkgs"];
       };
 
-      squashed = {
+      flattened = [
+        {
+          "a" = true;
+        }
+        {
+          "b1" = true;
+        }
+        {
+          "c" = true;
+        }
+        {
+          "debug" = {
+            "args" = [
+              "hello"
+            ];
+          };
+        }
+      ];
+
+      merged = {
         a = true;
         b1 = true;
         c = true;

@@ -8,12 +8,13 @@
 # - supports both function-based and direct value modules
 # - handles systemized vs systemless contexts with proper error reporting
 # - recursive loading of nested module structures
-# - optional squashing (flattening) of hierarchical results
+# - optional flattening of hierarchical results
 # - comprehensive error context for debugging
 {
   source, # path to module source file, or nested attrset of sources for recursive loading
   args, # arguments to pass to the module during instantiation
-  squash ? false, # whether to flatten/merge nested module results into a single attrset
+  flatten ? false, # whether to flatten nested module results into one list of result
+  merge ? false, # if flatten is true, whether to merge the list of result into a single attrset
 }: let
   load = src: let
     # provide enhanced error context for debugging failed module loads
@@ -48,9 +49,9 @@
       # handle direct value modules (less common, but supported)
       else addErrorContext imported;
   in
-    if squash
+    if flatten
     then {
-      # mark this for collection during squash phase
+      # mark this for collection
       _synergy = true;
       inherit result;
     }
@@ -62,16 +63,21 @@
     then lib.mapAttrsRecursive (_: load) source
     else load source;
 in
-  if squash
-  then
-    # squashing mode: flatten all nested results into a single attribute set
-    root.attrsets.recursiveMerge (
-      builtins.map (x: x.result) (
-        lib.attrsets.collect (x:
-          builtins.hasAttr "_synergy" x)
-        loaded
-      )
-    )
+  if flatten
+  then let
+    flattened = builtins.map (x: x.result) (
+      lib.attrsets.collect (x:
+        builtins.hasAttr "_synergy" x)
+      loaded
+    );
+  in
+    if merge
+    then
+      # flatten with merge: flatten all nested results into a single attribute set result
+      root.attrsets.recursiveMerge flattened
+    else
+      # flatten without merge: flatten all nested results and return the list of results
+      flattened
   else
-    # normal mode: return the loaded structure as-is, preserving hierarchy
+    # return the loaded structure as-is, preserving hierarchy
     loaded

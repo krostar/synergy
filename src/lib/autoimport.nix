@@ -19,11 +19,13 @@
 #   source - Filesystem path to collect and import modules from
 #            Can be a directory (recursive import) or single file
 #
-#   squash - Optional boolean controlling result organization (default: false)
+#   flatten - Optional boolean controlling result organization (default: false)
 #            false: Preserve nested directory structure in results
-#            true: Flatten all modules into a single attribute set level
-#            Squashing is useful when directory organization is for convenience
-#            but you want the final result to be flat
+#            true: Flatten all modules into a flat list of results
+#
+#   merge - Optional boolean controlling result organization (default: false)
+#            false: Preserve nested directory structure in results
+#            true: and flatten also true, merge the flattened results into a single attribute set
 #
 # Examples:
 #   within synergy sources, with this layout
@@ -43,8 +45,9 @@
 {
   args, # arguments to provide to all imported modules during instantiation
   source, # filesystem path (directory or file) to collect modules from
-  squash ? false, # whether to flatten the result structure (false = preserve hierarchy)
+  flatten ? false, # whether to flatten the result structure in a flat list of result
+  merge ? false, # if flatten is true, whether to merge the result into one attribute set
 }: (root.modules.import {
   source = root.modules.collect source;
-  inherit squash args;
+  inherit flatten merge args;
 })

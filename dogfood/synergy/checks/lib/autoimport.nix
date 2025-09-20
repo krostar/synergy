@@ -10,26 +10,52 @@ in
   testEqualContents {
     assertion = "lib.autoimport";
     actual = formatJSON "actual.json" {
-      not-squashed = autoimport {
+      not-flattened = autoimport {
         source = ./modules/_testdata/test-import;
         args.hello = "world";
       };
 
-      squashed = autoimport {
+      flattened = autoimport {
         source = ./modules/_testdata/test-import;
         args.hello = "world";
-        squash = true;
+        flatten = true;
+      };
+
+      merged = autoimport {
+        source = ./modules/_testdata/test-import;
+        args.hello = "world";
+        flatten = true;
+        merge = true;
       };
     };
     expected = formatJSON "expected.json" {
-      not-squashed = {
+      not-flattened = {
         a.a = true;
         b.b1.b1 = true;
         c.c = true;
         debug.debug.args = ["hello"];
       };
 
-      squashed = {
+      flattened = [
+        {
+          "a" = true;
+        }
+        {
+          "b1" = true;
+        }
+        {
+          "c" = true;
+        }
+        {
+          "debug" = {
+            "args" = [
+              "hello"
+            ];
+          };
+        }
+      ];
+
+      merged = {
         a = true;
         b1 = true;
         c = true;
