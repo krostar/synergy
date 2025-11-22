@@ -6,7 +6,7 @@
   nixagoFilesConfigs =
     builtins.filter
     (i: i != {})
-    (builtins.attrValues data.${pkgs.system}.dev.nixago);
+    (builtins.attrValues data.${pkgs.stdenv.hostPlatform.system}.dev.nixago);
 in
   if builtins.length nixagoFilesConfigs > 0
   then

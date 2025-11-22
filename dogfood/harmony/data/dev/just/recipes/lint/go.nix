@@ -9,7 +9,7 @@
 in
   unit.lib.just.mkRecipe "linters" "lint-go" rec {
     golangci-lint = let
-      cfg = data.${pkgs.system}.ci.linters.golangci-lint;
+      cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.golangci-lint;
       inherit
         (nixago.make {
           inherit pkgs;

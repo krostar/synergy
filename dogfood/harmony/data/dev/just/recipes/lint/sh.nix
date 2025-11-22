@@ -7,7 +7,7 @@
 }:
 unit.lib.just.mkRecipe "linters" "lint-sh" {
   bashate = let
-    cfg = data.${pkgs.system}.ci.linters.bashate;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.bashate;
   in {
     inherit (cfg) enable;
     groups = ["sh"];
@@ -28,7 +28,7 @@ unit.lib.just.mkRecipe "linters" "lint-sh" {
   };
 
   shellcheck = let
-    cfg = data.${pkgs.system}.ci.linters.shellcheck;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.shellcheck;
   in {
     inherit (cfg) enable;
     groups = ["sh"];
@@ -45,7 +45,7 @@ unit.lib.just.mkRecipe "linters" "lint-sh" {
   };
 
   shellharden = let
-    cfg = data.${pkgs.system}.ci.linters.shellharden;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.shellharden;
   in {
     inherit (cfg) enable;
     groups = ["sh"];

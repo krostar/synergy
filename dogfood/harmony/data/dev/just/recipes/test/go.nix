@@ -7,7 +7,7 @@
 } @ args:
 unit.lib.just.mkRecipe "testers" "test-go" {
   go-test = let
-    cfg = data.${pkgs.system}.ci.testers.go;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.testers.go;
   in {
     inherit (cfg) enable;
     groups = ["go"];

@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  just = data.${pkgs.system}.dev.just.recipes;
+  just = data.${pkgs.stdenv.hostPlatform.system}.dev.just.recipes;
   justExe = lib.getExe pkgs.just;
 in [
   {

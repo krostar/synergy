@@ -9,7 +9,7 @@
 in
   unit.lib.just.mkRecipe "linters" "lint-yaml" {
     yamllint = let
-      cfg = data.${pkgs.system}.ci.linters.yamllint;
+      cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.yamllint;
 
       inherit
         (nixago.make {

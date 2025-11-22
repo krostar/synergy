@@ -8,7 +8,7 @@
   inherit (unit.lib) nixago;
 in {
   tag = let
-    cfg = data.${pkgs.system}.dev.git-cliff;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.dev.git-cliff;
 
     inherit
       (nixago.make {

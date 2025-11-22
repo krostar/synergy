@@ -10,7 +10,7 @@
           pkgs,
           ...
         }:
-          flake.inputs.flake-checker.packages.${pkgs.system}.default;
+          flake.inputs.flake-checker.packages.${pkgs.stdenv.hostPlatform.system}.default;
         description = "The flake-checker package to use.";
       };
 

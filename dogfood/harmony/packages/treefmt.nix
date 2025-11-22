@@ -7,7 +7,7 @@
   treefmt =
     (unit.lib.treefmt.eval {
       inherit pkgs;
-      config = data.${pkgs.system}.dev.formatters.treefmt;
+      config = data.${pkgs.stdenv.hostPlatform.system}.dev.formatters.treefmt;
     })
     .config;
 in

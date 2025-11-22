@@ -7,7 +7,7 @@
 }:
 unit.lib.just.mkRecipe "linters" "lint-github" {
   actionlint = let
-    cfg = data.${pkgs.system}.ci.linters.actionlint;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.actionlint;
   in {
     inherit (cfg) enable;
     parameters = ["*FILES"];

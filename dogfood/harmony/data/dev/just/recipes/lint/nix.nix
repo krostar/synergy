@@ -7,7 +7,7 @@
 } @ args:
 unit.lib.just.mkRecipe "linters" "lint-nix" {
   alejandra-check = let
-    cfg = data.${pkgs.system}.ci.linters.alejandra;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.alejandra;
   in {
     inherit (cfg) enable;
     groups = ["nix"];
@@ -20,7 +20,7 @@ unit.lib.just.mkRecipe "linters" "lint-nix" {
   };
 
   statix = let
-    cfg = data.${pkgs.system}.ci.linters.statix;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.statix;
   in {
     inherit (cfg) enable;
     groups = ["nix"];
@@ -35,7 +35,7 @@ unit.lib.just.mkRecipe "linters" "lint-nix" {
   };
 
   nixfmt-rfc-style-check = let
-    cfg = data.${pkgs.system}.ci.linters.nixfmt-rfc-style;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.nixfmt-rfc-style;
   in {
     inherit (cfg) enable;
     groups = ["nix"];
@@ -46,7 +46,7 @@ unit.lib.just.mkRecipe "linters" "lint-nix" {
   };
 
   deadnix = let
-    cfg = data.${pkgs.system}.ci.linters.deadnix;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.deadnix;
   in {
     inherit (cfg) enable;
     groups = ["nix"];
@@ -61,7 +61,7 @@ unit.lib.just.mkRecipe "linters" "lint-nix" {
   };
 
   flake-checker = let
-    cfg = data.${pkgs.system}.ci.linters.flake-checker;
+    cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.flake-checker;
   in {
     enable = true;
     groups = ["nix"];

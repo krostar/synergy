@@ -9,7 +9,7 @@
 in
   unit.lib.just.mkRecipe "linters" "lint-commit" {
     commitlint = let
-      cfg = data.${pkgs.system}.ci.linters.commitlint;
+      cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.commitlint;
 
       inherit
         (nixago.make {
