@@ -21,18 +21,18 @@ in
     in {
       inherit (cfg) enable;
       groups = ["go"];
-      parameters = ["*PACKAGES"];
+      parameters = [''+PACKAGES="./..."''];
       recipe = ''
-        ${lib.meta.getExe pkgs.golangci-lint} run --config ${configFile} --verbose {{ if PACKAGES == "" { "./..." } else { PACKAGES } }}
+        ${lib.meta.getExe pkgs.golangci-lint} run --config ${configFile} --verbose {{ PACKAGES }}
       '';
     };
 
     govulncheck = {
       inherit (golangci-lint) enable;
       groups = ["go"];
-      parameters = ["*PACKAGES"];
+      parameters = [''+PACKAGES="./..."''];
       recipe = ''
-        ${lib.meta.getExe pkgs.govulncheck} {{ if PACKAGES == "" { "./..." } else { PACKAGES } }}
+        ${lib.meta.getExe pkgs.govulncheck} {{ PACKAGES }}
       '';
     };
   }
