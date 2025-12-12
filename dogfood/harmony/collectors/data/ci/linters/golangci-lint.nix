@@ -47,6 +47,7 @@
                 "goconst"
                 "gocritic"
                 "gocyclo"
+                "godoclint"
                 "godot"
                 "godox"
                 "err113"
@@ -65,6 +66,7 @@
                 "ineffassign"
                 "interfacebloat"
                 "intrange"
+                "iotamixing"
                 "ireturn"
                 "lll"
                 "loggercheck"
@@ -73,6 +75,7 @@
                 "mirror"
                 "misspell"
                 "mnd"
+                "modernize"
                 "musttag"
                 "nakedret"
                 "nestif"
@@ -413,6 +416,12 @@
                                         description = "Keywords used to ignore detection";
                                         type = types.nullOr (types.listOf types.str);
                                       };
+
+                                      comments-only = lib.mkOption {
+                                        default = null;
+                                        description = "Checks only comments, skip strings.";
+                                        type = types.nullOr types.bool;
+                                      };
                                     };
                                   }
                                 );
@@ -695,6 +704,12 @@
                                 type = types.nullOr (
                                   types.submodule {
                                     options = {
+                                      empty-line = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Checks that there is an empty space between the embedded fields";
+                                      };
+
                                       forbid-mutex = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
@@ -1129,6 +1144,18 @@
                                         default = null;
                                         description = "Force using the Succeed matcher for error functions, and the HaveOccurred matcher for non-function error values";
                                       };
+
+                                      force-assertion-description = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Force adding assertion descriptions to gomega matchers";
+                                      };
+
+                                      force-tonot = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Force using `ToNot`, `ShouldNot` instead of `To(Not())`";
+                                      };
                                     };
                                   }
                                 );
@@ -1277,6 +1304,7 @@
                                     "dupBranchBody"
                                     "dupCase"
                                     "dupImport"
+                                    "dupOption"
                                     "dupSubExpr"
                                     "dynamicFmtString"
                                     "elseif"
@@ -1298,7 +1326,6 @@
                                     "importShadow"
                                     "indexAlloc"
                                     "initClause"
-                                    "ioutilDeprecated"
                                     "mapKey"
                                     "methodExprCall"
                                     "nestingReduce"
@@ -1356,6 +1383,7 @@
                                     "whyNoLint"
                                     "wrapperFunc"
                                     "yodaStyleExpr"
+                                    "zeroByteRepeat"
                                   ];
                                   tags = [
                                     "diagnostic"
@@ -1641,6 +1669,85 @@
                                 );
                                 default = null;
                               };
+
+                              godoclint =
+                                let
+                                  rules = [
+                                    "pkg-doc"
+                                    "single-pkg-doc"
+                                    "require-pkg-doc"
+                                    "start-with-name"
+                                    "require-doc"
+                                    "deprecated"
+                                    "max-len"
+                                    "no-unused-link"
+                                  ];
+                                in
+                                lib.mkOption {
+                                  type = types.nullOr (
+                                    types.submodule {
+                                      options = {
+                                        default = lib.mkOption {
+                                          type = types.nullOr (
+                                            types.enum [
+                                              "all"
+                                              "basic"
+                                              "none"
+                                            ]
+                                          );
+                                          default = null;
+                                          description = "Default set of rules to enable";
+                                        };
+
+                                        enable = lib.mkOption {
+                                          type = types.nullOr (types.enum rules);
+                                          default = null;
+                                          description = "List of rules to enable in addition to the default set";
+                                        };
+
+                                        disable = lib.mkOption {
+                                          type = types.nullOr (types.enum rules);
+                                          default = null;
+                                          description = "List of rules to disable";
+                                        };
+
+                                        options = lib.mkOption {
+                                          type = types.nullOr (
+                                            types.submodule {
+                                              options = {
+                                                max-len = lib.mkOption {
+                                                  type = types.nullOr types.int;
+                                                  default = null;
+                                                  description = ''Maximum line length for godocs, not including the `// `, or `/*` or `*/` tokens'';
+                                                };
+                                                require-doc = {
+                                                  ignore-exported = lib.mkOption {
+                                                    type = types.nullOr types.bool;
+                                                    default = null;
+                                                    description = "Ignore exported (public) symbols when applying the `require-doc` rule";
+                                                  };
+                                                  ignore-unexported = lib.mkOption {
+                                                    type = types.nullOr types.bool;
+                                                    default = null;
+                                                    description = "Ignore unexported (private) symbols when applying the `require-doc` rule";
+                                                  };
+                                                };
+                                                start-with-name = {
+                                                  iinclude-unexported = lib.mkOption {
+                                                    type = types.nullOr types.bool;
+                                                    default = null;
+                                                    description = "Include unexported symbols when applying the `start-with-name` rule";
+                                                  };
+                                                };
+                                              };
+                                            }
+                                          );
+                                        };
+                                      };
+                                    }
+                                  );
+                                  default = null;
+                                };
 
                               godot = lib.mkOption {
                                 type = types.nullOr (
@@ -2257,6 +2364,21 @@
                                   default = null;
                                 };
 
+                              ineffassign = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      check-escaping-errors = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Check escaping variables of type error, may cause false positive";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                              };
+
                               importas = lib.mkOption {
                                 type = types.nullOr (
                                   types.submodule {
@@ -2308,6 +2430,21 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Skips check for interface methods with only a single parameter";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                              };
+
+                              iotamixing = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      report-individual = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Whether to report individual consts rather than just the const block";
                                       };
                                     };
                                   }
@@ -2381,6 +2518,45 @@
                                         description = "Allow only slices initialized with a length of zero";
                                       };
                                     };
+                                  }
+                                );
+                                default = null;
+                              };
+
+                              modernize = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options =
+                                      let
+                                        analyzers = [
+                                          "any"
+                                          "bloop"
+                                          "fmtappendf"
+                                          "forvar"
+                                          "mapsloop"
+                                          "minmax"
+                                          "newexpr"
+                                          "omitzero"
+                                          "plusbuild"
+                                          "rangeint"
+                                          "reflecttypefor"
+                                          "slicescontains"
+                                          "slicessort"
+                                          "stditerators"
+                                          "stringscutprefix"
+                                          "stringsseq"
+                                          "stringsbuilder"
+                                          "testingcontext"
+                                          "waitgroup"
+                                        ];
+                                      in
+                                      {
+                                        disable = lib.mkOption {
+                                          type = types.nullOr (types.enum analyzers);
+                                          default = null;
+                                          description = "List of analyzers to disable";
+                                        };
+                                      };
                                   }
                                 );
                                 default = null;
@@ -2831,6 +3007,18 @@
                                         default = null;
                                         description = "Enable/disable optimization of hex formatting";
                                       };
+
+                                      concat-loop = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable/disable optimization of concat loop";
+                                      };
+
+                                      loop-other-ops = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Optimization of `concat-loop` even with other operations";
+                                      };
                                     };
                                   }
                                 );
@@ -2988,16 +3176,22 @@
                                     "file-length-limit"
                                     "filename-format"
                                     "flag-parameter"
+                                    "forbidden-call-in-wg-go"
                                     "function-length"
                                     "function-result-limit"
                                     "get-return"
                                     "identical-branches"
+                                    "identical-ifelseif-branches"
+                                    "identical-ifelseif-conditions"
+                                    "identical-switch-branches"
+                                    "identical-switch-conditions"
                                     "if-return"
                                     "import-alias-naming"
                                     "import-shadowing"
                                     "imports-blocklist"
                                     "increment-decrement"
                                     "indent-error-flow"
+                                    "inefficient-map-lookup"
                                     "line-length-limit"
                                     "max-control-nesting"
                                     "max-public-structs"
@@ -3006,6 +3200,7 @@
                                     "nested-structs"
                                     "optimize-operands-order"
                                     "package-comments"
+                                    "package-directory-mismatch"
                                     "range-val-address"
                                     "range-val-in-closure"
                                     "range"
@@ -3027,14 +3222,18 @@
                                     "unexported-return"
                                     "unhandled-error"
                                     "unnecessary-format"
+                                    "unnecessary-if"
                                     "unnecessary-stmt"
                                     "unreachable-code"
+                                    "unsecure-url-scheme"
                                     "unused-parameter"
                                     "unused-receiver"
                                     "use-any"
                                     "use-errors-new"
                                     "use-fmt-print"
+                                    "use-waitgroup-go"
                                     "useless-break"
+                                    "useless-fallthrough"
                                     "var-declaration"
                                     "var-naming"
                                     "waitgroup-by-value"
@@ -3044,6 +3243,7 @@
                                   type = types.nullOr (
                                     types.submodule {
                                       options = {
+
                                         max-open-files = lib.mkOption {
                                           type = types.nullOr types.int;
                                           default = null;
@@ -3065,6 +3265,12 @@
                                           );
                                           default = null;
                                           description = "Severity level";
+                                        };
+
+                                        enable-default-rules = lib.mkOption {
+                                          type = types.nullOr types.bool;
+                                          default = null;
+                                          description = "Enable default rules";
                                         };
 
                                         enable-all-rules = lib.mkOption {
@@ -4150,6 +4356,27 @@
                                         tb = opts;
                                         fuzz = opts;
                                       };
+                                  }
+                                );
+                                default = null;
+                              };
+
+                              unqueryvet = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      check-sql-builders = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable SQL builder checking";
+                                      };
+
+                                      allowed-patterns = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "Regex patterns for acceptable SELECT * usage";
+                                      };
+                                    };
                                   }
                                 );
                                 default = null;

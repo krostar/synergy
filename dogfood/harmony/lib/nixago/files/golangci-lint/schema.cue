@@ -110,6 +110,7 @@ close({
 			goconst?:                  _#defs."/definitions/settings/definitions/goconstSettings"
 			gocritic?:                 _#defs."/definitions/settings/definitions/gocriticSettings"
 			gocyclo?:                  _#defs."/definitions/settings/definitions/gocycloSettings"
+			godoclint?:                _#defs."/definitions/settings/definitions/godoclintSettings"
 			godot?:                    _#defs."/definitions/settings/definitions/godotSettings"
 			godox?:                    _#defs."/definitions/settings/definitions/godoxSettings"
 			interfacebloat?:           _#defs."/definitions/settings/definitions/interfacebloatSettings"
@@ -123,6 +124,8 @@ close({
 			iface?:                    _#defs."/definitions/settings/definitions/ifaceSettings"
 			importas?:                 _#defs."/definitions/settings/definitions/importasSettings"
 			inamedparam?:              _#defs."/definitions/settings/definitions/inamedparamSettings"
+			ineffassign?:              _#defs."/definitions/settings/definitions/ineffassignSettings"
+			iotamixing?:               _#defs."/definitions/settings/definitions/iotamixingSettings"
 			ireturn?:                  _#defs."/definitions/settings/definitions/ireturnSettings"
 			lll?:                      _#defs."/definitions/settings/definitions/lllSettings"
 			maintidx?:                 _#defs."/definitions/settings/definitions/maintidxSettings"
@@ -135,6 +138,7 @@ close({
 			nilnil?:                   _#defs."/definitions/settings/definitions/nilnilSettings"
 			nlreturn?:                 _#defs."/definitions/settings/definitions/nlreturnSettings"
 			mnd?:                      _#defs."/definitions/settings/definitions/mndSettings"
+			modernize?:                _#defs."/definitions/settings/definitions/modernizeSettings"
 			nolintlint?:               _#defs."/definitions/settings/definitions/nolintlintSettings"
 			reassign?:                 _#defs."/definitions/settings/definitions/reassignSettings"
 			recvcheck?:                _#defs."/definitions/settings/definitions/recvcheckSettings"
@@ -159,6 +163,7 @@ close({
 			usetesting?:               _#defs."/definitions/settings/definitions/usetestingSettings"
 			unconvert?:                _#defs."/definitions/settings/definitions/unconvertSettings"
 			unparam?:                  _#defs."/definitions/settings/definitions/unparamSettings"
+			unqueryvet?:               _#defs."/definitions/settings/definitions/unqueryvetSettings"
 			unused?:                   _#defs."/definitions/settings/definitions/unusedSettings"
 			varnamelen?:               _#defs."/definitions/settings/definitions/varnamelenSettings"
 			whitespace?:               _#defs."/definitions/settings/definitions/whitespaceSettings"
@@ -238,7 +243,8 @@ close({
 		// Show only new issues created in git patch with this file path.
 		"new-from-patch"?: string
 
-		// Fix found issues (if it's supported by the linter).
+		// Apply the fixes detected by the linters and formatters (if it's
+		// supported by the linter).
 		fix?: bool
 
 		// Make issues output unique by line.
@@ -293,9 +299,11 @@ close({
 // Usable formatter names.
 #: "formatter-names": "gci" | "gofmt" | "gofumpt" | "goimports" | "golines" | "swaggo"
 
-#: "gocritic-checks": "appendAssign" | "appendCombine" | "argOrder" | "assignOp" | "badCall" | "badCond" | "badLock" | "badRegexp" | "badSorting" | "badSyncOnceFunc" | "boolExprSimplify" | "builtinShadow" | "builtinShadowDecl" | "captLocal" | "caseOrder" | "codegenComment" | "commentFormatting" | "commentedOutCode" | "commentedOutImport" | "defaultCaseOrder" | "deferInLoop" | "deferUnlambda" | "deprecatedComment" | "docStub" | "dupArg" | "dupBranchBody" | "dupCase" | "dupImport" | "dupSubExpr" | "dynamicFmtString" | "elseif" | "emptyDecl" | "emptyFallthrough" | "emptyStringTest" | "equalFold" | "evalOrder" | "exitAfterDefer" | "exposedSyncMutex" | "externalErrorReassign" | "filepathJoin" | "flagDeref" | "flagName" | "hexLiteral" | "httpNoBody" | "hugeParam" | "ifElseChain" | "importShadow" | "indexAlloc" | "initClause" | "ioutilDeprecated" | "mapKey" | "methodExprCall" | "nestingReduce" | "newDeref" | "nilValReturn" | "octalLiteral" | "offBy1" | "paramTypeCombine" | "preferDecodeRune" | "preferFilepathJoin" | "preferFprint" | "preferStringWriter" | "preferWriteByte" | "ptrToRefParam" | "rangeAppendAll" | "rangeExprCopy" | "rangeValCopy" | "redundantSprint" | "regexpMust" | "regexpPattern" | "regexpSimplify" | "returnAfterHttpError" | "ruleguard" | "singleCaseSwitch" | "sliceClear" | "sloppyLen" | "sloppyReassign" | "sloppyTypeAssert" | "sortSlice" | "sprintfQuotedString" | "sqlQuery" | "stringConcatSimplify" | "stringXbytes" | "stringsCompare" | "switchTrue" | "syncMapLoadAndDelete" | "timeExprSimplify" | "todoCommentWithoutDetail" | "tooManyResultsChecker" | "truncateCmp" | "typeAssertChain" | "typeDefFirst" | "typeSwitchVar" | "typeUnparen" | "uncheckedInlineErr" | "underef" | "unlabelStmt" | "unlambda" | "unnamedResult" | "unnecessaryBlock" | "unnecessaryDefer" | "unslice" | "valSwap" | "weakCond" | "whyNoLint" | "wrapperFunc" | "yodaStyleExpr"
+#: "gocritic-checks": "appendAssign" | "appendCombine" | "argOrder" | "assignOp" | "badCall" | "badCond" | "badLock" | "badRegexp" | "badSorting" | "badSyncOnceFunc" | "boolExprSimplify" | "builtinShadow" | "builtinShadowDecl" | "captLocal" | "caseOrder" | "codegenComment" | "commentFormatting" | "commentedOutCode" | "commentedOutImport" | "defaultCaseOrder" | "deferInLoop" | "deferUnlambda" | "deprecatedComment" | "docStub" | "dupArg" | "dupBranchBody" | "dupCase" | "dupImport" | "dupOption" | "dupSubExpr" | "dynamicFmtString" | "elseif" | "emptyDecl" | "emptyFallthrough" | "emptyStringTest" | "equalFold" | "evalOrder" | "exitAfterDefer" | "exposedSyncMutex" | "externalErrorReassign" | "filepathJoin" | "flagDeref" | "flagName" | "hexLiteral" | "httpNoBody" | "hugeParam" | "ifElseChain" | "importShadow" | "indexAlloc" | "initClause" | "mapKey" | "methodExprCall" | "nestingReduce" | "newDeref" | "nilValReturn" | "octalLiteral" | "offBy1" | "paramTypeCombine" | "preferDecodeRune" | "preferFilepathJoin" | "preferFprint" | "preferStringWriter" | "preferWriteByte" | "ptrToRefParam" | "rangeAppendAll" | "rangeExprCopy" | "rangeValCopy" | "redundantSprint" | "regexpMust" | "regexpPattern" | "regexpSimplify" | "returnAfterHttpError" | "ruleguard" | "singleCaseSwitch" | "sliceClear" | "sloppyLen" | "sloppyReassign" | "sloppyTypeAssert" | "sortSlice" | "sprintfQuotedString" | "sqlQuery" | "stringConcatSimplify" | "stringXbytes" | "stringsCompare" | "switchTrue" | "syncMapLoadAndDelete" | "timeExprSimplify" | "todoCommentWithoutDetail" | "tooManyResultsChecker" | "truncateCmp" | "typeAssertChain" | "typeDefFirst" | "typeSwitchVar" | "typeUnparen" | "uncheckedInlineErr" | "underef" | "unlabelStmt" | "unlambda" | "unnamedResult" | "unnecessaryBlock" | "unnecessaryDefer" | "unslice" | "valSwap" | "weakCond" | "whyNoLint" | "wrapperFunc" | "yodaStyleExpr" | "zeroByteRepeat"
 
 #: "gocritic-tags": "diagnostic" | "style" | "performance" | "experimental" | "opinionated" | "security"
+
+#: "godoclint-rules": "pkg-doc" | "single-pkg-doc" | "require-pkg-doc" | "start-with-name" | "require-doc" | "deprecated" | "max-len" | "no-unused-link"
 
 #: "gosec-rules": "G101" | "G102" | "G103" | "G104" | "G106" | "G107" | "G108" | "G109" | "G110" | "G111" | "G112" | "G114" | "G115" | "G201" | "G202" | "G203" | "G204" | "G301" | "G302" | "G303" | "G304" | "G305" | "G306" | "G307" | "G401" | "G402" | "G403" | "G404" | "G405" | "G406" | "G501" | "G502" | "G503" | "G504" | "G505" | "G506" | "G507" | "G601" | "G602"
 
@@ -304,11 +312,13 @@ close({
 #: "iface-analyzers": "identical" | "unused" | "opaque" | "unexported"
 
 // Usable linter names.
-#: "linter-names": matchN(>=1, ["arangolint" | "asasalint" | "asciicheck" | "bidichk" | "bodyclose" | "canonicalheader" | "containedctx" | "contextcheck" | "copyloopvar" | "cyclop" | "decorder" | "depguard" | "dogsled" | "dupl" | "dupword" | "durationcheck" | "embeddedstructfieldcheck" | "errcheck" | "errchkjson" | "errname" | "errorlint" | "exhaustive" | "exhaustruct" | "exptostd" | "fatcontext" | "forbidigo" | "forcetypeassert" | "funcorder" | "funlen" | "ginkgolinter" | "gocheckcompilerdirectives" | "gochecknoglobals" | "gochecknoinits" | "gochecksumtype" | "gocognit" | "goconst" | "gocritic" | "gocyclo" | "godot" | "godox" | "err113" | "goheader" | "gomoddirectives" | "gomodguard" | "goprintffuncname" | "gosec" | "gosimple" | "gosmopolitan" | "govet" | "grouper" | "iface" | "importas" | "inamedparam" | "ineffassign" | "interfacebloat" | "intrange" | "ireturn" | "lll" | "loggercheck" | "maintidx" | "makezero" | "mirror" | "misspell" | "mnd" | "musttag" | "nakedret" | "nestif" | "nilerr" | "nilnesserr" | "nilnil" | "nlreturn" | "noctx" | "noinlineerr" | "nolintlint" | "nonamedreturns" | "nosprintfhostport" | "paralleltest" | "perfsprint" | "prealloc" | "predeclared" | "promlinter" | "protogetter" | "reassign" | "recvcheck" | "revive" | "rowserrcheck" | "sloglint" | "sqlclosecheck" | "staticcheck" | "stylecheck" | "tagalign" | "tagliatelle" | "testableexamples" | "testifylint" | "testpackage" | "thelper" | "tparallel" | "unconvert" | "unparam" | "unused" | "usestdlibvars" | "usetesting" | "varnamelen" | "wastedassign" | "whitespace" | "wrapcheck" | "wsl" | "wsl_v5" | "zerologlint", string])
+#: "linter-names": matchN(>=1, ["arangolint" | "asasalint" | "asciicheck" | "bidichk" | "bodyclose" | "canonicalheader" | "containedctx" | "contextcheck" | "copyloopvar" | "cyclop" | "decorder" | "depguard" | "dogsled" | "dupl" | "dupword" | "durationcheck" | "embeddedstructfieldcheck" | "errcheck" | "errchkjson" | "errname" | "errorlint" | "exhaustive" | "exhaustruct" | "exptostd" | "fatcontext" | "forbidigo" | "forcetypeassert" | "funcorder" | "funlen" | "ginkgolinter" | "gocheckcompilerdirectives" | "gochecknoglobals" | "gochecknoinits" | "gochecksumtype" | "gocognit" | "goconst" | "gocritic" | "gocyclo" | "godoclint" | "godot" | "godox" | "err113" | "goheader" | "gomoddirectives" | "gomodguard" | "goprintffuncname" | "gosec" | "gosimple" | "gosmopolitan" | "govet" | "grouper" | "iface" | "importas" | "inamedparam" | "ineffassign" | "interfacebloat" | "intrange" | "iotamixing" | "ireturn" | "lll" | "loggercheck" | "maintidx" | "makezero" | "mirror" | "misspell" | "mnd" | "modernize" | "musttag" | "nakedret" | "nestif" | "nilerr" | "nilnesserr" | "nilnil" | "nlreturn" | "noctx" | "noinlineerr" | "nolintlint" | "nonamedreturns" | "nosprintfhostport" | "paralleltest" | "perfsprint" | "prealloc" | "predeclared" | "promlinter" | "protogetter" | "reassign" | "recvcheck" | "revive" | "rowserrcheck" | "sloglint" | "sqlclosecheck" | "staticcheck" | "stylecheck" | "tagalign" | "tagliatelle" | "testableexamples" | "testifylint" | "testpackage" | "thelper" | "tparallel" | "unconvert" | "unparam" | "unused" | "usestdlibvars" | "usetesting" | "varnamelen" | "wastedassign" | "whitespace" | "wrapcheck" | "wsl" | "wsl_v5" | "zerologlint", string])
+
+#: "modernize-analyzers": "any" | "bloop" | "fmtappendf" | "forvar" | "mapsloop" | "minmax" | "newexpr" | "omitzero" | "plusbuild" | "rangeint" | "reflecttypefor" | "slicescontains" | "slicessort" | "stditerators" | "stringscutprefix" | "stringsseq" | "stringsbuilder" | "testingcontext" | "waitgroup"
 
 #: "relative-path-modes": "gomod" | "gitroot" | "cfg" | "wd"
 
-#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "enforce-switch-style" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-date" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-format" | "unnecessary-stmt" | "unreachable-code" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "use-fmt-print" | "useless-break" | "var-declaration" | "var-naming" | "waitgroup-by-value"
+#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "enforce-switch-style" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "forbidden-call-in-wg-go" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "identical-ifelseif-branches" | "identical-ifelseif-conditions" | "identical-switch-branches" | "identical-switch-conditions" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "inefficient-map-lookup" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "package-directory-mismatch" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-date" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-format" | "unnecessary-if" | "unnecessary-stmt" | "unreachable-code" | "unsecure-url-scheme" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "use-fmt-print" | "use-waitgroup-go" | "useless-break" | "useless-fallthrough" | "var-declaration" | "var-naming" | "waitgroup-by-value"
 
 #: "simple-format": close({
 	path?: #."formats-path"
@@ -477,9 +487,16 @@ _#defs: "/definitions/settings/definitions/dupwordSettings": close({
 
 	// Keywords used to ignore detection.
 	ignore?: list.UniqueItems() & [...string]
+
+	// Checks only comments, skip strings.
+	"comments-only"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/embeddedstructfieldcheckSettings": close({
+	// Checks that there is an empty space between the embedded fields
+	// and regular fields.
+	"empty-line"?: bool
+
 	// Checks that sync.Mutex and sync.RWMutex are not used as
 	// embedded fields.
 	"forbid-mutex"?: bool
@@ -702,6 +719,9 @@ _#defs: "/definitions/settings/definitions/ginkgolinterSettings": close({
 
 	// Force adding assertion descriptions to gomega matchers.
 	"force-assertion-description"?: bool
+
+	// Force using `ToNot`, `ShouldNot` instead of `To(Not())`.
+	"force-tonot"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/gochecksumtypeSettings": close({
@@ -824,6 +844,45 @@ _#defs: "/definitions/settings/definitions/gocycloSettings": close({
 	// Minimum code complexity to report (we recommend 10-20).
 	"min-complexity"?: int
 })
+
+_#defs: "/definitions/settings/definitions/godoclintSettings": {
+	// Default set of rules to enable.
+	default?: "all" | "basic" | "none"
+
+	// List of rules to enable in addition to the default set.
+	enable?: list.UniqueItems() & [...#."godoclint-rules"]
+
+	// List of rules to disable.
+	disable?: list.UniqueItems() & [...#."godoclint-rules"]
+
+	// A map for setting individual rule options.
+	options?: {
+		"max-len"?: {
+			// Maximum line length for godocs, not including the `// `, or
+			// `/*` or `*/` tokens.
+			length?: int
+			...
+		}
+		"require-doc"?: {
+			// Ignore exported (public) symbols when applying the
+			// `require-doc` rule.
+			"ignore-exported"?: bool
+
+			// Ignore unexported (private) symbols when applying the
+			// `require-doc` rule.
+			"ignore-unexported"?: bool
+			...
+		}
+		"start-with-name"?: {
+			// Include unexported symbols when applying the `start-with-name`
+			// rule.
+			"include-unexported"?: bool
+			...
+		}
+		...
+	}
+	...
+}
 
 _#defs: "/definitions/settings/definitions/godotSettings": close({
 	// Comments to be checked.
@@ -1090,9 +1149,21 @@ _#defs: "/definitions/settings/definitions/inamedparamSettings": close({
 	"skip-single-param"?: bool
 })
 
+_#defs: "/definitions/settings/definitions/ineffassignSettings": close({
+	// Check escaping variables of type error, may cause false
+	// positives.
+	"check-escaping-errors"?: bool
+})
+
 _#defs: "/definitions/settings/definitions/interfacebloatSettings": close({
 	// The maximum number of methods allowed for an interface.
 	max?: int
+})
+
+_#defs: "/definitions/settings/definitions/iotamixingSettings": close({
+	// Whether to report individual consts rather than just the const
+	// block.
+	"report-individual"?: bool
 })
 
 // Use either `reject` or `allow` properties for interfaces
@@ -1196,6 +1267,11 @@ _#defs: "/definitions/settings/definitions/mndSettings": close({
 	checks?: [..."argument" | "case" | "condition" | "operation" | "return" | "assign"]
 })
 
+_#defs: "/definitions/settings/definitions/modernizeSettings": close({
+	// List of analyzers to disable.
+	disable?: [...#."modernize-analyzers"]
+})
+
 _#defs: "/definitions/settings/definitions/musttagSettings": close({
 	functions?: [...close({
 		name?:      string
@@ -1295,6 +1371,12 @@ _#defs: "/definitions/settings/definitions/perfsprintSettings": close({
 
 	// Enable/disable optimization of hex formatting.
 	"hex-format"?: bool
+
+	// Enable/disable optimization of concat loop.
+	"concat-loop"?: bool
+
+	// Optimization of `concat-loop` even with other operations.
+	"loop-other-ops"?: bool
 })
 
 // We do not recommend using this linter before doing performance
@@ -1350,10 +1432,11 @@ _#defs: "/definitions/settings/definitions/recvcheckSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/reviveSettings": close({
-	"max-open-files"?:   int
-	confidence?:         number
-	severity?:           "warning" | "error"
-	"enable-all-rules"?: bool
+	"max-open-files"?:       int
+	confidence?:             number
+	severity?:               "warning" | "error"
+	"enable-all-rules"?:     bool
+	"enable-default-rules"?: bool
 	directives?: [...close({
 		name?:     "specify-disable-reason"
 		severity?: "warning" | "error"
@@ -1635,6 +1718,14 @@ _#defs: "/definitions/settings/definitions/unparamSettings": close({
 	// with golangci-lint call it on a directory with the changed
 	// file.
 	"check-exported"?: bool
+})
+
+_#defs: "/definitions/settings/definitions/unqueryvetSettings": close({
+	// Enable SQL builder checking.
+	"check-sql-builders"?: bool
+
+	// Regex patterns for acceptable SELECT * usage.
+	"allowed-patterns"?: [...string]
 })
 
 _#defs: "/definitions/settings/definitions/unusedSettings": close({
