@@ -8,7 +8,7 @@ pkgs.mkShellNoCC
   shellHook =
     (unit.lib.nixago.appendToShellHooks pkgs "")
     + ''
-      export PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+      export PRJ_ROOT="$(git rev-parse --show-toplevel)"
     '';
 
   nativeBuildInputs = with pkgs; [
