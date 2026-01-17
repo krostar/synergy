@@ -18,7 +18,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nixago = {
-      url = "github:nix-community/nixago";
+      url = "github:krostar/nixago/fix-warning";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         nixago-exts.follows = "nixago-exts";
@@ -26,7 +26,7 @@
     };
 
     nixago-exts = {
-      url = "github:nix-community/nixago-extensions";
+      url = "github:krostar/nixago-extensions/fix-warning";
       inputs = {
         flake-utils.follows = "nixago/flake-utils";
         nixago.follows = "nixago";
