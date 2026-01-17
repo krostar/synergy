@@ -1718,7 +1718,7 @@
                                                 max-len = lib.mkOption {
                                                   type = types.nullOr types.int;
                                                   default = null;
-                                                  description = ''Maximum line length for godocs, not including the `// `, or `/*` or `*/` tokens'';
+                                                  description = "Maximum line length for godocs, not including the `// `, or `/*` or `*/` tokens";
                                                 };
                                                 require-doc = {
                                                   ignore-exported = lib.mkOption {
