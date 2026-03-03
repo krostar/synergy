@@ -116,6 +116,7 @@
                 "usetesting"
                 "varnamelen"
                 "wastedassign"
+                "unqueryvet"
                 "whitespace"
                 "wrapcheck"
                 "wsl"
@@ -129,7 +130,7 @@
               version = lib.mkOption {
                 type = types.str;
                 default = "2";
-                description = "Version of the golangci-lint configuration";
+                description = "golangci-lint configuration schema version.";
               };
 
               run = lib.mkOption {
@@ -139,31 +140,31 @@
                       concurrency = lib.mkOption {
                         type = types.nullOr types.int;
                         default = null;
-                        description = "Number of concurrent runners";
+                        description = "Number of concurrent runners.";
                       };
 
                       timeout = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
-                        description = "Timeout for the analysis (e.g., \"30s\", \"5m\")";
+                        description = "Timeout for the analysis (e.g., \"30s\", \"5m\").";
                       };
 
                       issues-exit-code = lib.mkOption {
                         type = types.nullOr types.int;
                         default = null;
-                        description = "Exit code when at least one issue was found";
+                        description = "Exit code when at least one issue was found.";
                       };
 
                       tests = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Enable inclusion of test files";
+                        description = "Enable inclusion of test files.";
                       };
 
                       build-tags = lib.mkOption {
                         type = types.nullOr (types.listOf types.str);
                         default = null;
-                        description = "List of build tags to pass to all linters";
+                        description = "List of build tags to pass to all linters.";
                       };
 
                       modules-download-mode = lib.mkOption {
@@ -175,25 +176,31 @@
                           ]
                         );
                         default = null;
-                        description = ''Option to pass to "go list -mod={option}"'';
+                        description = ''Option to pass to "go list -mod={option}".'';
+                      };
+
+                      enable-build-vcs = lib.mkOption {
+                        type = types.nullOr types.bool;
+                        default = null;
+                        description = "Enable VCS information in build.";
                       };
 
                       allow-parallel-runners = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Allow multiple parallel golangci-lint instances running";
+                        description = "Allow multiple parallel golangci-lint instances running.";
                       };
 
                       allow-serial-runners = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Allow multiple golangci-lint instances running, but serialize them around a lock";
+                        description = "Allow multiple golangci-lint instances running, but serialize them around a lock.";
                       };
 
                       go = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
-                        description = "Targeted Go version";
+                        description = "Targeted Go version.";
                       };
 
                       relative-path-mode = lib.mkOption {
@@ -206,7 +213,7 @@
                           ]
                         );
                         default = null;
-                        description = "Path mode for reporting results";
+                        description = "Path mode for reporting results.";
                       };
                     };
                   }
@@ -230,7 +237,7 @@
                               )
                             );
                             default = null;
-                            description = "Output path (stdout, stderr, or file path)";
+                            description = "Output path (stdout, stderr, or file path).";
                           };
                           simpleFormat = lib.mkOption {
                             type = types.nullOr (
@@ -255,17 +262,17 @@
                                         print-linter-name = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Print linter name in the end of issue text";
+                                          description = "Print linter name in the end of issue text.";
                                         };
                                         print-issued-lines = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Print lines of code with issue";
+                                          description = "Print lines of code with issue.";
                                         };
                                         colors = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Use colors in output";
+                                          description = "Use colors in output.";
                                         };
                                       };
                                     }
@@ -283,12 +290,12 @@
                                         print-linter-name = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Print linter name in the end of issue text";
+                                          description = "Print linter name in the end of issue text.";
                                         };
                                         colors = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Use colors in output";
+                                          description = "Use colors in output.";
                                         };
                                       };
                                     }
@@ -310,7 +317,7 @@
                                         extended = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Use extended format";
+                                          description = "Use extended format.";
                                         };
                                       };
                                     }
@@ -325,25 +332,25 @@
                             }
                           );
                           default = null;
-                          description = "Output formats";
+                          description = "Output formats.";
                         };
 
                       path-mode = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
-                        description = "Path mode for output";
+                        description = "Path mode for output.";
                       };
 
                       path-prefix = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
-                        description = "Add a prefix to the output file references";
+                        description = "Add a prefix to the output file references.";
                       };
 
                       show-stats = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Show statistics per linter";
+                        description = "Show statistics per linter.";
                       };
 
                       sort-order = lib.mkOption {
@@ -357,7 +364,7 @@
                           )
                         );
                         default = null;
-                        description = "Sort results by criteria (linter, severity, file)";
+                        description = "Sort results by criteria (linter, severity, file).";
                       };
                     };
                   }
@@ -379,19 +386,19 @@
                           ]
                         );
                         default = null;
-                        description = "Default linters to use";
+                        description = "Default linters to use.";
                       };
 
                       enable = lib.mkOption {
                         type = types.nullOr (types.listOf (types.enum linterNames));
                         default = null;
-                        description = "List of enabled linters";
+                        description = "List of enabled linters.";
                       };
 
                       disable = lib.mkOption {
                         type = types.nullOr (types.listOf (types.enum linterNames));
                         default = null;
-                        description = "List of disabled linters";
+                        description = "List of disabled linters.";
                       };
 
                       settings = lib.mkOption {
@@ -413,7 +420,7 @@
 
                                       ignore = lib.mkOption {
                                         default = null;
-                                        description = "Keywords used to ignore detection";
+                                        description = "Keywords used to ignore detection.";
                                         type = types.nullOr (types.listOf types.str);
                                       };
 
@@ -435,13 +442,13 @@
                                       exclude = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "To specify a set of function names to exclude";
+                                        description = "To specify a set of function names to exclude.";
                                       };
 
                                       use-builtin-exclusions = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "To enable/disable the asasalint builtin exclusions of function names";
+                                        description = "To enable/disable the asasalint builtin exclusions of function names.";
                                       };
                                     };
                                   }
@@ -456,55 +463,55 @@
                                       left-to-right-embedding = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: LEFT-TO-RIGHT-EMBEDDING";
+                                        description = "Disallow: LEFT-TO-RIGHT-EMBEDDING.";
                                       };
 
                                       right-to-left-embedding = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: RIGHT-TO-LEFT-EMBEDDING";
+                                        description = "Disallow: RIGHT-TO-LEFT-EMBEDDING.";
                                       };
 
                                       pop-directional-formatting = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: POP-DIRECTIONAL-FORMATTING";
+                                        description = "Disallow: POP-DIRECTIONAL-FORMATTING.";
                                       };
 
                                       left-to-right-override = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: LEFT-TO-RIGHT-OVERRIDE";
+                                        description = "Disallow: LEFT-TO-RIGHT-OVERRIDE.";
                                       };
 
                                       right-to-left-override = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: RIGHT-TO-LEFT-OVERRIDE";
+                                        description = "Disallow: RIGHT-TO-LEFT-OVERRIDE.";
                                       };
 
                                       left-to-right-isolate = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: LEFT-TO-RIGHT-ISOLATE";
+                                        description = "Disallow: LEFT-TO-RIGHT-ISOLATE.";
                                       };
 
                                       right-to-left-isolate = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: RIGHT-TO-LEFT-ISOLATE";
+                                        description = "Disallow: RIGHT-TO-LEFT-ISOLATE.";
                                       };
 
                                       first-strong-isolate = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: FIRST-STRONG-ISOLATE";
+                                        description = "Disallow: FIRST-STRONG-ISOLATE.";
                                       };
 
                                       pop-directional-isolate = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disallow: POP-DIRECTIONAL-ISOLATE";
+                                        description = "Disallow: POP-DIRECTIONAL-ISOLATE.";
                                       };
                                     };
                                   }
@@ -519,13 +526,13 @@
                                       max-complexity = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Max complexity the function can have";
+                                        description = "Max complexity the function can have.";
                                       };
 
                                       package-average = lib.mkOption {
                                         type = types.nullOr types.float;
                                         default = null;
-                                        description = "Max average complexity in package";
+                                        description = "Max average complexity in package.";
                                       };
                                     };
                                   }
@@ -549,49 +556,49 @@
                                           )
                                         );
                                         default = null;
-                                        description = "Order of declarations";
+                                        description = "Order of declarations.";
                                       };
 
                                       ignore-underscore-vars = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = ''Underscore vars (vars with "_" as the name) will be ignored at all checks'';
+                                        description = ''Underscore vars (vars with "_" as the name) will be ignored at all checks.'';
                                       };
 
                                       disable-dec-order-check = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Order of declarations is not checked";
+                                        description = "Order of declarations is not checked.";
                                       };
 
                                       disable-init-func-first-check = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow init func to be anywhere in file";
+                                        description = "Allow init func to be anywhere in file.";
                                       };
 
                                       disable-dec-num-check = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Multiple global type, const and var declarations are allowed";
+                                        description = "Multiple global type, const and var declarations are allowed.";
                                       };
 
                                       disable-type-dec-num-check = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Type declarations will be ignored for dec num check";
+                                        description = "Type declarations will be ignored for dec num check.";
                                       };
 
                                       disable-const-dec-num-check = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Const declarations will be ignored for dec num check";
+                                        description = "Const declarations will be ignored for dec num check.";
                                       };
 
                                       disable-var-dec-num-check = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Var declarations will be ignored for dec num check";
+                                        description = "Var declarations will be ignored for dec num check.";
                                       };
                                     };
                                   }
@@ -617,19 +624,19 @@
                                                     ]
                                                   );
                                                   default = null;
-                                                  description = "Used to determine the package matching priority";
+                                                  description = "Used to determine the package matching priority.";
                                                 };
 
                                                 files = lib.mkOption {
                                                   type = types.nullOr (types.listOf types.str);
                                                   default = null;
-                                                  description = "List of file globs that will match this list of settings to compare against";
+                                                  description = "List of file globs that will match this list of settings to compare against.";
                                                 };
 
                                                 allow = lib.mkOption {
                                                   type = types.nullOr (types.listOf types.str);
                                                   default = null;
-                                                  description = "List of allowed packages";
+                                                  description = "List of allowed packages.";
                                                 };
 
                                                 deny = lib.mkOption {
@@ -640,27 +647,27 @@
                                                           desc = lib.mkOption {
                                                             type = types.nullOr types.str;
                                                             default = null;
-                                                            description = "Description";
+                                                            description = "Description.";
                                                           };
 
                                                           pkg = lib.mkOption {
                                                             type = types.nullOr types.str;
                                                             default = null;
-                                                            description = "Package";
+                                                            description = "Package.";
                                                           };
                                                         };
                                                       }
                                                     )
                                                   );
                                                   default = null;
-                                                  description = "Packages that are not allowed where the value is a suggestion";
+                                                  description = "Packages that are not allowed where the value is a suggestion.";
                                                 };
                                               };
                                             }
                                           )
                                         );
                                         default = null;
-                                        description = "Rules to apply";
+                                        description = "Rules to apply.";
                                       };
                                     };
                                   }
@@ -675,13 +682,13 @@
                                       max-blank-identifiers = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Check assignments with too many blank identifiers";
+                                        description = "Check assignments with too many blank identifiers.";
                                       };
                                     };
                                   }
                                 );
                                 default = null;
-                                description = "Settings for the dogsled linter";
+                                description = "Settings for the dogsled linter.";
                               };
 
                               dupl = lib.mkOption {
@@ -691,13 +698,13 @@
                                       threshold = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Tokens count to trigger issue";
+                                        description = "Tokens count to trigger issue.";
                                       };
                                     };
                                   }
                                 );
                                 default = null;
-                                description = "Settings for the dupl linter";
+                                description = "Settings for the dupl linter.";
                               };
 
                               embeddedstructfieldcheck = lib.mkOption {
@@ -707,19 +714,19 @@
                                       empty-line = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Checks that there is an empty space between the embedded fields";
+                                        description = "Checks that there is an empty space between the embedded fields.";
                                       };
 
                                       forbid-mutex = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Checks that sync.Mutex and sync.RWMutex are not used as embedded fields";
+                                        description = "Checks that sync.Mutex and sync.RWMutex are not used as embedded fields.";
                                       };
                                     };
                                   }
                                 );
                                 default = null;
-                                description = "Settings for the embeddedstructfieldcheck linter";
+                                description = "Settings for the embeddedstructfieldcheck linter.";
                               };
 
                               errcheck = lib.mkOption {
@@ -729,25 +736,31 @@
                                       check-type-assertions = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Report about not checking errors in type assertions, i.e.: `a := b.(MyStruct)`";
+                                        description = "Report about not checking errors in type assertions, i.e.: `a := b.(MyStruct)`.";
                                       };
 
                                       check-blank = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Report about assignment of errors to blank identifier";
+                                        description = "Report about assignment of errors to blank identifier.";
                                       };
 
                                       exclude-functions = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of functions to exclude from checking, where each entry is a single function to exclude";
+                                        description = "List of functions to exclude from checking, where each entry is a single function to exclude.";
                                       };
 
                                       disable-default-exclusions = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "To disable the errcheck built-in exclude list";
+                                        description = "To disable the errcheck built-in exclude list.";
+                                      };
+
+                                      verbose = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Display function signature instead of selector.";
                                       };
                                     };
                                   }
@@ -762,13 +775,13 @@
                                       check-error-free-encoding = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check error-free of `encoding/json`, `encoding/xml` and `encoding/gob` methods";
+                                        description = "Check error-free of `encoding/json`, `encoding/xml` and `encoding/gob` methods.";
                                       };
 
                                       report-no-exported = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Issue on struct that doesn't have exported fields";
+                                        description = "Issue on struct that doesn't have exported fields.";
                                       };
                                     };
                                   }
@@ -783,25 +796,25 @@
                                       errorf = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check whether fmt.Errorf uses the %w verb for formatting errors";
+                                        description = "Check whether fmt.Errorf uses the %w verb for formatting errors.";
                                       };
 
                                       errorf-multi = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Permit more than 1 %w verb, valid per Go 1.20";
+                                        description = "Permit more than 1 %w verb, valid per Go 1.20.";
                                       };
 
                                       asserts = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check for plain type assertions and type switches";
+                                        description = "Check for plain type assertions and type switches.";
                                       };
 
                                       comparison = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check for plain error comparisons";
+                                        description = "Check for plain error comparisons.";
                                       };
 
                                       allowed-errors = lib.mkOption {
@@ -856,49 +869,49 @@
                                       check = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Program elements to check for exhaustiveness";
+                                        description = "Program elements to check for exhaustiveness.";
                                       };
 
                                       explicit-exhaustive-switch = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = ''Only run exhaustive check on switches with "//exhaustive:enforce" comment'';
+                                        description = ''Only run exhaustive check on switches with "//exhaustive:enforce" comment.'';
                                       };
 
                                       explicit-exhaustive-map = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = ''Only run exhaustive check on map literals with "//exhaustive:enforce" comment'';
+                                        description = ''Only run exhaustive check on map literals with "//exhaustive:enforce" comment.'';
                                       };
 
                                       default-case-required = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Switch statement requires default case even if exhaustive";
+                                        description = "Switch statement requires default case even if exhaustive.";
                                       };
 
                                       default-signifies-exhaustive = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Presence of `default` case in switch statements satisfies exhaustiveness, even if all enum members are not listed";
+                                        description = "Presence of `default` case in switch statements satisfies exhaustiveness, even if all enum members are not listed.";
                                       };
 
                                       ignore-enum-members = lib.mkOption {
                                         type = types.nullOr types.str;
                                         default = null;
-                                        description = "Enum members matching `regex` do not have to be listed in switch statements to satisfy exhaustiveness";
+                                        description = "Enum members matching `regex` do not have to be listed in switch statements to satisfy exhaustiveness.";
                                       };
 
                                       ignore-enum-types = lib.mkOption {
                                         type = types.nullOr types.str;
                                         default = null;
-                                        description = "Enum types matching the supplied regex do not have to be listed in switch statements to satisfy exhaustiveness";
+                                        description = "Enum types matching the supplied regex do not have to be listed in switch statements to satisfy exhaustiveness.";
                                       };
 
                                       package-scope-only = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Consider enums only in package scopes, not in inner scopes";
+                                        description = "Consider enums only in package scopes, not in inner scopes.";
                                       };
                                     };
                                   }
@@ -913,37 +926,37 @@
                                       include = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of regular expressions to match struct packages and names";
+                                        description = "List of regular expressions to match struct packages and names.";
                                       };
 
                                       exclude = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of regular expressions to exclude struct packages and names from check";
+                                        description = "List of regular expressions to exclude struct packages and names from check.";
                                       };
 
                                       allow-empty = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allows empty structures, effectively excluding them from the check";
+                                        description = "Allows empty structures, effectively excluding them from the check.";
                                       };
 
                                       allow-empty-rx = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of regular expressions to match type names that should be allowed to be empty";
+                                        description = "List of regular expressions to match type names that should be allowed to be empty.";
                                       };
 
                                       allow-empty-returns = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allows empty structures in return statements";
+                                        description = "Allows empty structures in return statements.";
                                       };
 
                                       allow-empty-declarations = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allows empty structures in variable declarations";
+                                        description = "Allows empty structures in variable declarations.";
                                       };
                                     };
                                   }
@@ -958,7 +971,7 @@
                                       check-struct-pointers = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check for potential fat contexts in struct pointers";
+                                        description = "Check for potential fat contexts in struct pointers.";
                                       };
                                     };
                                   }
@@ -973,7 +986,7 @@
                                       exclude-godoc-examples = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Exclude code in godoc examples";
+                                        description = "Exclude code in godoc examples.";
                                       };
 
                                       analyze-types = lib.mkOption {
@@ -1008,7 +1021,7 @@
                                           )
                                         );
                                         default = null;
-                                        description = "List of identifiers to forbid (written using `regexp`)";
+                                        description = "List of identifiers to forbid (written using `regexp`).";
                                       };
                                     };
                                   }
@@ -1023,23 +1036,23 @@
                                       constructor = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Checks that constructors are placed after the structure declaration";
+                                        description = "Checks that constructors are placed after the structure declaration.";
                                       };
                                       struct-method = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Checks if the exported methods of a structure are placed before the non-exported ones";
+                                        description = "Checks if the exported methods of a structure are placed before the non-exported ones.";
                                       };
                                       alphabetical = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Checks if the constructors and/or structure methods are sorted alphabetically";
+                                        description = "Checks if the constructors and/or structure methods are sorted alphabetically.";
                                       };
                                     };
                                   }
                                 );
                                 default = null;
-                                description = "Settings for the funcorder linter";
+                                description = "Settings for the funcorder linter.";
                               };
 
                               funlen = lib.mkOption {
@@ -1049,19 +1062,19 @@
                                       lines = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Limit lines number per function";
+                                        description = "Limit lines number per function.";
                                       };
 
                                       statements = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Limit statements number per function";
+                                        description = "Limit statements number per function.";
                                       };
 
                                       ignore-comments = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Ignore comments when counting lines";
+                                        description = "Ignore comments when counting lines.";
                                       };
                                     };
                                   }
@@ -1076,85 +1089,85 @@
                                       suppress-len-assertion = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suppress the wrong length assertion warning";
+                                        description = "Suppress the wrong length assertion warning.";
                                       };
 
                                       suppress-nil-assertion = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suppress the wrong nil assertion warning";
+                                        description = "Suppress the wrong nil assertion warning.";
                                       };
 
                                       suppress-err-assertion = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suppress the wrong error assertion warning";
+                                        description = "Suppress the wrong error assertion warning.";
                                       };
 
                                       suppress-compare-assertion = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suppress the wrong comparison assertion warning";
+                                        description = "Suppress the wrong comparison assertion warning.";
                                       };
 
                                       suppress-async-assertion = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suppress the function all in async assertion warning";
+                                        description = "Suppress the function all in async assertion warning.";
                                       };
 
                                       suppress-type-compare-assertion = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suppress warning for comparing values from different types, like int32 and uint32";
+                                        description = "Suppress warning for comparing values from different types, like int32 and uint32.";
                                       };
 
                                       forbid-focus-container = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Trigger warning for ginkgo focus containers like FDescribe, FContext, FWhen or FIt";
+                                        description = "Trigger warning for ginkgo focus containers like FDescribe, FContext, FWhen or FIt.";
                                       };
 
                                       allow-havelen-zero = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Don't trigger warnings for HaveLen(0)";
+                                        description = "Don't trigger warnings for HaveLen(0).";
                                       };
 
                                       force-expect-to = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Force using `Expect` with `To`, `ToNot` or `NotTo`";
+                                        description = "Force using `Expect` with `To`, `ToNot` or `NotTo`.";
                                       };
 
                                       validate-async-intervals = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Best effort validation of async intervals (timeout and polling)";
+                                        description = "Best effort validation of async intervals (timeout and polling).";
                                       };
 
                                       forbid-spec-pollution = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Trigger a warning for variable assignments in ginkgo containers like `Describe`, `Context` and `When`, instead of in `BeforeEach()`";
+                                        description = "Trigger a warning for variable assignments in ginkgo containers like `Describe`, `Context` and `When`, instead of in `BeforeEach()`.";
                                       };
 
                                       force-succeed = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Force using the Succeed matcher for error functions, and the HaveOccurred matcher for non-function error values";
+                                        description = "Force using the Succeed matcher for error functions, and the HaveOccurred matcher for non-function error values.";
                                       };
 
                                       force-assertion-description = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Force adding assertion descriptions to gomega matchers";
+                                        description = "Force adding assertion descriptions to gomega matchers.";
                                       };
 
                                       force-tonot = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Force using `ToNot`, `ShouldNot` instead of `To(Not())`";
+                                        description = "Force using `ToNot`, `ShouldNot` instead of `To(Not())`.";
                                       };
                                     };
                                   }
@@ -1169,13 +1182,13 @@
                                       default-signifies-exhaustive = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Presence of `default` case in switch statements satisfies exhaustiveness, if all members are not listed";
+                                        description = "Presence of `default` case in switch statements satisfies exhaustiveness, if all members are not listed.";
                                       };
 
                                       include-shared-interfaces = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Include shared interfaces in the exhaustiviness check";
+                                        description = "Include shared interfaces in the exhaustiviness check.";
                                       };
                                     };
                                   }
@@ -1190,7 +1203,7 @@
                                       min-complexity = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Minimal code complexity to report (we recommend 10-20)";
+                                        description = "Minimal code complexity to report (we recommend 10-20).";
                                       };
                                     };
                                   }
@@ -1205,67 +1218,61 @@
                                       match-constant = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Look for existing constants matching the values";
+                                        description = "Look for existing constants matching the values.";
                                       };
 
                                       min-len = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Minimum length of string constant";
+                                        description = "Minimum length of string constant.";
                                       };
 
                                       min-occurrences = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Minimum occurrences count to trigger";
+                                        description = "Minimum occurrences count to trigger.";
                                       };
 
                                       ignore-calls = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Ignore when constant is not used as function argument";
-                                      };
-
-                                      ignore-strings = lib.mkOption {
-                                        type = types.nullOr types.str;
-                                        default = null;
-                                        description = "Exclude strings matching the given regular expression";
+                                        description = "Ignore when constant is not used as function argument.";
                                       };
 
                                       ignore-string-values = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Exclude strings matching the given regular expressions";
+                                        description = "Exclude strings matching the given regular expressions.";
                                       };
 
                                       numbers = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Search also for duplicated numbers";
+                                        description = "Search also for duplicated numbers.";
                                       };
 
                                       min = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Minimum value, only works with `numbers`";
+                                        description = "Minimum value, only works with `numbers`.";
                                       };
 
                                       max = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Maximum value, only works with `numbers`";
+                                        description = "Maximum value, only works with `numbers`.";
                                       };
 
                                       find-duplicates = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Detects constants with identical values";
+                                        description = "Detects constants with identical values.";
                                       };
 
                                       eval-const-expressions = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Evaluates of constant expressions like Prefix + \"suffix\"";
+                                        description = "Evaluates of constant expressions like Prefix + \"suffix\".";
                                       };
                                     };
                                   }
@@ -1401,25 +1408,25 @@
                                         enabled-checks = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum checks));
                                           default = null;
-                                          description = "Which checks should be enabled. By default, a list of stable checks is used. To see it, run `GL_DEBUG=gocritic golangci-lint run`";
+                                          description = "Which checks should be enabled. By default, a list of stable checks is used. To see it, run `GL_DEBUG=gocritic golangci-lint run`.";
                                         };
 
                                         disabled-checks = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum checks));
                                           default = null;
-                                          description = "Which checks should be disabled";
+                                          description = "Which checks should be disabled.";
                                         };
 
                                         enabled-tags = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum tags));
                                           default = null;
-                                          description = "Enable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint run` to see all tags and checks";
+                                          description = "Enable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint run` to see all tags and checks.";
                                         };
 
                                         disabled-tags = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum tags));
                                           default = null;
-                                          description = "Disable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint run` to see all tags and checks";
+                                          description = "Disable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint run` to see all tags and checks.";
                                         };
 
                                         settings = lib.mkOption {
@@ -1635,19 +1642,19 @@
                                             }
                                           );
                                           default = null;
-                                          description = "Settings passed to gocritic. Properties must be valid and enabled check names";
+                                          description = "Settings passed to gocritic. Properties must be valid and enabled check names.";
                                         };
 
                                         disable-all = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Disable all checks marked for stable use in config";
+                                          description = "Disable all checks marked for stable use in config.";
                                         };
 
                                         enable-all = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Enable all checks marked for stable use in config";
+                                          description = "Enable all checks marked for stable use in config.";
                                         };
                                       };
                                     }
@@ -1662,7 +1669,7 @@
                                       min-complexity = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Minimum code complexity to report (we recommend 10-20)";
+                                        description = "Minimum code complexity to report (we recommend 10-20).";
                                       };
                                     };
                                   }
@@ -1681,6 +1688,7 @@
                                     "deprecated"
                                     "max-len"
                                     "no-unused-link"
+                                    "require-stdlib-doclink"
                                   ];
                                 in
                                 lib.mkOption {
@@ -1696,19 +1704,19 @@
                                             ]
                                           );
                                           default = null;
-                                          description = "Default set of rules to enable";
+                                          description = "Default set of rules to enable.";
                                         };
 
                                         enable = lib.mkOption {
                                           type = types.nullOr (types.enum rules);
                                           default = null;
-                                          description = "List of rules to enable in addition to the default set";
+                                          description = "List of rules to enable in addition to the default set.";
                                         };
 
                                         disable = lib.mkOption {
                                           type = types.nullOr (types.enum rules);
                                           default = null;
-                                          description = "List of rules to disable";
+                                          description = "List of rules to disable.";
                                         };
 
                                         options = lib.mkOption {
@@ -1716,27 +1724,37 @@
                                             types.submodule {
                                               options = {
                                                 max-len = lib.mkOption {
-                                                  type = types.nullOr types.int;
+                                                  type = types.nullOr (
+                                                    types.submodule {
+                                                      options = {
+                                                        length = lib.mkOption {
+                                                          type = types.nullOr types.int;
+                                                          default = null;
+                                                          description = "Maximum line length.";
+                                                        };
+                                                      };
+                                                    }
+                                                  );
                                                   default = null;
-                                                  description = "Maximum line length for godocs, not including the `// `, or `/*` or `*/` tokens";
+                                                  description = "Maximum line length settings for godocs.";
                                                 };
                                                 require-doc = {
                                                   ignore-exported = lib.mkOption {
                                                     type = types.nullOr types.bool;
                                                     default = null;
-                                                    description = "Ignore exported (public) symbols when applying the `require-doc` rule";
+                                                    description = "Ignore exported (public) symbols when applying the `require-doc` rule.";
                                                   };
                                                   ignore-unexported = lib.mkOption {
                                                     type = types.nullOr types.bool;
                                                     default = null;
-                                                    description = "Ignore unexported (private) symbols when applying the `require-doc` rule";
+                                                    description = "Ignore unexported (private) symbols when applying the `require-doc` rule.";
                                                   };
                                                 };
                                                 start-with-name = {
-                                                  iinclude-unexported = lib.mkOption {
+                                                  include-unexported = lib.mkOption {
                                                     type = types.nullOr types.bool;
                                                     default = null;
-                                                    description = "Include unexported symbols when applying the `start-with-name` rule";
+                                                    description = "Include unexported symbols when applying the `start-with-name` rule.";
                                                   };
                                                 };
                                               };
@@ -1756,37 +1774,38 @@
                                       scope = lib.mkOption {
                                         type = types.nullOr (
                                           types.enum [
+                                            ""
                                             "declarations"
                                             "toplevel"
                                             "all"
                                           ]
                                         );
                                         default = null;
-                                        description = "Comments to be checked";
+                                        description = "Comments to be checked.";
                                       };
 
                                       exclude = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of regexps for excluding particular comment lines from check";
+                                        description = "List of regexps for excluding particular comment lines from check.";
                                       };
 
                                       period = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check that each sentence ends with a period";
+                                        description = "Check that each sentence ends with a period.";
                                       };
 
                                       capital = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check that each sentence starts with a capital letter";
+                                        description = "Check that each sentence starts with a capital letter.";
                                       };
 
                                       check-all = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "DEPRECATED: Check all top-level comments, not only declarations";
+                                        description = "DEPRECATED: Check all top-level comments, not only declarations.";
                                       };
                                     };
                                   }
@@ -1820,7 +1839,7 @@
                                       max = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "The maximum number of methods allowed for an interface";
+                                        description = "The maximum number of methods allowed for an interface.";
                                       };
                                     };
                                   }
@@ -1830,45 +1849,43 @@
 
                               goheader = lib.mkOption {
                                 type = types.nullOr (
-                                  types.listOf (
-                                    types.submodule {
-                                      options = {
-                                        values = lib.mkOption {
-                                          type = types.nullOr (
-                                            types.submodule {
-                                              options = {
-                                                const = lib.mkOption {
-                                                  type = types.nullOr (types.attrsOf types.str);
-                                                  default = null;
-                                                  description = "Constants to use in the template";
-                                                };
-
-                                                regexp = lib.mkOption {
-                                                  type = types.nullOr (types.attrsOf types.str);
-                                                  default = null;
-                                                  description = "Regular expressions to use in your template";
-                                                };
+                                  types.submodule {
+                                    options = {
+                                      values = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.submodule {
+                                            options = {
+                                              const = lib.mkOption {
+                                                type = types.nullOr (types.attrsOf types.str);
+                                                default = null;
+                                                description = "Constants to use in the template.";
                                               };
-                                            }
-                                          );
-                                          default = null;
-                                          description = "Values to use in the template";
-                                        };
 
-                                        template = lib.mkOption {
-                                          type = types.nullOr types.str;
-                                          default = null;
-                                          description = "Template to put on top of every file";
-                                        };
-
-                                        template-path = lib.mkOption {
-                                          type = types.nullOr types.str;
-                                          default = null;
-                                          description = "Path to the file containing the template source";
-                                        };
+                                              regexp = lib.mkOption {
+                                                type = types.nullOr (types.attrsOf types.str);
+                                                default = null;
+                                                description = "Regular expressions to use in your template.";
+                                              };
+                                            };
+                                          }
+                                        );
+                                        default = null;
+                                        description = "Values to use in the template.";
                                       };
-                                    }
-                                  )
+
+                                      template = lib.mkOption {
+                                        type = types.nullOr types.str;
+                                        default = null;
+                                        description = "Template to put on top of every file.";
+                                      };
+
+                                      template-path = lib.mkOption {
+                                        type = types.nullOr types.str;
+                                        default = null;
+                                        description = "Path to the file containing the template source.";
+                                      };
+                                    };
+                                  }
                                 );
                                 default = null;
                               };
@@ -1880,31 +1897,31 @@
                                       replace-local = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow local `replace` directives";
+                                        description = "Allow local `replace` directives.";
                                       };
 
                                       replace-allow-list = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of allowed `replace` directives";
+                                        description = "List of allowed `replace` directives.";
                                       };
 
                                       retract-allow-no-explanation = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow to not explain why the version has been retracted in the `retract` directives";
+                                        description = "Allow to not explain why the version has been retracted in the `retract` directives.";
                                       };
 
                                       exclude-forbidden = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Forbid the use of the `exclude` directives";
+                                        description = "Forbid the use of the `exclude` directives.";
                                       };
 
                                       ignore-forbidden = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Forbid the use of the `ignore` directives (>= go1.25)";
+                                        description = "Forbid the use of the `ignore` directives (>= go1.25).";
                                       };
 
                                       toolchain-forbidden = lib.mkOption {
@@ -1916,25 +1933,31 @@
                                       toolchain-pattern = lib.mkOption {
                                         type = types.nullOr types.str;
                                         default = null;
-                                        description = "Defines a pattern to validate `toolchain` directive";
+                                        description = "Defines a pattern to validate `toolchain` directive.";
                                       };
 
                                       tool-forbidden = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Forbid the use of the `tool` directives";
+                                        description = "Forbid the use of the `tool` directives.";
                                       };
 
                                       go-debug-forbidden = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Forbid the use of the `godebug` directive";
+                                        description = "Forbid the use of the `godebug` directive.";
                                       };
 
                                       go-version-pattern = lib.mkOption {
                                         type = types.nullOr types.str;
                                         default = null;
-                                        description = "Defines a pattern to validate `go` minimum version directive";
+                                        description = "Defines a pattern to validate `go` minimum version directive.";
+                                      };
+
+                                      check-module-path = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Check the validity of the module path.";
                                       };
                                     };
                                   }
@@ -1953,13 +1976,13 @@
                                               modules = lib.mkOption {
                                                 type = types.nullOr (types.listOf types.str);
                                                 default = null;
-                                                description = "List of allowed modules";
+                                                description = "List of allowed modules.";
                                               };
 
                                               domains = lib.mkOption {
                                                 type = types.nullOr (types.listOf types.str);
                                                 default = null;
-                                                description = "List of allowed module domains";
+                                                description = "List of allowed module domains.";
                                               };
                                             };
                                           }
@@ -1980,13 +2003,13 @@
                                                           recommendations = lib.mkOption {
                                                             type = types.nullOr (types.listOf types.str);
                                                             default = null;
-                                                            description = "Recommended modules that should be used instead";
+                                                            description = "Recommended modules that should be used instead.";
                                                           };
 
                                                           reason = lib.mkOption {
                                                             type = types.nullOr types.str;
                                                             default = null;
-                                                            description = "Reason why the recommended module should be used";
+                                                            description = "Reason why the recommended module should be used.";
                                                           };
                                                         };
                                                       }
@@ -1994,7 +2017,7 @@
                                                   )
                                                 );
                                                 default = null;
-                                                description = "List of blocked modules";
+                                                description = "List of blocked modules.";
                                               };
 
                                               versions = lib.mkOption {
@@ -2005,26 +2028,26 @@
                                                         version = lib.mkOption {
                                                           type = types.nullOr types.str;
                                                           default = null;
-                                                          description = "Version constraint";
+                                                          description = "Version constraint.";
                                                         };
 
                                                         reason = lib.mkOption {
                                                           type = types.nullOr types.str;
                                                           default = null;
-                                                          description = "Reason why the version constraint exists";
+                                                          description = "Reason why the version constraint exists.";
                                                         };
                                                       };
                                                     }
                                                   )
                                                 );
                                                 default = null;
-                                                description = "List of blocked module version constraints";
+                                                description = "List of blocked module version constraints.";
                                               };
 
                                               local-replace-directives = lib.mkOption {
                                                 type = types.nullOr types.bool;
                                                 default = null;
-                                                description = "Raise lint issues if loading local path with replace directive";
+                                                description = "Raise lint issues if loading local path with replace directive.";
                                               };
                                             };
                                           }
@@ -2051,9 +2074,10 @@
                                     "G110"
                                     "G111"
                                     "G112"
-                                    "G113"
                                     "G114"
                                     "G115"
+                                    "G116"
+                                    "G117"
                                     "G201"
                                     "G202"
                                     "G203"
@@ -2080,6 +2104,12 @@
                                     "G507"
                                     "G601"
                                     "G602"
+                                    "G701"
+                                    "G702"
+                                    "G703"
+                                    "G704"
+                                    "G705"
+                                    "G706"
                                   ];
                                 in
                                 lib.mkOption {
@@ -2089,19 +2119,13 @@
                                         includes = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum rules));
                                           default = null;
-                                          description = "To select a subset of rules to run";
+                                          description = "To select a subset of rules to run.";
                                         };
 
                                         excludes = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum rules));
                                           default = null;
-                                          description = "To specify a set of rules to explicitly exclude";
-                                        };
-
-                                        exclude-generated = lib.mkOption {
-                                          type = types.nullOr types.bool;
-                                          default = null;
-                                          description = "Exclude generated files";
+                                          description = "To specify a set of rules to explicitly exclude.";
                                         };
 
                                         severity = lib.mkOption {
@@ -2113,7 +2137,7 @@
                                             ]
                                           );
                                           default = null;
-                                          description = "Filter out the issues with a lower severity than the given value";
+                                          description = "Filter out the issues with a lower severity than the given value.";
                                         };
 
                                         confidence = lib.mkOption {
@@ -2125,13 +2149,13 @@
                                             ]
                                           );
                                           default = null;
-                                          description = "Filter out the issues with a lower confidence than the given value";
+                                          description = "Filter out the issues with a lower confidence than the given value.";
                                         };
 
                                         config = lib.mkOption {
                                           type = types.nullOr (types.attrsOf types.unspecified);
                                           default = null;
-                                          description = "To specify the configuration of rules";
+                                          description = "To specify the configuration of rules.";
                                         };
 
                                         concurrency = lib.mkOption {
@@ -2152,19 +2176,19 @@
                                       allow-time-local = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow and ignore `time.Local` usages";
+                                        description = "Allow and ignore `time.Local` usages.";
                                       };
 
                                       escape-hatches = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = ''List of fully qualified names in the `full/pkg/path.name` form, to act as "i18n escape hatches"'';
+                                        description = ''List of fully qualified names in the `full/pkg/path.name` form, to act as "i18n escape hatches".'';
                                       };
 
                                       watch-for-scripts = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of Unicode scripts to watch for any usage in string literals";
+                                        description = "List of Unicode scripts to watch for any usage in string literals.";
                                       };
                                     };
                                   }
@@ -2192,7 +2216,9 @@
                                     "fieldalignment"
                                     "findcall"
                                     "framepointer"
+                                    "hostport"
                                     "httpresponse"
+                                    "httpmux"
                                     "ifaceassert"
                                     "loopclosure"
                                     "lostcancel"
@@ -2233,25 +2259,25 @@
                                         enable = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum analyzers));
                                           default = null;
-                                          description = "Enable analyzers by name";
+                                          description = "Enable analyzers by name.";
                                         };
 
                                         disable = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum analyzers));
                                           default = null;
-                                          description = "Disable analyzers by name";
+                                          description = "Disable analyzers by name.";
                                         };
 
                                         enable-all = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Enable all analyzers";
+                                          description = "Enable all analyzers.";
                                         };
 
                                         disable-all = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Disable all analyzers";
+                                          description = "Disable all analyzers.";
                                         };
                                       };
                                     }
@@ -2266,49 +2292,49 @@
                                       const-require-single-const = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that constants are defined in a single const block";
+                                        description = "Require that constants are defined in a single const block.";
                                       };
 
                                       const-require-grouping = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that constants are defined in a group";
+                                        description = "Require that constants are defined in a group.";
                                       };
 
                                       import-require-single-import = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that imports are defined in a single import block";
+                                        description = "Require that imports are defined in a single import block.";
                                       };
 
                                       import-require-grouping = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that imports are defined in a group";
+                                        description = "Require that imports are defined in a group.";
                                       };
 
                                       type-require-single-type = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that types are defined in a single type block";
+                                        description = "Require that types are defined in a single type block.";
                                       };
 
                                       type-require-grouping = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that types are defined in a group";
+                                        description = "Require that types are defined in a group.";
                                       };
 
                                       var-require-single-var = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that variables are defined in a single var block";
+                                        description = "Require that variables are defined in a single var block.";
                                       };
 
                                       var-require-grouping = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Require that variables are defined in a group";
+                                        description = "Require that variables are defined in a group.";
                                       };
                                     };
                                   }
@@ -2320,6 +2346,7 @@
                                 let
                                   analyzers = [
                                     "identical"
+                                    "unexported"
                                     "unused"
                                     "opaque"
                                   ];
@@ -2331,7 +2358,7 @@
                                         enable = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum analyzers));
                                           default = null;
-                                          description = "Enable analyzers by name";
+                                          description = "Enable analyzers by name.";
                                         };
                                         settings = lib.mkOption {
                                           type = types.nullOr (
@@ -2344,19 +2371,19 @@
                                                         exclude = lib.mkOption {
                                                           type = types.nullOr (types.listOf types.str);
                                                           default = null;
-                                                          description = "List of regular expressions to exclude unused interfaces from check";
+                                                          description = "List of regular expressions to exclude unused interfaces from check.";
                                                         };
                                                       };
                                                     }
                                                   );
                                                   default = null;
-                                                  description = "Settings for the unused analyzer";
+                                                  description = "Settings for the unused analyzer.";
                                                 };
                                               };
                                             }
                                           );
                                           default = null;
-                                          description = "Settings per analyzer. Map of analyzer name to specific settings";
+                                          description = "Settings per analyzer. Map of analyzer name to specific settings.";
                                         };
                                       };
                                     }
@@ -2371,7 +2398,7 @@
                                       check-escaping-errors = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check escaping variables of type error, may cause false positive";
+                                        description = "Check escaping variables of type error, may cause false positive.";
                                       };
                                     };
                                   }
@@ -2386,13 +2413,13 @@
                                       no-unaliased = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Do not allow unaliased imports of aliased packages";
+                                        description = "Do not allow unaliased imports of aliased packages.";
                                       };
 
                                       no-extra-aliases = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Do not allow non-required aliases";
+                                        description = "Do not allow non-required aliases.";
                                       };
 
                                       alias = lib.mkOption {
@@ -2402,19 +2429,19 @@
                                               options = {
                                                 pkg = lib.mkOption {
                                                   type = types.str;
-                                                  description = "Package path e.g. knative.dev/serving/pkg/apis/autoscaling/v1alpha1";
+                                                  description = "Package path e.g. knative.dev/serving/pkg/apis/autoscaling/v1alpha1.";
                                                 };
 
                                                 alias = lib.mkOption {
                                                   type = types.str;
-                                                  description = "Package alias e.g. autoscalingv1alpha1";
+                                                  description = "Package alias e.g. autoscalingv1alpha1.";
                                                 };
                                               };
                                             }
                                           )
                                         );
                                         default = null;
-                                        description = "List of aliases";
+                                        description = "List of aliases.";
                                       };
                                     };
                                   }
@@ -2429,7 +2456,7 @@
                                       skip-single-param = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Skips check for interface methods with only a single parameter";
+                                        description = "Skips check for interface methods with only a single parameter.";
                                       };
                                     };
                                   }
@@ -2444,7 +2471,7 @@
                                       report-individual = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Whether to report individual consts rather than just the const block";
+                                        description = "Whether to report individual consts rather than just the const block.";
                                       };
                                     };
                                   }
@@ -2459,12 +2486,12 @@
                                       allow = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of allowed interfaces";
+                                        description = "List of allowed interfaces.";
                                       };
                                       reject = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of interfaces to reject";
+                                        description = "List of interfaces to reject.";
                                       };
                                     };
                                   }
@@ -2479,13 +2506,13 @@
                                       tab-width = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = ''Width of \t in spaces'';
+                                        description = ''Width of \t in spaces.'';
                                       };
 
                                       line-length = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Maximum allowed line length, lines longer will be reported";
+                                        description = "Maximum allowed line length, lines longer will be reported.";
                                       };
                                     };
                                   }
@@ -2500,7 +2527,7 @@
                                       under = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Minimum acceptable maintainability index level (see https://docs.microsoft.com/en-us/visualstudio/code-quality/code-metrics-maintainability-index-range-and-meaning?view=vs-2022)";
+                                        description = "Minimum acceptable maintainability index level (see https://docs.microsoft.com/en-us/visualstudio/code-quality/code-metrics-maintainability-index-range-and-meaning?view=vs-2022).";
                                       };
                                     };
                                   }
@@ -2515,7 +2542,7 @@
                                       always = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow only slices initialized with a length of zero";
+                                        description = "Allow only slices initialized with a length of zero.";
                                       };
                                     };
                                   }
@@ -2530,7 +2557,6 @@
                                       let
                                         analyzers = [
                                           "any"
-                                          "bloop"
                                           "fmtappendf"
                                           "forvar"
                                           "mapsloop"
@@ -2543,18 +2569,20 @@
                                           "slicescontains"
                                           "slicessort"
                                           "stditerators"
+                                          "stringscut"
                                           "stringscutprefix"
                                           "stringsseq"
                                           "stringsbuilder"
                                           "testingcontext"
+                                          "unsafefuncs"
                                           "waitgroup"
                                         ];
                                       in
                                       {
                                         disable = lib.mkOption {
-                                          type = types.nullOr (types.enum analyzers);
+                                          type = types.nullOr (types.listOf (types.enum analyzers));
                                           default = null;
-                                          description = "List of analyzers to disable";
+                                          description = "List of analyzers to disable.";
                                         };
                                       };
                                   }
@@ -2582,6 +2610,12 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Allow check for the github.com/go-logr/logr library.";
+                                      };
+
+                                      slog = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allow check for the log/slog library.";
                                       };
 
                                       zap = lib.mkOption {
@@ -2628,27 +2662,22 @@
                                         description = "Correct spellings using locale preferences for US or UK. Default is to use a neutral variety of English.";
                                       };
 
-                                      ignore-words = lib.mkOption {
-                                        type = types.nullOr (types.listOf types.str);
-                                        default = null;
-                                        description = "List of words to ignore";
-                                      };
-
                                       ignore-rules = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of rules to ignore";
+                                        description = "List of rules to ignore.";
                                       };
 
                                       mode = lib.mkOption {
                                         type = types.nullOr (
                                           types.enum [
+                                            ""
                                             "restricted"
                                             "default"
                                           ]
                                         );
                                         default = null;
-                                        description = "Mode of the analysis";
+                                        description = "Mode of the analysis.";
                                       };
 
                                       extra-words = lib.mkOption {
@@ -2658,18 +2687,18 @@
                                               options = {
                                                 correction = lib.mkOption {
                                                   type = types.str;
-                                                  description = "Corrected word";
+                                                  description = "Corrected word.";
                                                 };
                                                 typo = lib.mkOption {
                                                   type = types.str;
-                                                  description = "Misspelled word";
+                                                  description = "Misspelled word.";
                                                 };
                                               };
                                             }
                                           )
                                         );
                                         default = null;
-                                        description = "Extra word corrections";
+                                        description = "Extra word corrections.";
                                       };
                                     };
                                   }
@@ -2688,16 +2717,16 @@
                                               options = {
                                                 name = lib.mkOption {
                                                   type = types.str;
-                                                  description = "Function name";
+                                                  description = "Function name.";
                                                 };
                                                 tag = lib.mkOption {
                                                   type = types.str;
-                                                  description = "Tag name";
+                                                  description = "Tag name.";
                                                 };
                                                 arg-pos = lib.mkOption {
                                                   type = types.nullOr types.int;
                                                   default = null;
-                                                  description = "Position of the argument the tag applies to";
+                                                  description = "Position of the argument the tag applies to.";
                                                 };
                                               };
                                             }
@@ -2719,7 +2748,7 @@
                                       max-func-lines = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Report if a function has more lines of code than this value and it has naked returns";
+                                        description = "Report if a function has more lines of code than this value and it has naked returns.";
                                       };
                                     };
                                   }
@@ -2734,7 +2763,7 @@
                                       min-complexity = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = ''Minimum complexity of "if" statements to report'';
+                                        description = ''Minimum complexity of "if" statements to report.'';
                                       };
                                     };
                                   }
@@ -2749,13 +2778,13 @@
                                       only-two = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "To check functions with only two return values";
+                                        description = "To check functions with only two return values.";
                                       };
 
                                       detect-opposite = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "In addition, detect opposite situation (simultaneous return of non-nil error and valid value)";
+                                        description = "In addition, detect opposite situation (simultaneous return of non-nil error and valid value).";
                                       };
 
                                       checked-types = lib.mkOption {
@@ -2773,7 +2802,7 @@
                                           )
                                         );
                                         default = null;
-                                        description = "List of return types to check";
+                                        description = "List of return types to check.";
                                       };
                                     };
                                   }
@@ -2788,7 +2817,7 @@
                                       block-size = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Set block size that is still ok";
+                                        description = "Set block size that is still ok.";
                                       };
                                     };
                                   }
@@ -2803,19 +2832,19 @@
                                       ignored-files = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of file patterns to exclude from analysis";
+                                        description = "List of file patterns to exclude from analysis.";
                                       };
 
                                       ignored-functions = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Comma-separated list of function patterns to exclude from the analysis";
+                                        description = "Comma-separated list of function patterns to exclude from the analysis.";
                                       };
 
                                       ignored-numbers = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of numbers to exclude from analysis";
+                                        description = "List of numbers to exclude from analysis.";
                                       };
 
                                       checks = lib.mkOption {
@@ -2832,7 +2861,7 @@
                                           )
                                         );
                                         default = null;
-                                        description = "The list of enabled checks, see https://github.com/tommy-muehle/go-mnd/#checks for description";
+                                        description = "The list of enabled checks, see https://github.com/tommy-muehle/go-mnd/#checks for description.";
                                       };
                                     };
                                   }
@@ -2848,25 +2877,25 @@
                                       allow-unused = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable to ensure that nolint directives are all used";
+                                        description = "Enable to ensure that nolint directives are all used.";
                                       };
 
                                       allow-no-explanation = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Exclude these linters from requiring an explanation";
+                                        description = "Exclude these linters from requiring an explanation.";
                                       };
 
                                       require-explanation = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable to require an explanation of nonzero length after each nolint directive";
+                                        description = "Enable to require an explanation of nonzero length after each nolint directive.";
                                       };
 
                                       require-specific = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable to require nolint directives to mention the specific linter being suppressed";
+                                        description = "Enable to require nolint directives to mention the specific linter being suppressed.";
                                       };
                                     };
                                   }
@@ -2880,7 +2909,7 @@
                                       patterns = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of patterns for variable reassignments";
+                                        description = "List of patterns for variable reassignments.";
                                       };
                                     };
                                   }
@@ -2895,13 +2924,13 @@
                                       disable-builtin = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Disables the built-in method exclusions";
+                                        description = "Disables the built-in method exclusions.";
                                       };
 
                                       exclusions = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "User-defined method exclusions";
+                                        description = "User-defined method exclusions.";
                                       };
                                     };
                                   }
@@ -2916,7 +2945,7 @@
                                       report-error-in-defer = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Report named error if it is assigned inside defer";
+                                        description = "Report named error if it is assigned inside defer.";
                                       };
                                     };
                                   }
@@ -2931,7 +2960,7 @@
                                       ignore-missing = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Ignore missing calls to `t.Parallel()` and only report incorrect uses of it";
+                                        description = "Ignore missing calls to `t.Parallel()` and only report incorrect uses of it.";
                                       };
                                       ignore-missing-subtests = lib.mkOption {
                                         type = types.nullOr types.bool;
@@ -2951,73 +2980,73 @@
                                       integer-format = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable/disable optimization of integer formatting";
+                                        description = "Enable/disable optimization of integer formatting.";
                                       };
 
                                       int-conversion = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Optimizes even if it requires an int or uint type cast";
+                                        description = "Optimizes even if it requires an int or uint type cast.";
                                       };
 
                                       error-format = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable/disable optimization of error formatting";
+                                        description = "Enable/disable optimization of error formatting.";
                                       };
 
                                       err-error = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Optimizes into `err.Error()` even if it is only equivalent for non-nil errors";
+                                        description = "Optimizes into `err.Error()` even if it is only equivalent for non-nil errors.";
                                       };
 
                                       errorf = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Optimizes `fmt.Errorf`";
+                                        description = "Optimizes `fmt.Errorf`.";
                                       };
 
                                       string-format = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable/disable optimization of string formatting";
+                                        description = "Enable/disable optimization of string formatting.";
                                       };
 
                                       sprintf1 = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Optimizes `fmt.Sprintf` with only one argument";
+                                        description = "Optimizes `fmt.Sprintf` with only one argument.";
                                       };
 
                                       strconcat = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Optimizes into strings concatenation";
+                                        description = "Optimizes into strings concatenation.";
                                       };
 
                                       bool-format = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable/disable optimization of bool formatting";
+                                        description = "Enable/disable optimization of bool formatting.";
                                       };
 
                                       hex-format = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable/disable optimization of hex formatting";
+                                        description = "Enable/disable optimization of hex formatting.";
                                       };
 
                                       concat-loop = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable/disable optimization of concat loop";
+                                        description = "Enable/disable optimization of concat loop.";
                                       };
 
                                       loop-other-ops = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Optimization of `concat-loop` even with other operations";
+                                        description = "Optimization of `concat-loop` even with other operations.";
                                       };
                                     };
                                   }
@@ -3032,19 +3061,19 @@
                                       simple = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Report preallocation suggestions only on simple loops that have no returns/breaks/continues/gotos in them";
+                                        description = "Report preallocation suggestions only on simple loops that have no returns/breaks/continues/gotos in them.";
                                       };
 
                                       range-loops = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Report preallocation suggestions on range loops";
+                                        description = "Report preallocation suggestions on range loops.";
                                       };
 
                                       for-loops = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Report preallocation suggestions on for loops";
+                                        description = "Report preallocation suggestions on for loops.";
                                       };
                                     };
                                   }
@@ -3057,14 +3086,14 @@
                                   types.submodule {
                                     options = {
                                       ignore = lib.mkOption {
-                                        type = types.nullOr types.str;
+                                        type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Comma-separated list of predeclared identifiers to not report on";
+                                        description = "List of predeclared identifiers to not report on.";
                                       };
                                       qualified-name = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Include method names and field names (i.e., qualified names) in checks";
+                                        description = "Include method names and field names (i.e., qualified names) in checks.";
                                       };
                                     };
                                   }
@@ -3079,7 +3108,7 @@
                                       strict = lib.mkOption {
                                         type = types.nullOr types.unspecified;
                                         default = null;
-                                        description = "Strict mode for labels";
+                                        description = "Strict mode for labels.";
                                       };
                                       disabled-linters = lib.mkOption {
                                         type = types.nullOr (
@@ -3097,7 +3126,7 @@
                                           )
                                         );
                                         default = null;
-                                        description = "List of linters to disable";
+                                        description = "List of linters to disable.";
                                       };
                                     };
                                   }
@@ -3112,22 +3141,22 @@
                                       skip-generated-by = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of strings that if ANY is found as comment, any generated file is skipped";
+                                        description = "List of strings that if ANY is found as comment, any generated file is skipped.";
                                       };
                                       skip-files = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of files to skip";
+                                        description = "List of files to skip.";
                                       };
                                       skip-any-generated = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Skip any generated files from the checking";
+                                        description = "Skip any generated files from the checking.";
                                       };
                                       replace-first-arg-in-append = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Skip first argument of append function";
+                                        description = "Skip first argument of append function.";
                                       };
                                     };
                                   }
@@ -3167,6 +3196,7 @@
                                     "enforce-repeated-arg-type-style"
                                     "enforce-slice-style"
                                     "enforce-switch-style"
+                                    "epoch-naming"
                                     "error-naming"
                                     "error-return"
                                     "error-strings"
@@ -3231,6 +3261,7 @@
                                     "use-any"
                                     "use-errors-new"
                                     "use-fmt-print"
+                                    "use-slices-sort"
                                     "use-waitgroup-go"
                                     "useless-break"
                                     "useless-fallthrough"
@@ -3247,13 +3278,13 @@
                                         max-open-files = lib.mkOption {
                                           type = types.nullOr types.int;
                                           default = null;
-                                          description = "Max open files limit";
+                                          description = "Max open files limit.";
                                         };
 
                                         confidence = lib.mkOption {
                                           type = types.nullOr types.float;
                                           default = null;
-                                          description = "Confidence level";
+                                          description = "Confidence level.";
                                         };
 
                                         severity = lib.mkOption {
@@ -3264,19 +3295,19 @@
                                             ]
                                           );
                                           default = null;
-                                          description = "Severity level";
+                                          description = "Severity level.";
                                         };
 
                                         enable-default-rules = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Enable default rules";
+                                          description = "Enable default rules.";
                                         };
 
                                         enable-all-rules = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Enable all rules, this will not respect excludes";
+                                          description = "Enable all rules, this will not respect excludes.";
                                         };
 
                                         directives = lib.mkOption {
@@ -3319,12 +3350,12 @@
                                                 options = {
                                                   name = lib.mkOption {
                                                     type = types.enum rules;
-                                                    description = "Rule name";
+                                                    description = "Rule name.";
                                                   };
                                                   disabled = lib.mkOption {
                                                     type = types.nullOr types.bool;
                                                     default = null;
-                                                    description = "Disable rule";
+                                                    description = "Disable rule.";
                                                   };
                                                   severity = lib.mkOption {
                                                     type = types.nullOr (
@@ -3334,24 +3365,24 @@
                                                       ]
                                                     );
                                                     default = null;
-                                                    description = "Severity of the rule";
+                                                    description = "Severity of the rule.";
                                                   };
                                                   exclude = lib.mkOption {
                                                     type = types.nullOr (types.listOf types.str);
                                                     default = null;
-                                                    description = "Exclude patterns";
+                                                    description = "Exclude patterns.";
                                                   };
                                                   arguments = lib.mkOption {
                                                     type = types.nullOr (types.listOf types.unspecified);
                                                     default = null;
-                                                    description = "Arguments to be passed to the rule";
+                                                    description = "Arguments to be passed to the rule.";
                                                   };
                                                 };
                                               }
                                             )
                                           );
                                           default = null;
-                                          description = "Rules to enable or disable";
+                                          description = "Rules to enable or disable.";
                                         };
                                       };
                                     }
@@ -3366,7 +3397,7 @@
                                       packages = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of packages to check";
+                                        description = "List of packages to check.";
                                       };
                                     };
                                   }
@@ -3381,52 +3412,55 @@
                                       kv-only = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforce using key-value pairs only (incompatible with attr-only)";
+                                        description = "Enforce using key-value pairs only (incompatible with attr-only).";
                                       };
 
                                       no-global = lib.mkOption {
                                         type = types.nullOr (
                                           types.enum [
+                                            ""
                                             "all"
                                             "default"
                                           ]
                                         );
                                         default = null;
-                                        description = "Enforce not using global loggers";
+                                        description = "Enforce not using global loggers.";
                                       };
 
                                       no-mixed-args = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforce not mixing key-value pairs and attributes";
+                                        description = "Enforce not mixing key-value pairs and attributes.";
                                       };
 
                                       context = lib.mkOption {
                                         type = types.nullOr (
                                           types.enum [
+                                            ""
                                             "all"
                                             "scope"
                                           ]
                                         );
                                         default = null;
-                                        description = "Enforce using methods that accept a context";
+                                        description = "Enforce using methods that accept a context.";
                                       };
 
                                       static-msg = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforce using static values for log messages";
+                                        description = "Enforce using static values for log messages.";
                                       };
 
                                       msg-style = lib.mkOption {
                                         type = types.nullOr (
                                           types.enum [
+                                            ""
                                             "lowercased"
                                             "capitalized"
                                           ]
                                         );
                                         default = null;
-                                        description = "Enforce message style";
+                                        description = "Enforce message style.";
                                       };
 
                                       key-naming-case = lib.mkOption {
@@ -3439,31 +3473,31 @@
                                           ]
                                         );
                                         default = null;
-                                        description = "Enforce a single key naming convention";
+                                        description = "Enforce a single key naming convention.";
                                       };
 
                                       attr-only = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforce using attributes only (incompatible with kv-only)";
+                                        description = "Enforce using attributes only (incompatible with kv-only).";
                                       };
 
                                       no-raw-keys = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforce using constants instead of raw keys";
+                                        description = "Enforce using constants instead of raw keys.";
                                       };
 
                                       forbidden-keys = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Enforce not using specific keys";
+                                        description = "Enforce not using specific keys.";
                                       };
 
                                       args-on-sep-lines = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforce putting arguments on separate lines";
+                                        description = "Enforce putting arguments on separate lines.";
                                       };
                                     };
                                   }
@@ -3486,19 +3520,19 @@
                                           )
                                         );
                                         default = null;
-                                        description = "Checks to enable";
+                                        description = "Checks to enable.";
                                       };
 
                                       ignore-check-signatures = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "A list of regexes for function signatures that silence `record-error` and `set-status` reports if found in the call path to a returned error";
+                                        description = "A list of regexes for function signatures that silence `record-error` and `set-status` reports if found in the call path to a returned error.";
                                       };
 
                                       extra-start-span-signatures = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "A list of regexes for additional function signatures that create spans";
+                                        description = "A list of regexes for additional function signatures that create spans.";
                                       };
                                     };
                                   }
@@ -3868,7 +3902,7 @@
                                         checks = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum checks));
                                           default = null;
-                                          description = "Checks to include in analysis. `all` is also accepted";
+                                          description = "Checks to include in analysis. `all` is also accepted.";
                                         };
                                         dot-import-whitelist = lib.mkOption {
                                           type = types.nullOr (types.listOf types.str);
@@ -3966,22 +4000,22 @@
                                       align = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Align and sort can be used together or separately";
+                                        description = "Align and sort can be used together or separately.";
                                       };
                                       sort = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Whether enable tags sort";
+                                        description = "Whether enable tags sort.";
                                       };
                                       order = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Specify the order of tags, the other tags will be sorted by name";
+                                        description = "Specify the order of tags, the other tags will be sorted by name.";
                                       };
                                       strict = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Whether enable strict style";
+                                        description = "Whether enable strict style.";
                                       };
                                     };
                                   }
@@ -3992,6 +4026,7 @@
                               tagliatelle =
                                 let
                                   cases = [
+                                    ""
                                     "camel"
                                     "pascal"
                                     "kebab"
@@ -4016,19 +4051,19 @@
                                               use-field-name = lib.mkOption {
                                                 type = types.nullOr types.bool;
                                                 default = null;
-                                                description = "Use the struct field name to check the name of the struct tag";
+                                                description = "Use the struct field name to check the name of the struct tag.";
                                               };
 
                                               ignored-fields = lib.mkOption {
                                                 type = types.nullOr (types.listOf types.str);
                                                 default = null;
-                                                description = "The field names to ignore";
+                                                description = "The field names to ignore.";
                                               };
 
                                               rules = lib.mkOption {
                                                 type = types.nullOr (types.attrsOf (types.enum cases));
                                                 default = null;
-                                                description = "Case rules";
+                                                description = "Case rules.";
                                               };
 
                                               extended-rules = lib.mkOption {
@@ -4050,7 +4085,7 @@
                                                   )
                                                 );
                                                 default = null;
-                                                description = "Defines the association between tag name and case";
+                                                description = "Defines the association between tag name and case.";
                                               };
 
                                               overrides = lib.mkOption {
@@ -4060,25 +4095,25 @@
                                                       options = {
                                                         pkg = lib.mkOption {
                                                           type = types.str;
-                                                          description = "A package path";
+                                                          description = "A package path.";
                                                         };
 
                                                         use-field-name = lib.mkOption {
                                                           type = types.nullOr types.bool;
                                                           default = null;
-                                                          description = "Use the struct field name to check the name of the struct tag";
+                                                          description = "Use the struct field name to check the name of the struct tag.";
                                                         };
 
                                                         ignored-fields = lib.mkOption {
                                                           type = types.nullOr (types.listOf types.str);
                                                           default = null;
-                                                          description = "The field names to ignore";
+                                                          description = "The field names to ignore.";
                                                         };
 
                                                         ignore = lib.mkOption {
                                                           type = types.nullOr types.bool;
                                                           default = null;
-                                                          description = "Ignore the package (takes precedence over all other configurations)";
+                                                          description = "Ignore the package (takes precedence over all other configurations).";
                                                         };
 
                                                         rules = lib.mkOption {
@@ -4111,12 +4146,12 @@
                                                   )
                                                 );
                                                 default = null;
-                                                description = "Defines the association between tag name and case";
+                                                description = "Defines the association between tag name and case.";
                                               };
                                             };
                                           };
                                           default = null;
-                                          description = "Case settings";
+                                          description = "Case settings.";
                                         };
                                       };
                                     }
@@ -4144,9 +4179,11 @@
                                     "nil-compare"
                                     "regexp"
                                     "require-error"
+                                    "equal-values"
                                     "suite-broken-parallel"
                                     "suite-dont-use-pkg"
                                     "suite-extra-assert-call"
+                                    "suite-method-signature"
                                     "suite-subtest-run"
                                     "suite-thelper"
                                     "useless-assert"
@@ -4159,25 +4196,25 @@
                                         enable-all = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Enable all checkers";
+                                          description = "Enable all checkers.";
                                         };
 
                                         disable-all = lib.mkOption {
                                           type = types.nullOr types.bool;
                                           default = null;
-                                          description = "Disable all checkers";
+                                          description = "Disable all checkers.";
                                         };
 
                                         enable = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum checks));
                                           default = null;
-                                          description = "Enable specific checkers";
+                                          description = "Enable specific checkers.";
                                         };
 
                                         disable = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum checks));
                                           default = null;
-                                          description = "Disable specific checkers";
+                                          description = "Disable specific checkers.";
                                         };
 
                                         bool-compare = lib.mkOption {
@@ -4187,13 +4224,13 @@
                                                 ignore-custom-types = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "To ignore user defined types (over builtin bool)";
+                                                  description = "To ignore user defined types (over builtin bool).";
                                                 };
                                               };
                                             }
                                           );
                                           default = null;
-                                          description = "Settings for the bool-compare checker";
+                                          description = "Settings for the bool-compare checker.";
                                         };
 
                                         expected-actual = lib.mkOption {
@@ -4203,13 +4240,13 @@
                                                 pattern = lib.mkOption {
                                                   type = types.nullOr types.str;
                                                   default = null;
-                                                  description = "Regexp for expected variable name";
+                                                  description = "Regexp for expected variable name.";
                                                 };
                                               };
                                             }
                                           );
                                           default = null;
-                                          description = "Settings for the expected-actual checker";
+                                          description = "Settings for the expected-actual checker.";
                                         };
 
                                         formatter = lib.mkOption {
@@ -4219,25 +4256,25 @@
                                                 check-format-string = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "To enable go vet's printf checks";
+                                                  description = "To enable go vet's printf checks.";
                                                 };
 
                                                 require-f-funcs = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "To require f-assertions (e.g. assert.Equalf) if format string is used, even if there are no variable-length variables";
+                                                  description = "To require f-assertions (e.g. assert.Equalf) if format string is used, even if there are no variable-length variables.";
                                                 };
 
                                                 require-string-msg = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "To require that the first element of msgAndArgs (msg) has a string type";
+                                                  description = "To require that the first element of msgAndArgs (msg) has a string type.";
                                                 };
                                               };
                                             }
                                           );
                                           default = null;
-                                          description = "Settings for the formatter checker";
+                                          description = "Settings for the formatter checker.";
                                         };
 
                                         go-require = lib.mkOption {
@@ -4247,13 +4284,13 @@
                                                 ignore-http-handlers = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "To ignore HTTP handlers (like http.HandlerFunc)";
+                                                  description = "To ignore HTTP handlers (like http.HandlerFunc).";
                                                 };
                                               };
                                             }
                                           );
                                           default = null;
-                                          description = "Settings for the go-require checker";
+                                          description = "Settings for the go-require checker.";
                                         };
 
                                         require-error = lib.mkOption {
@@ -4263,13 +4300,13 @@
                                                 fn-pattern = lib.mkOption {
                                                   type = types.nullOr types.str;
                                                   default = null;
-                                                  description = "Regexp for assertions to analyze. If defined, then only matched error assertions will be reported";
+                                                  description = "Regexp for assertions to analyze. If defined, then only matched error assertions will be reported.";
                                                 };
                                               };
                                             }
                                           );
                                           default = null;
-                                          description = "Settings for the require-error checker";
+                                          description = "Settings for the require-error checker.";
                                         };
 
                                         suite-extra-assert-call = lib.mkOption {
@@ -4284,13 +4321,13 @@
                                                     ]
                                                   );
                                                   default = null;
-                                                  description = "To require or remove extra Assert() call?";
+                                                  description = "To require or remove extra Assert() call?.";
                                                 };
                                               };
                                             }
                                           );
                                           default = null;
-                                          description = "Settings for the suite-extra-assert-call checker";
+                                          description = "Settings for the suite-extra-assert-call checker.";
                                         };
                                       };
                                     }
@@ -4305,12 +4342,12 @@
                                       skip-regexp = lib.mkOption {
                                         type = types.nullOr types.str;
                                         default = null;
-                                        description = "Files with names matching this regular expression are skipped";
+                                        description = "Files with names matching this regular expression are skipped.";
                                       };
                                       allow-packages = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "List of packages that don't end with _test that tests are allowed to be in";
+                                        description = "List of packages that don't end with _test that tests are allowed to be in.";
                                       };
                                     };
                                   }
@@ -4330,19 +4367,19 @@
                                                 begin = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "Check if `t.Helper()` begins helper function";
+                                                  description = "Check if `t.Helper()` begins helper function.";
                                                 };
 
                                                 first = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "Check if *testing.T is first param of helper function";
+                                                  description = "Check if *testing.T is first param of helper function.";
                                                 };
 
                                                 name = lib.mkOption {
                                                   type = types.nullOr types.bool;
                                                   default = null;
-                                                  description = "Check if *testing.T param has t name";
+                                                  description = "Check if *testing.T param has t name.";
                                                 };
                                               };
                                             }
@@ -4368,13 +4405,153 @@
                                       check-sql-builders = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable SQL builder checking";
+                                        description = "Enable SQL builder checking.";
+                                      };
+
+                                      check-aliased-wildcard = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable aliased wildcard detection like SELECT t.*.";
+                                      };
+
+                                      check-string-concat = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable string concatenation analysis.";
+                                      };
+
+                                      check-format-strings = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable format string analysis like fmt.Sprintf.";
+                                      };
+
+                                      check-string-builder = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable strings.Builder analysis.";
+                                      };
+
+                                      check-subqueries = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable subquery analysis.";
+                                      };
+
+                                      check-n1 = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable N+1 query detection.";
+                                      };
+
+                                      check-sql-injection = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable SQL injection detection.";
+                                      };
+
+                                      check-tx-leaks = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Enable transaction leak detection.";
                                       };
 
                                       allowed-patterns = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Regex patterns for acceptable SELECT * usage";
+                                        description = "Regex patterns for acceptable SELECT * usage.";
+                                      };
+
+                                      allow = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "Allow is a list of SQL patterns to allow (whitelist).";
+                                      };
+
+                                      ignored-functions = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "Functions to ignore.";
+                                      };
+
+                                      sql-builders = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.attrsOf (
+                                            types.submodule {
+                                              options = {
+                                                squirrel = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                                gorm = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                                sqlx = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                                ent = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                                pgx = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                                bun = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                                sqlboiler = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                                jet = lib.mkOption {
+                                                  type = types.nullOr types.bool;
+                                                  default = null;
+                                                };
+                                              };
+                                            }
+                                          )
+                                        );
+                                        default = null;
+                                      };
+
+                                      custom-rules = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.listOf (
+                                            types.submodule {
+                                              options = {
+                                                id = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                };
+                                                pattern = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                };
+                                                patterns = lib.mkOption {
+                                                  type = types.nullOr (types.listOf types.str);
+                                                  default = null;
+                                                };
+                                                when = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                };
+                                                message = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                };
+                                                action = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                };
+                                              };
+                                            }
+                                          )
+                                        );
+                                        default = null;
                                       };
                                     };
                                   }
@@ -4389,61 +4566,67 @@
                                       http-method = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of http.MethodXX";
+                                        description = "Suggest the use of http.MethodXX.";
                                       };
 
                                       http-status-code = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of http.StatusXX";
+                                        description = "Suggest the use of http.StatusXX.";
                                       };
 
                                       time-weekday = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of time.Weekday.String()";
+                                        description = "Suggest the use of time.Weekday.String().";
                                       };
 
                                       time-month = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of time.Month.String()";
+                                        description = "Suggest the use of time.Month.String().";
+                                      };
+
+                                      time-date-month = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Suggest the use of time.Month in time.Date.";
                                       };
 
                                       time-layout = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of time.Layout";
+                                        description = "Suggest the use of time.Layout.";
                                       };
 
                                       crypto-hash = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of crypto.Hash.String()";
+                                        description = "Suggest the use of crypto.Hash.String().";
                                       };
 
                                       default-rpc-path = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of rpc.DefaultXXPath";
+                                        description = "Suggest the use of rpc.DefaultXXPath.";
                                       };
 
                                       sql-isolation-level = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of sql.LevelXX.String()";
+                                        description = "Suggest the use of sql.LevelXX.String().";
                                       };
 
                                       tls-signature-scheme = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of tls.SignatureScheme.String()";
+                                        description = "Suggest the use of tls.SignatureScheme.String().";
                                       };
 
                                       constant-kind = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Suggest the use of constant.Kind.String()";
+                                        description = "Suggest the use of constant.Kind.String().";
                                       };
                                     };
                                   }
@@ -4496,12 +4679,12 @@
                                       fast-math = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow floating point conversions that may result in loss of precision";
+                                        description = "Allow floating point conversions that may result in loss of precision.";
                                       };
                                       safe = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Restrict conversions to safe conversions only";
+                                        description = "Restrict conversions to safe conversions only.";
                                       };
                                     };
                                   }
@@ -4541,32 +4724,32 @@
                                       field-writes-are-uses = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Consider field writes as uses";
+                                        description = "Consider field writes as uses.";
                                       };
                                       post-statements-are-reads = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Consider post statements in for loops as reads of loop variables";
+                                        description = "Consider post statements in for loops as reads of loop variables.";
                                       };
                                       exported-fields-are-used = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Consider exported fields as used";
+                                        description = "Consider exported fields as used.";
                                       };
                                       parameters-are-used = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Consider function parameters as used";
+                                        description = "Consider function parameters as used.";
                                       };
                                       local-variables-are-used = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Consider local variables as used";
+                                        description = "Consider local variables as used.";
                                       };
                                       generated-is-used = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Consider generated code as used";
+                                        description = "Consider generated code as used.";
                                       };
                                     };
                                   }
@@ -4581,61 +4764,61 @@
                                       max-distance = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Variables used in at most this N-many lines will be ignored";
+                                        description = "Variables used in at most this N-many lines will be ignored.";
                                       };
 
                                       min-name-length = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "The minimum length of a variable's name that is considered `long`";
+                                        description = "The minimum length of a variable's name that is considered `long`.";
                                       };
 
                                       check-receiver = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check method receiver names";
+                                        description = "Check method receiver names.";
                                       };
 
                                       check-return = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check named return values";
+                                        description = "Check named return values.";
                                       };
 
                                       check-type-param = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check type parameters";
+                                        description = "Check type parameters.";
                                       };
 
                                       ignore-type-assert-ok = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Ignore `ok` variables that hold the bool return value of a type assertio";
+                                        description = "Ignore `ok` variables that hold the bool return value of a type assertion.";
                                       };
 
                                       ignore-map-index-ok = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Ignore `ok` variables that hold the bool return value of a map index";
+                                        description = "Ignore `ok` variables that hold the bool return value of a map index.";
                                       };
 
                                       ignore-chan-recv-ok = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Ignore `ok` variables that hold the bool return value of a channel receive";
+                                        description = "Ignore `ok` variables that hold the bool return value of a channel receive.";
                                       };
 
                                       ignore-names = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Optional list of variable names that should be ignored completely";
+                                        description = "Optional list of variable names that should be ignored completely.";
                                       };
 
                                       ignore-decls = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Optional list of variable declarations that should be ignored completely";
+                                        description = "Optional list of variable declarations that should be ignored completely.";
                                       };
                                     };
                                   }
@@ -4650,13 +4833,13 @@
                                       multi-if = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforces newlines (or comments) after every multi-line if statement";
+                                        description = "Enforces newlines (or comments) after every multi-line if statement.";
                                       };
 
                                       multi-func = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enforces newlines (or comments) after every multi-line function signature";
+                                        description = "Enforces newlines (or comments) after every multi-line function signature.";
                                       };
                                     };
                                   }
@@ -4671,31 +4854,37 @@
                                       extra-ignore-sigs = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = " An array of strings specifying additional substrings of signatures to ignore";
+                                        description = "An array of strings specifying additional substrings of signatures to ignore.";
                                       };
 
                                       ignore-sigs = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "An array of strings which specify substrings of signatures to ignore";
+                                        description = "An array of strings which specify substrings of signatures to ignore.";
                                       };
 
                                       ignore-sig-regexps = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "An array of strings which specify regular expressions of signatures to ignore";
+                                        description = "An array of strings which specify regular expressions of signatures to ignore.";
                                       };
 
                                       ignore-package-globs = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "An array of glob patterns which, if any match the package of the function returning the error, will skip wrapcheck analysis for this error";
+                                        description = "An array of glob patterns which, if any match the package of the function returning the error, will skip wrapcheck analysis for this error.";
                                       };
 
                                       ignore-interface-regexps = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "An array of glob patterns which, if matched to an underlying interface name, will ignore unwrapped errors returned from a function whose call is defined on the given interface";
+                                        description = "An array of glob patterns which, if matched to an underlying interface name, will ignore unwrapped errors returned from a function whose call is defined on the given interface.";
+                                      };
+
+                                      report-internal-errors = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Determines whether wrapcheck should report errors returned from inside the package.";
                                       };
                                     };
                                   }
@@ -4710,85 +4899,85 @@
                                       allow-assign-and-anything = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Controls if you may cuddle assignments and anything without needing an empty line between them";
+                                        description = "Controls if you may cuddle assignments and anything without needing an empty line between them.";
                                       };
 
                                       allow-assign-and-call = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow calls and assignments to be cuddled as long as the lines have any matching variables, fields or types";
+                                        description = "Allow calls and assignments to be cuddled as long as the lines have any matching variables, fields or types.";
                                       };
 
                                       allow-cuddle-declarations = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow declarations (var) to be cuddled";
+                                        description = "Allow declarations (var) to be cuddled.";
                                       };
 
                                       allow-cuddle-with-calls = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "A list of call idents that everything can be cuddled with";
+                                        description = "A list of call idents that everything can be cuddled with.";
                                       };
 
                                       allow-cuddle-with-rhs = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "AllowCuddleWithRHS is a list of right hand side variables that is allowed to be cuddled with anything";
+                                        description = "AllowCuddleWithRHS is a list of right hand side variables that is allowed to be cuddled with anything.";
                                       };
 
                                       allow-cuddle-used-in-block = lib.mkOption {
-                                        type = types.nullOr (types.listOf types.str);
+                                        type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow cuddling with any block as long as the variable is used somewhere in the block";
+                                        description = "Allow cuddling with any block as long as the variable is used somewhere in the block.";
                                       };
 
                                       allow-multiline-assign = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow multiline assignments to be cuddled";
+                                        description = "Allow multiline assignments to be cuddled.";
                                       };
 
                                       allow-separated-leading-comment = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow leading comments to be separated with empty lines";
+                                        description = "Allow leading comments to be separated with empty lines.";
                                       };
 
                                       allow-trailing-comment = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Allow trailing comments in ending of blocks";
+                                        description = "Allow trailing comments in ending of blocks.";
                                       };
 
                                       error-variable-names = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "When force-err-cuddling is enabled this is a list of names used for error variables to check for in the conditional";
+                                        description = "When force-err-cuddling is enabled this is a list of names used for error variables to check for in the conditional.";
                                       };
 
                                       force-case-trailing-whitespace = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Force newlines in end of case at this limit (0 = never)";
+                                        description = "Force newlines in end of case at this limit (0 = never).";
                                       };
 
                                       force-err-cuddling = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Causes an error when an If statement that checks an error variable doesn't cuddle with the assignment of that variable";
+                                        description = "Causes an error when an If statement that checks an error variable doesn't cuddle with the assignment of that variable.";
                                       };
 
                                       force-short-decl-cuddling = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Causes an error if a short declaration (:=) cuddles with anything other than another short declaration";
+                                        description = "Causes an error if a short declaration (:=) cuddles with anything other than another short declaration.";
                                       };
 
                                       strict-append = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "If true, append is only allowed to be cuddled if appending value is matching variables, fields or types on line above";
+                                        description = "If true, append is only allowed to be cuddled if appending value is matching variables, fields or types on line above.";
                                       };
                                     };
                                   }
@@ -4796,51 +4985,79 @@
                                 default = null;
                               };
 
-                              wsl_v5 = lib.mkOption {
-                                type = types.nullOr (
-                                  types.submodule {
-                                    options = {
-                                      default = lib.mkOption {
-                                        type = types.nullOr types.str;
-                                        default = null;
-                                        description = "default mode setting";
+                              wsl_v5 =
+                                let
+                                  checks = [
+                                    "assign"
+                                    "branch"
+                                    "decl"
+                                    "defer"
+                                    "expr"
+                                    "for"
+                                    "go"
+                                    "if"
+                                    "inc-dec"
+                                    "label"
+                                    "range"
+                                    "return"
+                                    "select"
+                                    "send"
+                                    "switch"
+                                    "type-switch"
+                                    "append"
+                                    "assign-exclusive"
+                                    "assign-expr"
+                                    "err"
+                                    "leading-whitespace"
+                                    "trailing-whitespace"
+                                    "after-block"
+                                  ];
+                                in
+                                lib.mkOption {
+                                  type = types.nullOr (
+                                    types.submodule {
+                                      options = {
+                                        default = lib.mkOption {
+                                          type = types.nullOr types.str;
+                                          default = null;
+                                          description = "Default mode setting.";
+                                        };
+                                        enable = lib.mkOption {
+                                          type = types.nullOr (types.listOf (types.enum checks));
+                                          default = null;
+                                          description = "List of enabled checks.";
+                                        };
+                                        disable = lib.mkOption {
+                                          type = types.nullOr (types.listOf (types.enum checks));
+                                          default = null;
+                                          description = "List of disabled checks.";
+                                        };
+                                        allow-first-in-block = lib.mkOption {
+                                          type = types.nullOr types.bool;
+                                          default = null;
+                                          description = "Allow first in block.";
+                                        };
+                                        allow-whole-block = lib.mkOption {
+                                          type = types.nullOr types.bool;
+                                          default = null;
+                                          description = "Allow whole block.";
+                                        };
+                                        branch-max-lines = lib.mkOption {
+                                          type = types.nullOr types.int;
+                                          default = null;
+                                          description = "Branch max lines.";
+                                        };
+                                        case-max-lines = lib.mkOption {
+                                          type = types.nullOr types.int;
+                                          default = null;
+                                          description = "Case max lines.";
+                                        };
                                       };
-                                      enable = lib.mkOption {
-                                        type = types.nullOr (types.listOf types.str);
-                                        default = null;
-                                        description = "list of enabled checks";
-                                      };
-                                      disable = lib.mkOption {
-                                        type = types.nullOr (types.listOf types.str);
-                                        default = null;
-                                        description = "list of disabled checks";
-                                      };
-                                      allow-first-in-block = lib.mkOption {
-                                        type = types.nullOr types.bool;
-                                        default = null;
-                                        description = "allow first in block";
-                                      };
-                                      allow-whole-block = lib.mkOption {
-                                        type = types.nullOr types.bool;
-                                        default = null;
-                                        description = "allow whole block";
-                                      };
-                                      branch-max-lines = lib.mkOption {
-                                        type = types.nullOr types.int;
-                                        default = null;
-                                        description = "branch max lines";
-                                      };
-                                      case-max-lines = lib.mkOption {
-                                        type = types.nullOr types.int;
-                                        default = null;
-                                        description = "case max lines";
-                                      };
-                                    };
-                                  }
-                                );
-                                default = null;
-                                description = "Settings for the wsl_v5 linter";
-                              };
+                                    }
+                                  );
+                                  default = null;
+                                  description = "Settings for the wsl_v5 linter.";
+                                };
 
                               copyloopvar = lib.mkOption {
                                 type = types.nullOr (
@@ -4849,7 +5066,7 @@
                                       check-alias = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Check alias of loop variables";
+                                        description = "Check alias of loop variables.";
                                       };
                                     };
                                   }
@@ -4870,27 +5087,27 @@
                                             ]
                                           );
                                           default = null;
-                                          description = "The plugin type";
+                                          description = "The plugin type.";
                                         };
                                         path = lib.mkOption {
                                           type = types.nullOr types.str;
                                           default = null;
-                                          description = "The path to the plugin *.so. Can be absolute or local";
+                                          description = "The path to the plugin *.so. Can be absolute or local.";
                                         };
                                         description = lib.mkOption {
                                           type = types.nullOr types.str;
                                           default = null;
-                                          description = "The description of the linter, for documentation purposes only";
+                                          description = "The description of the linter, for documentation purposes only.";
                                         };
                                         original-url = lib.mkOption {
                                           type = types.nullOr types.str;
                                           default = null;
-                                          description = "Intended to point to the repo location of the linter, for documentation purposes only";
+                                          description = "Intended to point to the repo location of the linter, for documentation purposes only.";
                                         };
                                         settings = lib.mkOption {
                                           type = types.nullOr types.unspecified;
                                           default = null;
-                                          description = "Plugins settings/configuration. Only work with plugin based on `linterdb.PluginConstructor`";
+                                          description = "Plugins settings/configuration. Only work with plugin based on `linterdb.PluginConstructor`.";
                                         };
                                       };
                                     }
@@ -4902,7 +5119,7 @@
                           }
                         );
                         default = null;
-                        description = "All available settings of specific linters";
+                        description = "All available settings of specific linters.";
                       };
 
                       exclusions = lib.mkOption {
@@ -4918,13 +5135,13 @@
                                   ]
                                 );
                                 default = null;
-                                description = "Generated files exclusion mode";
+                                description = "Generated files exclusion mode.";
                               };
 
                               warn-unused = lib.mkOption {
                                 type = types.nullOr types.bool;
                                 default = null;
-                                description = "Warn about unused exclusions";
+                                description = "Warn about unused exclusions.";
                               };
 
                               presets = lib.mkOption {
@@ -4939,7 +5156,7 @@
                                   )
                                 );
                                 default = null;
-                                description = "Preset of exclusions to use";
+                                description = "Preset of exclusions to use.";
                               };
 
                               rules = lib.mkOption {
@@ -4950,46 +5167,46 @@
                                         path = lib.mkOption {
                                           type = types.nullOr types.str;
                                           default = null;
-                                          description = "Path pattern";
+                                          description = "Path pattern.";
                                         };
                                         path-except = lib.mkOption {
                                           type = types.nullOr types.str;
                                           default = null;
-                                          description = "Path exception pattern";
+                                          description = "Path exception pattern.";
                                         };
                                         linters = lib.mkOption {
                                           type = types.nullOr (types.listOf (types.enum linterNames));
                                           default = null;
-                                          description = "List of linters this rule applies to";
+                                          description = "List of linters this rule applies to.";
                                         };
                                         text = lib.mkOption {
                                           type = types.nullOr types.str;
                                           default = null;
-                                          description = "Issue text pattern";
+                                          description = "Issue text pattern.";
                                         };
                                         source = lib.mkOption {
                                           type = types.nullOr types.str;
                                           default = null;
-                                          description = "Source code pattern";
+                                          description = "Source code pattern.";
                                         };
                                       };
                                     }
                                   )
                                 );
                                 default = null;
-                                description = "Fine-grained issue exclusion rules";
+                                description = "Fine-grained issue exclusion rules.";
                               };
 
                               paths = lib.mkOption {
                                 type = types.nullOr (types.listOf types.str);
                                 default = null;
-                                description = "Path patterns to exclude";
+                                description = "Path patterns to exclude.";
                               };
 
                               paths-except = lib.mkOption {
                                 type = types.nullOr (types.listOf types.str);
                                 default = null;
-                                description = "Path patterns to include (overrides paths)";
+                                description = "Path patterns to include (overrides paths).";
                               };
                             };
                           }
@@ -5020,7 +5237,7 @@
                           )
                         );
                         default = null;
-                        description = "List of enabled formatters";
+                        description = "List of enabled formatters.";
                       };
 
                       settings = lib.mkOption {
@@ -5034,31 +5251,31 @@
                                       sections = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
-                                        description = "Section configuration to compare against";
+                                        description = "Section configuration to compare against.";
                                       };
 
                                       no-inline-comments = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Checks that no inline Comments are present";
+                                        description = "Checks that no inline Comments are present.";
                                       };
 
                                       no-prefix-comments = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Checks that no prefix Comments(comment lines above an import) are present";
+                                        description = "Checks that no prefix Comments(comment lines above an import) are present.";
                                       };
 
                                       custom-order = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Enable custom order of sections";
+                                        description = "Enable custom order of sections.";
                                       };
 
                                       no-lex-order = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Drops lexical ordering for custom sections";
+                                        description = "Drops lexical ordering for custom sections.";
                                       };
                                     };
                                   }
@@ -5073,7 +5290,7 @@
                                       simplify = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Simplify code";
+                                        description = "Simplify code.";
                                       };
 
                                       rewrite-rules = lib.mkOption {
@@ -5084,19 +5301,19 @@
                                                 pattern = lib.mkOption {
                                                   type = types.nullOr types.str;
                                                   default = null;
-                                                  description = "Go syntax-compliant pattern to match";
+                                                  description = "Go syntax-compliant pattern to match.";
                                                 };
                                                 replacement = lib.mkOption {
                                                   type = types.nullOr types.str;
                                                   default = null;
-                                                  description = "Replacement pattern to transform into";
+                                                  description = "Replacement pattern to transform into.";
                                                 };
                                               };
                                             }
                                           )
                                         );
                                         default = null;
-                                        description = "Apply the rewrite rules to the source before reformatting";
+                                        description = "Apply the rewrite rules to the source before reformatting.";
                                       };
                                     };
                                   }
@@ -5111,13 +5328,13 @@
                                       extra-rules = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Choose whether or not to use the extra rules that are disabled by default";
+                                        description = "Choose whether or not to use the extra rules that are disabled by default.";
                                       };
 
                                       module-path = lib.mkOption {
                                         type = types.nullOr types.str;
                                         default = null;
-                                        description = "Module path which contains the source code being formatted";
+                                        description = "Module path which contains the source code being formatted.";
                                       };
                                     };
                                   }
@@ -5147,31 +5364,31 @@
                                       max-len = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Maximum line length in characters";
+                                        description = "Maximum line length in characters.";
                                       };
 
                                       tab-len = lib.mkOption {
                                         type = types.nullOr types.int;
                                         default = null;
-                                        description = "Number of spaces in a tab";
+                                        description = "Number of spaces in a tab.";
                                       };
 
                                       shorten-comments = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Whether to shorten comments";
+                                        description = "Whether to shorten comments.";
                                       };
 
                                       reformat-tags = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Whether to reformat tags";
+                                        description = "Whether to reformat tags.";
                                       };
 
                                       chain-split-dots = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
-                                        description = "Whether to split chains at dots";
+                                        description = "Whether to split chains at dots.";
                                       };
                                     };
                                   }
@@ -5182,7 +5399,7 @@
                           }
                         );
                         default = null;
-                        description = "Formatter-specific settings";
+                        description = "Formatter-specific settings.";
                       };
 
                       exclusions = lib.mkOption {
@@ -5198,25 +5415,25 @@
                                   ]
                                 );
                                 default = null;
-                                description = "Generated files exclusion mode";
+                                description = "Generated files exclusion mode.";
                               };
 
                               paths = lib.mkOption {
                                 type = types.nullOr (types.listOf types.str);
                                 default = null;
-                                description = "Path patterns to exclude from formatting";
+                                description = "Path patterns to exclude from formatting.";
                               };
 
                               warn-unused = lib.mkOption {
                                 type = types.nullOr types.bool;
                                 default = null;
-                                description = "Warn about unused exclusions";
+                                description = "Warn about unused exclusions.";
                               };
                             };
                           }
                         );
                         default = null;
-                        description = "Formatter exclusion configuration";
+                        description = "Formatter exclusion configuration.";
                       };
                     };
                   }
@@ -5243,43 +5460,43 @@
                       new = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Show only new issues: if there are unstaged changes or untracked files, only those changes are analyzed, else only changes in HEAD~ are analyzed";
+                        description = "Show only new issues: if there are unstaged changes or untracked files, only those changes are analyzed, else only changes in HEAD~ are analyzed.";
                       };
 
                       new-from-merge-base = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
-                        description = "Show only new issues created after the best common ancestor (merge-base against HEAD)";
+                        description = "Show only new issues created after the best common ancestor (merge-base against HEAD).";
                       };
 
                       new-from-rev = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
-                        description = "Show only new issues created after this git revision";
+                        description = "Show only new issues created after this git revision.";
                       };
 
                       new-from-patch = lib.mkOption {
                         type = types.nullOr types.str;
                         default = null;
-                        description = "Show only new issues created in git patch with this file path";
+                        description = "Show only new issues created in git patch with this file path.";
                       };
 
                       fix = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Fix found issues (if it's supported by the linter)";
+                        description = "Fix found issues (if it's supported by the linter).";
                       };
 
                       uniq-by-line = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Make issues output unique by line";
+                        description = "Make issues output unique by line.";
                       };
 
                       whole-files = lib.mkOption {
                         type = types.nullOr types.bool;
                         default = null;
-                        description = "Show issues in any part of update files (requires new-from-rev or new-from-patch)";
+                        description = "Show issues in any part of update files (requires new-from-rev or new-from-patch).";
                       };
                     };
                   }
@@ -5303,39 +5520,39 @@
                               options = {
                                 severity = lib.mkOption {
                                   type = types.str;
-                                  description = "Severity level";
+                                  description = "Severity level.";
                                 };
                                 path = lib.mkOption {
                                   type = types.nullOr types.str;
                                   default = null;
-                                  description = "Path pattern";
+                                  description = "Path pattern.";
                                 };
                                 path-except = lib.mkOption {
                                   type = types.nullOr types.str;
                                   default = null;
-                                  description = "Path exception pattern";
+                                  description = "Path exception pattern.";
                                 };
                                 linters = lib.mkOption {
                                   type = types.nullOr (types.listOf (types.enum linterNames));
                                   default = null;
-                                  description = "List of linters this rule applies to";
+                                  description = "List of linters this rule applies to.";
                                 };
                                 text = lib.mkOption {
                                   type = types.nullOr types.str;
                                   default = null;
-                                  description = "Issue text pattern";
+                                  description = "Issue text pattern.";
                                 };
                                 source = lib.mkOption {
                                   type = types.nullOr types.str;
                                   default = null;
-                                  description = "Source code pattern";
+                                  description = "Source code pattern.";
                                 };
                               };
                             }
                           )
                         );
                         default = null;
-                        description = "Severity rules";
+                        description = "Severity rules.";
                       };
                     };
                   }

@@ -26,6 +26,7 @@ close({
 		// Option to pass to "go list -mod={option}".
 		// See "go help modules" for more information.
 		"modules-download-mode"?: "mod" | "readonly" | "vendor"
+		"enable-build-vcs"?:      bool
 
 		// Allow multiple parallel golangci-lint instances running. If
 		// disabled, golangci-lint acquires file lock on start.
@@ -303,9 +304,9 @@ close({
 
 #: "gocritic-tags": "diagnostic" | "style" | "performance" | "experimental" | "opinionated" | "security"
 
-#: "godoclint-rules": "pkg-doc" | "single-pkg-doc" | "require-pkg-doc" | "start-with-name" | "require-doc" | "deprecated" | "max-len" | "no-unused-link"
+#: "godoclint-rules": "pkg-doc" | "single-pkg-doc" | "require-pkg-doc" | "start-with-name" | "require-doc" | "deprecated" | "max-len" | "no-unused-link" | "require-stdlib-doclink"
 
-#: "gosec-rules": "G101" | "G102" | "G103" | "G104" | "G106" | "G107" | "G108" | "G109" | "G110" | "G111" | "G112" | "G114" | "G115" | "G201" | "G202" | "G203" | "G204" | "G301" | "G302" | "G303" | "G304" | "G305" | "G306" | "G307" | "G401" | "G402" | "G403" | "G404" | "G405" | "G406" | "G501" | "G502" | "G503" | "G504" | "G505" | "G506" | "G507" | "G601" | "G602"
+#: "gosec-rules": "G101" | "G102" | "G103" | "G104" | "G106" | "G107" | "G108" | "G109" | "G110" | "G111" | "G112" | "G114" | "G115" | "G116" | "G117" | "G201" | "G202" | "G203" | "G204" | "G301" | "G302" | "G303" | "G304" | "G305" | "G306" | "G307" | "G401" | "G402" | "G403" | "G404" | "G405" | "G406" | "G501" | "G502" | "G503" | "G504" | "G505" | "G506" | "G507" | "G601" | "G602" | "G701" | "G702" | "G703" | "G704" | "G705" | "G706"
 
 #: "govet-analyzers": "appends" | "asmdecl" | "assign" | "atomic" | "atomicalign" | "bools" | "buildtag" | "cgocall" | "composites" | "copylocks" | "deepequalerrors" | "defers" | "directive" | "errorsas" | "fieldalignment" | "findcall" | "framepointer" | "hostport" | "httpmux" | "httpresponse" | "ifaceassert" | "loopclosure" | "lostcancel" | "nilfunc" | "nilness" | "printf" | "reflectvaluecompare" | "shadow" | "shift" | "sigchanyzer" | "slog" | "sortslice" | "stdmethods" | "stdversion" | "stringintconv" | "structtag" | "testinggoroutine" | "tests" | "timeformat" | "unmarshal" | "unreachable" | "unsafeptr" | "unusedresult" | "unusedwrite" | "waitgroup"
 
@@ -314,11 +315,11 @@ close({
 // Usable linter names.
 #: "linter-names": matchN(>=1, ["arangolint" | "asasalint" | "asciicheck" | "bidichk" | "bodyclose" | "canonicalheader" | "containedctx" | "contextcheck" | "copyloopvar" | "cyclop" | "decorder" | "depguard" | "dogsled" | "dupl" | "dupword" | "durationcheck" | "embeddedstructfieldcheck" | "errcheck" | "errchkjson" | "errname" | "errorlint" | "exhaustive" | "exhaustruct" | "exptostd" | "fatcontext" | "forbidigo" | "forcetypeassert" | "funcorder" | "funlen" | "ginkgolinter" | "gocheckcompilerdirectives" | "gochecknoglobals" | "gochecknoinits" | "gochecksumtype" | "gocognit" | "goconst" | "gocritic" | "gocyclo" | "godoclint" | "godot" | "godox" | "err113" | "goheader" | "gomoddirectives" | "gomodguard" | "goprintffuncname" | "gosec" | "gosimple" | "gosmopolitan" | "govet" | "grouper" | "iface" | "importas" | "inamedparam" | "ineffassign" | "interfacebloat" | "intrange" | "iotamixing" | "ireturn" | "lll" | "loggercheck" | "maintidx" | "makezero" | "mirror" | "misspell" | "mnd" | "modernize" | "musttag" | "nakedret" | "nestif" | "nilerr" | "nilnesserr" | "nilnil" | "nlreturn" | "noctx" | "noinlineerr" | "nolintlint" | "nonamedreturns" | "nosprintfhostport" | "paralleltest" | "perfsprint" | "prealloc" | "predeclared" | "promlinter" | "protogetter" | "reassign" | "recvcheck" | "revive" | "rowserrcheck" | "sloglint" | "sqlclosecheck" | "staticcheck" | "stylecheck" | "tagalign" | "tagliatelle" | "testableexamples" | "testifylint" | "testpackage" | "thelper" | "tparallel" | "unconvert" | "unparam" | "unused" | "usestdlibvars" | "usetesting" | "varnamelen" | "wastedassign" | "whitespace" | "wrapcheck" | "wsl" | "wsl_v5" | "zerologlint", string])
 
-#: "modernize-analyzers": "any" | "bloop" | "fmtappendf" | "forvar" | "mapsloop" | "minmax" | "newexpr" | "omitzero" | "plusbuild" | "rangeint" | "reflecttypefor" | "slicescontains" | "slicessort" | "stditerators" | "stringscutprefix" | "stringsseq" | "stringsbuilder" | "testingcontext" | "waitgroup"
+#: "modernize-analyzers": "any" | "fmtappendf" | "forvar" | "mapsloop" | "minmax" | "newexpr" | "omitzero" | "plusbuild" | "rangeint" | "reflecttypefor" | "slicescontains" | "slicessort" | "stditerators" | "stringscut" | "stringscutprefix" | "stringsseq" | "stringsbuilder" | "testingcontext" | "unsafefuncs" | "waitgroup"
 
 #: "relative-path-modes": "gomod" | "gitroot" | "cfg" | "wd"
 
-#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "enforce-switch-style" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "forbidden-call-in-wg-go" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "identical-ifelseif-branches" | "identical-ifelseif-conditions" | "identical-switch-branches" | "identical-switch-conditions" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "inefficient-map-lookup" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "package-directory-mismatch" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-date" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-format" | "unnecessary-if" | "unnecessary-stmt" | "unreachable-code" | "unsecure-url-scheme" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "use-fmt-print" | "use-waitgroup-go" | "useless-break" | "useless-fallthrough" | "var-declaration" | "var-naming" | "waitgroup-by-value"
+#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "enforce-switch-style" | "epoch-naming" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "forbidden-call-in-wg-go" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "identical-ifelseif-branches" | "identical-ifelseif-conditions" | "identical-switch-branches" | "identical-switch-conditions" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "inefficient-map-lookup" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "package-directory-mismatch" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-date" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-format" | "unnecessary-if" | "unnecessary-stmt" | "unreachable-code" | "unsecure-url-scheme" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "use-fmt-print" | "use-slices-sort" | "use-waitgroup-go" | "useless-break" | "useless-fallthrough" | "var-declaration" | "var-naming" | "waitgroup-by-value"
 
 #: "simple-format": close({
 	path?: #."formats-path"
@@ -328,7 +329,7 @@ close({
 
 #: "tagliatelle-cases": "" | "camel" | "pascal" | "kebab" | "snake" | "goCamel" | "goPascal" | "goKebab" | "goSnake" | "upper" | "upperSnake" | "lower" | "header"
 
-#: "wsl-checks": "assign" | "branch" | "decl" | "defer" | "expr" | "for" | "go" | "if" | "inc-dec" | "label" | "range" | "return" | "select" | "send" | "switch" | "type-switch" | "append" | "assign-exclusive" | "assign-expr" | "err" | "leading-whitespace" | "trailing-whitespace"
+#: "wsl-checks": "assign" | "branch" | "decl" | "defer" | "expr" | "for" | "go" | "if" | "inc-dec" | "label" | "range" | "return" | "select" | "send" | "switch" | "type-switch" | "append" | "assign-exclusive" | "assign-expr" | "err" | "leading-whitespace" | "trailing-whitespace" | "after-block"
 
 #settings: _
 
@@ -858,8 +859,8 @@ _#defs: "/definitions/settings/definitions/godoclintSettings": {
 	// A map for setting individual rule options.
 	options?: {
 		"max-len"?: {
-			// Maximum line length for godocs, not including the `// `, or
-			// `/*` or `*/` tokens.
+			// Maximum line length for godocs, not including the `//`, `/*` or
+			// `*/` tokens.
 			length?: int
 			...
 		}
@@ -1001,6 +1002,9 @@ _#defs: "/definitions/settings/definitions/gomoddirectivesSettings": close({
 
 	// Defines a pattern to validate `go` minimum version directive.
 	"go-version-pattern"?: string
+
+	// Check the validity of the module path.
+	"check-module-path"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/gomodguardSettings": close({
@@ -1724,8 +1728,50 @@ _#defs: "/definitions/settings/definitions/unqueryvetSettings": close({
 	// Enable SQL builder checking.
 	"check-sql-builders"?: bool
 
+	// Enable aliased wildcard detection like SELECT t.*.
+	"check-aliased-wildcard"?: bool
+
+	// Enable string concatenation analysis.
+	"check-string-concat"?: bool
+
+	// Enable format string analysis like fmt.Sprintf.
+	"check-format-strings"?: bool
+
+	// Enable strings.Builder analysis.
+	"check-string-builder"?: bool
+
+	// Enable subquery analysis.
+	"check-subqueries"?:    bool
+	"check-n1"?:            bool
+	"check-sql-injection"?: bool
+	"check-tx-leaks"?:      bool
+
 	// Regex patterns for acceptable SELECT * usage.
 	"allowed-patterns"?: [...string]
+
+	// Allow is a list of SQL patterns to allow (whitelist).
+	allow?: [...string]
+
+	// Functions to ignore.
+	"ignored-functions"?: [...string]
+	"sql-builders"?: close({
+		squirrel?:  bool
+		gorm?:      bool
+		sqlx?:      bool
+		ent?:       bool
+		pgx?:       bool
+		bun?:       bool
+		sqlboiler?: bool
+		jet?:       bool
+	})
+	"custom-rules"?: [...close({
+		id?:      string
+		pattern?: string
+		patterns?: [...string]
+		when?:    string
+		message?: string
+		action?:  string
+	})]
 })
 
 _#defs: "/definitions/settings/definitions/unusedSettings": close({
