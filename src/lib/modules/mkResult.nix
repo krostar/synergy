@@ -78,6 +78,7 @@ in {
         args = {
           inherit flake lib results;
           inherit (config) data;
+          inherit (config.synergy) systems;
           deps = dependencies;
         };
       }

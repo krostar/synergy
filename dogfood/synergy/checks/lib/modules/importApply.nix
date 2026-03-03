@@ -89,6 +89,7 @@ in
           "lib"
           "results"
           "synergy-lib"
+          "systems"
           "unit"
           "units"
         ];
