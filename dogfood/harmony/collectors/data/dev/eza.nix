@@ -1,9 +1,9 @@
 {
-  data,
   unit,
+  systems,
   ...
 }: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     dev.eza = lib.mkOption {
       type = lib.types.submodule {
         options = let

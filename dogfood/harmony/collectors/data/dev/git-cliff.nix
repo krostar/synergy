@@ -1,9 +1,9 @@
 {
-  data,
+  systems,
   unit,
   ...
 }: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     dev.git-cliff = with lib.types; {
       enable = lib.mkEnableOption "git-cliff";
       settings = lib.mkOption {

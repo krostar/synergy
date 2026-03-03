@@ -56,7 +56,7 @@
   in
     lib.trivial.throwIf (failedAssertions != []) ''
       ╭────────────────────────────────────────────────╮
-      │                                EVALUATION ERROR                                │
+      │                EVALUATION ERROR                │
       ╰────────────────────────────────────────────────╯
 
       The following assertions failed during Synergy module evaluation:

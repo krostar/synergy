@@ -1,7 +1,7 @@
-{ data, unit, ... }:
+{ systems, unit, ... }:
 { lib, ... }:
 {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     ci.linters.golangci-lint =
       with lib.types;
       lib.mkOption {

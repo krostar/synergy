@@ -1,9 +1,9 @@
 {
-  data,
   synergy-lib,
+  systems,
   ...
 }: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     ci.linters.shellcheck = {
       enable = lib.mkEnableOption "shellcheck";
       settings.include = {

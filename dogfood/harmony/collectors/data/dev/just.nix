@@ -1,5 +1,5 @@
-{data, ...}: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+{systems, ...}: {lib, ...}: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     dev.just = lib.mkOption {
       type = with lib.types;
         types.submodule {

@@ -1,5 +1,5 @@
-{data, ...}: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+{systems, ...}: {lib, ...}: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     ci.linters.flake-checker = with lib.types; {
       enable = lib.mkEnableOption "flake-checker";
 

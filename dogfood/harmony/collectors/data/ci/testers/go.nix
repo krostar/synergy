@@ -1,5 +1,5 @@
-{data, ...}: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+{systems, ...}: {lib, ...}: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     ci.testers.go = with lib.types; {
       enable = lib.mkEnableOption "go test";
 

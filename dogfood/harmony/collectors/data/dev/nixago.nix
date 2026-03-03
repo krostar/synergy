@@ -1,9 +1,9 @@
 {
-  data,
+  systems,
   unit,
   ...
 }: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     dev.nixago = with lib.types;
       lib.mkOption {
         type = types.attrsOf (types.submodule {

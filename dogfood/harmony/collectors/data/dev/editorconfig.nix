@@ -1,9 +1,9 @@
 {
-  data,
   unit,
+  systems,
   ...
 }: {lib, ...}: {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     dev.editorconfig = with lib.types;
       lib.mkOption {
         type = types.attrsOf (types.either types.bool (types.submodule {

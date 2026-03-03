@@ -1,7 +1,7 @@
-{ data, unit, ... }:
+{ systems, unit, ... }:
 { lib, ... }:
 {
-  options.data = lib.attrsets.genAttrs (builtins.attrNames data) (_: {
+  options.data = lib.attrsets.genAttrs systems (_: {
     ci.linters.yamllint = {
       enable = lib.mkEnableOption "yamllint";
       settings = lib.mkOption {
