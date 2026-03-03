@@ -10,10 +10,10 @@
         type = lib.types.submodule {
           options = {
             extends = lib.mkOption {
-              type = lib.types.nullOr (lib.types.listOf lib.types.str);
+              type = lib.types.nullOr (lib.types.either lib.types.str (lib.types.listOf lib.types.str));
               default = null;
               example = lib.literalExpression ''[ "@commitlint/config-conventional" ]'';
-              description = "List of shareable configurations to extend.";
+              description = "Shareable configuration(s) to extend; either a single string or a list of strings.";
             };
 
             plugins = lib.mkOption {
@@ -42,10 +42,25 @@
             };
 
             parserPreset = lib.mkOption {
-              type = lib.types.nullOr lib.types.str;
+              type = lib.types.nullOr (
+                lib.types.either lib.types.str (
+                  lib.types.submodule {
+                    options = {
+                      name = lib.mkOption {
+                        type = lib.types.nullOr lib.types.str;
+                        default = null;
+                      };
+                      path = lib.mkOption {
+                        type = lib.types.nullOr lib.types.str;
+                        default = null;
+                      };
+                    };
+                  }
+                )
+              );
               default = null;
               example = "conventional-changelog-atom";
-              description = "The parser preset to use (e.g., 'conventional-changelog-conventionalcommits').";
+              description = "The parser preset to use; either a preset name string or an object with name/path fields.";
             };
 
             formatter = lib.mkOption {

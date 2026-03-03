@@ -39,4 +39,4 @@ null | bool | number | string | [...] | {
 	...
 }
 
-#rule: list.MaxItems(3) & [0 | 1 | 2, "always" | "never", _] & [_, _, ...]
+#rule: list.MaxItems(3) & [0 | 1 | 2, "always" | "never", _] & [_, ...]
