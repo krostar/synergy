@@ -113,7 +113,7 @@ in {
       systems = lib.mkOption {
         type = with lib.types; listOf str;
         description = "systems for which systemized modules will be instanciated";
-        default = ["x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin"];
+        default = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
       };
     };
 
