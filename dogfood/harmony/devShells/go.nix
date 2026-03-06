@@ -9,7 +9,7 @@ unit.devShells.base.overrideAttrs (_: prev: {
     ++ (with pkgs; [
       binsider
       cyclonedx-gomod
-      go_1_25
+      go_1_26
       gops
       gotools
       govulncheck
