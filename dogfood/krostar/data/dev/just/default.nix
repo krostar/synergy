@@ -1,7 +1,5 @@
 {synergy-lib, ...} @ args: {
-  settings = {
-    unstable = "true";
-  };
+  enable = true;
 
   recipes = synergy-lib.autoimport {
     inherit args;

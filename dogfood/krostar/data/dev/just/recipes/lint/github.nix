@@ -2,10 +2,10 @@
   data,
   lib,
   pkgs,
-  unit,
+  units,
   ...
 }:
-unit.lib.just.mkRecipe "linters" "lint-github" {
+units.harmony.lib.just.mkRecipe "linters" "lint-github" {
   actionlint = let
     cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.actionlint;
   in {

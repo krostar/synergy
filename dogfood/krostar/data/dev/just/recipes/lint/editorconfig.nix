@@ -2,12 +2,12 @@
   data,
   lib,
   pkgs,
-  unit,
+  units,
   ...
 }:
-unit.lib.just.mkRecipe "linters" "lint-editorconfig" {
+units.harmony.lib.just.mkRecipe "linters" "lint-editorconfig" {
   editorconfig-checker = let
-    inherit (unit.lib) nixago;
+    inherit (units.harmony.lib) nixago;
     cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.editorconfig-checker;
     inherit
       (nixago.make {

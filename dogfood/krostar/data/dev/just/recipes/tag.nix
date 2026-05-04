@@ -2,10 +2,10 @@
   data,
   lib,
   pkgs,
-  unit,
+  units,
   ...
 }: let
-  inherit (unit.lib) nixago;
+  inherit (units.harmony.lib) nixago;
 in {
   tag = let
     cfg = data.${pkgs.stdenv.hostPlatform.system}.dev.git-cliff;

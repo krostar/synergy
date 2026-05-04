@@ -4,6 +4,8 @@
       type = with lib.types;
         types.submodule {
           options = {
+            enable = lib.mkEnableOption "just";
+
             module = lib.mkOption {
               type = types.nullOr types.str;
               default = null;

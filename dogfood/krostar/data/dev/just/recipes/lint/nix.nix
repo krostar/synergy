@@ -2,10 +2,10 @@
   data,
   lib,
   pkgs,
-  unit,
+  units,
   ...
 } @ args:
-unit.lib.just.mkRecipe "linters" "lint-nix" {
+units.harmony.lib.just.mkRecipe "linters" "lint-nix" {
   alejandra-check = let
     cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.alejandra;
   in {

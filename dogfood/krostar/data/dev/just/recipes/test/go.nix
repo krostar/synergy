@@ -2,10 +2,10 @@
   data,
   lib,
   pkgs,
-  unit,
+  units,
   ...
 } @ args:
-unit.lib.just.mkRecipe "testers" "test-go" {
+units.harmony.lib.just.mkRecipe "testers" "test-go" {
   go-test = let
     cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.testers.go;
   in {

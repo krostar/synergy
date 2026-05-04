@@ -2,12 +2,12 @@
   data,
   lib,
   pkgs,
-  unit,
+  units,
   ...
 }: let
-  inherit (unit.lib) nixago;
+  inherit (units.harmony.lib) nixago;
 in
-  unit.lib.just.mkRecipe "linters" "lint-go" rec {
+  units.harmony.lib.just.mkRecipe "linters" "lint-go" rec {
     golangci-lint = let
       cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.golangci-lint;
       inherit

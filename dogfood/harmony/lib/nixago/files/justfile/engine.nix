@@ -66,7 +66,7 @@
     settings ? {},
     pre-recipes ? null,
     default ? null,
-    recipes ? [],
+    recipes ? {},
     post-recipes ? null,
   }: let
     formatModule =

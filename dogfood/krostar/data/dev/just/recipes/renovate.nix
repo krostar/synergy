@@ -1,7 +1,7 @@
 {
   lib,
   pkgs,
-  unit,
+  units,
   ...
 }: {
   renovate = {
@@ -9,7 +9,7 @@
     recipe = lib.meta.getExe (pkgs.writeShellApplication {
       name = "renovate-diff";
 
-      runtimeInputs = [unit.packages.renovate-diff pkgs.jq pkgs.renovate];
+      runtimeInputs = [units.harmony.packages.renovate-diff pkgs.jq pkgs.renovate];
       checkPhase = "";
 
       text = ''

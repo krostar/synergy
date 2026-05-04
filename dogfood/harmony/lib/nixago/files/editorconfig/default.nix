@@ -5,9 +5,9 @@ in {
   format = "iniWithGlobalSection";
   apply = data: {
     globalSection =
-      if (builtins.hasAttr "root" data)
-      then {inherit (data) root;}
+      if (builtins.hasAttr "root" data.settings)
+      then {inherit (data.settings) root;}
       else {};
-    sections = builtins.removeAttrs data ["root"];
+    sections = builtins.removeAttrs data.settings ["root"];
   };
 }

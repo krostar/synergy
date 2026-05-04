@@ -24,14 +24,12 @@ in {
 
   dev = {
     git-cliff.enable = true;
-    formatters.treefmt = {
-      programs = {
-        alejandra.excludes = alejandraSlowNixFiles;
-        nixfmt = {
-          enable = true;
-          includes = alejandraSlowNixFiles;
-          strict = true;
-        };
+    formatters.treefmt.programs = {
+      alejandra.excludes = alejandraSlowNixFiles;
+      nixfmt = {
+        enable = true;
+        includes = alejandraSlowNixFiles;
+        strict = true;
       };
     };
   };

@@ -1,4 +1,5 @@
 {
+  enable = true;
   settings = {
     extends = ["@commitlint/config-conventional"];
     helpUrl = ''

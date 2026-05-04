@@ -1,13 +1,13 @@
 {
   lib,
   data,
-  unit,
+  units,
   pkgs,
   ...
 }: let
-  inherit (unit.lib) nixago;
+  inherit (units.harmony.lib) nixago;
 in
-  unit.lib.just.mkRecipe "linters" "lint-commit" {
+  units.harmony.lib.just.mkRecipe "linters" "lint-commit" {
     commitlint = let
       cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.commitlint;
 
@@ -21,6 +21,6 @@ in
         ;
     in {
       inherit (cfg) enable;
-      recipe = "${lib.meta.getExe unit.packages.commitlint} --config ${configFile} --strict --last";
+      recipe = "${lib.meta.getExe units.harmony.packages.commitlint} --config ${configFile} --strict --last";
     };
   }

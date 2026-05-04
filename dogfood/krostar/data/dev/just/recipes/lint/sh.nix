@@ -2,10 +2,10 @@
   data,
   lib,
   pkgs,
-  unit,
+  units,
   ...
 }:
-unit.lib.just.mkRecipe "linters" "lint-sh" {
+units.harmony.lib.just.mkRecipe "linters" "lint-sh" {
   bashate = let
     cfg = data.${pkgs.stdenv.hostPlatform.system}.ci.linters.bashate;
   in {

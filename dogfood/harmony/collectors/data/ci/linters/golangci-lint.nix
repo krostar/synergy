@@ -3274,7 +3274,6 @@
                                   type = types.nullOr (
                                     types.submodule {
                                       options = {
-
                                         max-open-files = lib.mkOption {
                                           type = types.nullOr types.int;
                                           default = null;
