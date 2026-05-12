@@ -4,10 +4,16 @@
   synergy-lib,
   ...
 }: {
-  options.packages = lib.mkOption {
-    type = with lib.types; attrsOf (attrsOf (attrsOf package));
-    default = lib.attrsets.filterAttrs (_: v: v != {}) (builtins.mapAttrs (_: m: m.packages or {}) config.synergy.result.systemized);
-    readOnly = true;
+  options = {
+    packages = lib.mkOption {
+      type = with lib.types; attrsOf (attrsOf (attrsOf package));
+      default = lib.attrsets.filterAttrs (_: v: v != {}) (builtins.mapAttrs (_: m: m.packages or {}) config.synergy.result.systemized);
+      readOnly = true;
+    };
+
+    flake.packages = lib.mkOption {
+      type = with lib.types; attrsOf (attrsOf package);
+    };
   };
 
   config = let

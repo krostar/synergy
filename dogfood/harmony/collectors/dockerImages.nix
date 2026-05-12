@@ -15,11 +15,20 @@ _: {
     export =
       config.synergy.export.dockerImages
       or (
-        builtins.mapAttrs (_: m: (synergy-lib.attrsets.liftChildren "-" m))
+        builtins.mapAttrs (_: m:
+          synergy-lib.attrsets.liftChildren "-" (
+            builtins.mapAttrs (_: images:
+              lib.attrsets.mapAttrs' (name: image: {
+                name = "docker-${name}";
+                value = image;
+              })
+              images)
+            m
+          ))
       );
     output = export cfg;
   in {
     synergy.collected.dockerImages.systemized = true;
-    flake = lib.mkIf (output != {}) {dockerImages = output;};
+    flake = lib.mkIf (output != {}) {packages = output;};
   };
 }
