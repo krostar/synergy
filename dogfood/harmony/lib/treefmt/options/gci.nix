@@ -11,6 +11,16 @@ in {
   options.programs.gci = {
     enable = lib.mkEnableOption "gci";
     package = lib.mkPackageOption pkgs "gci" {};
+    includes = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = ["*.go"];
+      description = lib.mdDoc "Glob patterns of files to include.";
+    };
+    excludes = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = ["vendor/*"];
+      description = lib.mdDoc "Glob patterns of files to exclude.";
+    };
     order = lib.mkOption {
       type = lib.types.listOf (
         lib.types.either (lib.types.strMatching "Prefix[(].+[)]") (lib.types.enum [
@@ -39,8 +49,8 @@ in {
     settings.formatter.gci = {
       command = lib.getExe' cfg.package "gci";
       options = ["write" "--custom-order"] ++ lib.lists.flatten (builtins.map (o: ["--section" o]) cfg.order);
-      includes = ["*.go"];
-      excludes = ["vendor/*"];
+      includes = cfg.includes;
+      excludes = cfg.excludes;
     };
   };
 }
