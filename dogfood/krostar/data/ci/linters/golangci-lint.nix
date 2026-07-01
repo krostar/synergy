@@ -22,6 +22,7 @@
       "funlen"
       "ginkgolinter"
       "gocognit"
+      "goconst"
       "gocyclo"
       "godot"
       "goheader"
@@ -310,10 +311,6 @@
           linters = ["staticcheck"];
           path = "_test\\.go";
           text = "SA1029";
-        }
-        {
-          linters = ["goconst"];
-          path = "(.+)_test\\.go";
         }
       ];
     };
