@@ -1,6 +1,4 @@
-{ systems, unit, ... }:
-{ lib, ... }:
-{
+{ systems, unit, ... }: { lib, ... }: {
   options.data = lib.attrsets.genAttrs systems (_: {
     dev.sops = {
       enable = lib.mkEnableOption "sops";

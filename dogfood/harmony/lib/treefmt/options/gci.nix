@@ -49,8 +49,7 @@ in {
     settings.formatter.gci = {
       command = lib.getExe' cfg.package "gci";
       options = ["write" "--custom-order"] ++ lib.lists.flatten (builtins.map (o: ["--section" o]) cfg.order);
-      includes = cfg.includes;
-      excludes = cfg.excludes;
+      inherit (cfg) includes excludes;
     };
   };
 }

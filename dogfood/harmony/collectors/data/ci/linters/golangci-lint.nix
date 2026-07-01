@@ -1,6 +1,4 @@
-{ systems, unit, ... }:
-{ lib, ... }:
-{
+{ systems, unit, ... }: { lib, ... }: {
   options.data = lib.attrsets.genAttrs systems (_: {
     ci.linters.golangci-lint =
       with lib.types;
