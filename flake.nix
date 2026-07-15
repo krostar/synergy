@@ -17,23 +17,6 @@
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    nixago = {
-      url = "github:nix-community/nixago";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        nixago-exts.follows = "nixago-exts";
-      };
-    };
-
-    nixago-exts = {
-      url = "github:nix-community/nixago-extensions";
-      inputs = {
-        flake-utils.follows = "nixago/flake-utils";
-        nixago.follows = "nixago";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-
     treefmt = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,7 +38,9 @@
       src = ./dogfood;
       eval = {lib, ...}: {
         synergy.export = {
-          lib = v: v.synergy;
+          # nixago is exported so downstream flakes can generate config files
+          # from nixago-compatible requests
+          lib = v: v.synergy // {inherit (v.harmony) nixago;};
 
           devShells = cfg: (builtins.mapAttrs (
               system: units:

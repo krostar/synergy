@@ -76,7 +76,7 @@
 
     formatImports =
       if builtins.length imports > 0
-      then lib.concatMapStrings "\n" (imp: "import \"${imp}") imports + "\n\n"
+      then lib.strings.concatMapStrings (imp: "import \"${imp}\"\n") imports + "\n"
       else "";
 
     formatSettings =

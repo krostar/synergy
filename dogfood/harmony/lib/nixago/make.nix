@@ -1,4 +1,4 @@
-{flake, ...}: {
+{lib, ...}: {
   pkgs,
   data ? null,
   file ? null,
@@ -11,7 +11,7 @@
     then file data pkgs
     else config;
 
-  result = flake.inputs.nixago.lib.${pkgs.stdenv.hostPlatform.system}.make (update nixagoConfig);
+  result = import ./_core/make.nix {inherit pkgs lib;} (update nixagoConfig);
 in
   if !log
   then result // {shellHook = "export NIXAGO_LOG=0\n" + result.shellHook;}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="4">
+  <component name="ProjectTasksOptions">
+    <TaskOptions isEnabled="true">
+      <option name="name" value="alejandra"></option>
+      <option name="scopeName" value="Project Files"></option>
+      <option name="fileExtension" value="nix"></option>
+      <option name="workingDir" value="$ProjectFileDir$"></option>
+      <option name="program" value="alejandra"></option>
+      <option name="arguments" value="$FilePath$"></option>
+      <option name="output" value="$FilePath$"></option>
+      <option name="runOnExternalChanges" value="false"></option>
+      <option name="checkSyntaxErrors" value="true"></option>
+      <option name="exitCodeBehavior" value="ERROR"></option>
+      <option name="immediateSync" value="false"></option>
+      <option name="runOnExternalChanges" value="false"></option>
+    </TaskOptions>
+  </component>
+</project>

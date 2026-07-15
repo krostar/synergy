@@ -1,0 +1,7 @@
+extends: default
+ignore:
+  - vendor/
+  - yamllint.yaml
+rules:
+  line-length:
+    max: 120

@@ -1,0 +1,24 @@
+import "justfiles/extra.just"
+
+set positional-arguments := true
+set shell := ["bash", "-uec"]
+
+alias b := build
+
+# pre section
+
+_default:
+    @just --list
+
+# build the project
+[group('ci')]
+[group('dev')]
+build:
+    cargo build
+
+[doc('run the tests')]
+[no-cd]
+test target='all': build
+    echo "testing {{target}}"
+    cargo test
+# post section
