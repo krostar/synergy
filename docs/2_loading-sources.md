@@ -4,7 +4,7 @@ Synergy automatically discovers and loads your Nix files. This guide explains ex
 
 ## The big picture
 
-Synergy transforms your organized source directory into a structured attribute set can use. Here's the transformation:
+Synergy transforms your organized source directory into a structured attribute set you can use. Here's the transformation:
 
 ```
 Your files                  →   What Synergy creates
@@ -27,7 +27,7 @@ src/                        →   {
 
 Flake-related rules applies, especially those related to git (ie: don't forget to git add your files).
 
-### units must be directories
+### Rule 1: units must be directories
 
 At the top level under your `src` directory, only directories are loaded as units. Files are ignored.
 
@@ -72,7 +72,7 @@ backend/
 
 ❌ Ignored:
 backend/
-└── script.sh       # ❌ Ignored (not .nix)
+├── script.sh       # ❌ Ignored (not .nix)
 └── symlink.nix     # ❌ Ignored (not regular file)
 ```
 

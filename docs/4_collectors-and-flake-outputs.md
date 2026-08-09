@@ -41,7 +41,7 @@ The goal of those collectors is to map to the official flake schema.
 **Collects:** `overlays`
 **Systemized:** no
 **Outputs:** `overlays.<overlay-name>`
-**Note:** overlays are automatically applied when instanciating nixpkgs to obtain pkgs
+**Note:** overlays are automatically applied when instantiating nixpkgs to obtain pkgs
 
 ### `packages`
 
@@ -52,7 +52,7 @@ The goal of those collectors is to map to the official flake schema.
 ## Other collectors
 
 When you import synergy, you can also enable harmony.
-Harmony defines opiniatred, not especially official flake outputs:
+Harmony defines opinionated, not especially official flake outputs:
 
 - `darwinConfigurations` and `darwinModules` for nix-darwin configurations
 - `diskoConfigurations` for disko configurations

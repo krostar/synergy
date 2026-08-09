@@ -89,7 +89,7 @@ src/
 
 **Usage:**
 
-Here the devShells module can reference the frontend packages using `unit.packages.mypkg`,
+Here the devShells module can reference the frontend packages using `units.frontend.packages.mypkg`,
 but also the backend packages using `units.backend.packages.mypkg`.
 
 ## External dependencies

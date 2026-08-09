@@ -65,7 +65,7 @@ See the dogfood folder, it uses synergy to define the harmony unit, and check it
 Modules can reference each other for powerful composition:
 
 ```nix
-# nix/frontend/devShell.nix
+# nix/frontend/devShells.nix
 {pkgs, unit, units, ...}:
 pkgs.mkShell {
   nativeBuildInputs = [
@@ -118,13 +118,13 @@ pkgs.mkShell {
 - **[Getting Started](./docs/1_getting-started.md)**
 - **[Loading Sources](./docs/2_loading-sources.md)**
 - **[Module Parameters](./docs/3_module-parameters.md)**
-- **[Collectors and Outputs](./docs/4_collectors-and-outputs.md)**
+- **[Collectors and Outputs](./docs/4_collectors-and-flake-outputs.md)**
 
 ## Harmony
 
 **Ready-to-use development tools and configurations.**
 
-Harmony is a Synergy-based project that provides opiniatred development tools, linters, formatters, and configurations. You can use synergy without harmony.
+Harmony is a Synergy-based project that provides opinionated development tools, linters, formatters, and configurations. You can use synergy without harmony.
 
 ## Story behind the project
 
@@ -132,7 +132,7 @@ When I discovered Nix, I quickly realized that GitHub would be my best ally for 
 
 As a beginner, it wasn't always smooth reading trying to make sense of various `flake.nix` files. When I started writing my own Nix code, I quickly discovered the truth: keeping flakes simple while maintaining project discoverability is genuinely hard. Questions started piling up: How do you test things properly? How do you propagate nixpkgs overlays cleanly? What is the best way to provide the nixpkgs instanciation everywhere ?
 
-The more Nix code I wrote, the more I found myself wondering: "Would the nix community understand this and think it is nix-idomatic ? What would onboarding look like if I work with someone else on this project?"
+The more Nix code I wrote, the more I found myself wondering: "Would the nix community understand this and think it is nix-idiomatic ? What would onboarding look like if I work with someone else on this project?"
 
 As the projects grew, I began organizing things where they seemed to make the most sense: packages in a `packages/` directory, NixOS configurations in a `nixosConfigurations/` directory, writing small helpers to easily load things. But reusing components without passing crazy parameters everywhere quickly became messy.
 

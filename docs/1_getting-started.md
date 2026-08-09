@@ -52,11 +52,10 @@ Let's create a simple package in the `foo` unit:
 
 ```nix
 # nix/foo/packages/hello-world.nix
-{pkgs, ...}: {
-  pkgs.writeShellScriptBin "hello-world" ''
-    echo "Hello from Synergy!"
-  '';
-}
+{pkgs, ...}:
+pkgs.writeShellScriptBin "hello-world" ''
+  echo "Hello from Synergy!"
+''
 ```
 
 ## Step 5: create your first development environment
@@ -64,7 +63,7 @@ Let's create a simple package in the `foo` unit:
 Now create a development environment that uses your package:
 
 ```nix
-# nix/bar/devShell.nix
+# nix/bar/devShells.nix
 {pkgs, units, ...}:
 
 pkgs.mkShellNoCC {
@@ -95,26 +94,23 @@ nix flake show
 #         ├───hello-world: package
 ```
 
-## Step 8: try your packages
+## Step 7: try your packages
 
-Build and run your packages:
+Build and run your package:
 
 ```bash
 # Build and run the hello world script
 nix run .#hello-world
-
-# Build and run the Python app
-nix run .#my-python-app
 
 # Build a package to see the result
 nix build .#hello-world
 ./result/bin/hello-world
 ```
 
-Enter your development environments:
+Enter your development environment:
 
 ```bash
-# Enter the app development environment
+# Enter the default development environment
 nix develop .#
 hello-world
 exit
