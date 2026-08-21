@@ -1,6 +1,6 @@
 {
   enable = true;
   settings = {
-    Exclude = ["^\\.direnv\/" "_testdata\/"];
+    Exclude = ["^\\.direnv/" "_testdata/"];
   };
 }
