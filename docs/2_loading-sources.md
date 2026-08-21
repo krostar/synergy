@@ -146,10 +146,14 @@ Once Synergy loads a file, it checks if the result is a function:
 
 ```nix
 # This file exports a function - Synergy will call it
-{pkgs, lib, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}:
+{
   hello = pkgs.writeShellScriptBin "hello" "echo hello";
 }
-
 # This file exports a value - Synergy uses it directly
 {
   greeting = "Hello World";

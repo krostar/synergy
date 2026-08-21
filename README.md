@@ -66,12 +66,17 @@ Modules can reference each other for powerful composition:
 
 ```nix
 # nix/frontend/devShells.nix
-{pkgs, unit, units, ...}:
+{
+  pkgs,
+  unit,
+  units,
+  ...
+}:
 pkgs.mkShell {
   nativeBuildInputs = [
-    unit.packages.web-app           # Same unit
-    units.backend.packages.api-cli  # Different unit
-    units.shared.lib.deploy-script  # Shared utilities
+    unit.packages.web-app # Same unit
+    units.backend.packages.api-cli # Different unit
+    units.shared.lib.deploy-script # Shared utilities
   ];
 }
 ```
@@ -98,10 +103,14 @@ outputs = {synergy, ...} @ inputs:
 ```
 
 ```nix
-{pkgs, deps, ...}:
+{
+  pkgs,
+  deps,
+  ...
+}:
 pkgs.mkShell {
   nativeBuildInputs = [
-      deps.awesomeproject.result.packages.backend.awesome-api
+    deps.awesomeproject.result.packages.backend.awesome-api
   ];
 }
 ```

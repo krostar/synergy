@@ -9,21 +9,18 @@ Every Synergy module function receives these parameters:
 ```nix
 {
   # Core Nix ecosystem
-  lib,           # nixpkgs library functions
-  pkgs,          # nixpkgs packages (for systemized modules only)
-
+  lib, # nixpkgs library functions
+  pkgs, # nixpkgs packages (for systemized modules only)
   # Dependending on your project
-  data,          # Shared configuration data
-  unit,          # Other modules in the same unit
-  units,         # Modules from all units in your project
-
+  data, # Shared configuration data
+  unit, # Other modules in the same unit
+  units, # Modules from all units in your project
   # External dependencies
-  deps,          # Synergy modules from other projects
-
+  deps, # Synergy modules from other projects
   # For advanced use-cases
-  flake,         # Details about your flake
-  results,       # All evaluated results
-  synergy-lib,   # Synergy's internal utilities
+  flake, # Details about your flake
+  results, # All evaluated results
+  synergy-lib, # Synergy's internal utilities
 }: {}
 ```
 

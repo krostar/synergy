@@ -32,7 +32,7 @@ Create a `flake.nix` file with Synergy:
   outputs = {synergy, ...} @ inputs:
     synergy.lib.mkFlake {
       inherit inputs;
-      src = ./nix;  # This is where we'll put our organized code
+      src = ./nix; # This is where we'll put our organized code
     };
 }
 ```
@@ -64,8 +64,11 @@ Now create a development environment that uses your package:
 
 ```nix
 # nix/bar/devShells.nix
-{pkgs, units, ...}:
-
+{
+  pkgs,
+  units,
+  ...
+}:
 pkgs.mkShellNoCC {
   nativeBuildInputs = [
     units.foo.packages.hello-world
