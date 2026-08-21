@@ -6,4 +6,5 @@ in {
   engine = engines.cue {
     files = [./schema.cue];
   };
+  apply = data: data.settings;
 }
