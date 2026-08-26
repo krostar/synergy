@@ -19,7 +19,7 @@ in
   // {
     "${name}" = {
       enable = builtins.length (builtins.attrNames recipes) > 0;
-      groups = [group];
+      groups = lib.lists.unique (lib.lists.concatMap (recipe: recipe.groups) (builtins.attrValues recipes));
       dependencies = lib.attrsets.mapAttrsToList (k: _: let
         recipeParameters = recipesParameters.${k};
       in
