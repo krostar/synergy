@@ -1,0 +1,25 @@
+Restrict package loading to the current module.
+
+When no include prefixes are given, gta loads the "..." pattern, which in
+module-aware mode means every package of every module in the build list --
+including packages of dependencies that the main module never imports. Those
+packages have imports of their own that a tidied go.mod does not record, so the
+go command aborts the whole load with:
+
+    go: updates to go.mod needed; to update it:
+        go mod tidy
+
+"./..." keeps the reverse dependency graph scoped to the packages gta can
+actually report on, which is all a per-repository change detector needs.
+
+--- a/packager.go
++++ b/packager.go
+@@ -273,7 +273,7 @@
+ 	}
+ 
+ 	if loadAllPackages {
+-		patterns = []string{"..."}
++		patterns = []string{"./..."}
+ 	}
+ 
+ 	loadedPackages, err := packages.Load(cfg, patterns...)

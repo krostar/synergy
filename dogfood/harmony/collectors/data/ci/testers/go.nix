@@ -14,6 +14,16 @@
         example = ["./..." "./cmd/..." "./pkg/..."];
       };
 
+      diff = {
+        enable = lib.mkEnableOption "a go test variant restricted to the packages affected by the git diff";
+
+        base = lib.mkOption {
+          type = types.str;
+          default = "origin/main";
+          example = "origin/master";
+        };
+      };
+
       verbose = lib.mkOption {
         type = types.bool;
         default = false;
