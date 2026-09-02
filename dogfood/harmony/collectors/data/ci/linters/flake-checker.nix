@@ -5,12 +5,7 @@
 
       package = lib.mkOption {
         type = types.functionTo types.package;
-        default = {
-          flake,
-          pkgs,
-          ...
-        }:
-          flake.inputs.flake-checker.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        default = {pkgs, ...}: pkgs.flake-checker;
         description = "The flake-checker package to use.";
       };
 
