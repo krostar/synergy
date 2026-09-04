@@ -7,8 +7,7 @@ close({
 
 	// Options for analysis running,
 	run?: close({
-		// Number of concurrent runners. Defaults to the number of
-		// available CPU cores.
+		// Number of concurrent runners. Defaults to the number of available CPU cores.
 		concurrency?: int & >=0
 
 		// Timeout for the analysis.
@@ -28,12 +27,11 @@ close({
 		"modules-download-mode"?: "mod" | "readonly" | "vendor"
 		"enable-build-vcs"?:      bool
 
-		// Allow multiple parallel golangci-lint instances running. If
-		// disabled, golangci-lint acquires file lock on start.
+		// Allow multiple parallel golangci-lint instances running. If disabled,
+		// golangci-lint acquires file lock on start.
 		"allow-parallel-runners"?: bool
 
-		// Allow multiple golangci-lint instances running, but serialize
-		// them around a lock.
+		// Allow multiple golangci-lint instances running, but serialize them around a lock.
 		"allow-serial-runners"?: bool
 
 		// Targeted Go version.
@@ -90,6 +88,8 @@ close({
 			dupword?:                  _#defs."/definitions/settings/definitions/dupwordSettings"
 			asasalint?:                _#defs."/definitions/settings/definitions/asasalintSettings"
 			bidichk?:                  _#defs."/definitions/settings/definitions/bidichkSettings"
+			bodyclose?:                _#defs."/definitions/settings/definitions/bodycloseSettings"
+			canonicalheader?:          _#defs."/definitions/settings/definitions/canonicalheaderSettings"
 			cyclop?:                   _#defs."/definitions/settings/definitions/cyclopSettings"
 			decorder?:                 _#defs."/definitions/settings/definitions/decorderSettings"
 			depguard?:                 _#defs."/definitions/settings/definitions/depguardSettings"
@@ -101,6 +101,7 @@ close({
 			errorlint?:                _#defs."/definitions/settings/definitions/errorlintSettings"
 			exhaustive?:               _#defs."/definitions/settings/definitions/exhaustiveSettings"
 			exhaustruct?:              _#defs."/definitions/settings/definitions/exhaustructSettings"
+			exhaustruct_v5?:           _#defs."/definitions/settings/definitions/exhaustructv5Settings"
 			fatcontext?:               _#defs."/definitions/settings/definitions/fatcontextSettings"
 			forbidigo?:                _#defs."/definitions/settings/definitions/forbidigoSettings"
 			funcorder?:                _#defs."/definitions/settings/definitions/funcorderSettings"
@@ -118,6 +119,7 @@ close({
 			goheader?:                 _#defs."/definitions/settings/definitions/goheaderSettings"
 			gomoddirectives?:          _#defs."/definitions/settings/definitions/gomoddirectivesSettings"
 			gomodguard?:               _#defs."/definitions/settings/definitions/gomodguardSettings"
+			gomodguard_v2?:            _#defs."/definitions/settings/definitions/gomodguardv2Settings"
 			gosec?:                    _#defs."/definitions/settings/definitions/gosecSettings"
 			gosmopolitan?:             _#defs."/definitions/settings/definitions/gosmopolitanSettings"
 			govet?:                    _#defs."/definitions/settings/definitions/govetSettings"
@@ -225,17 +227,14 @@ close({
 		// Maximum issues count per one linter. Set to 0 to disable.
 		"max-issues-per-linter"?: int & >=0
 
-		// Maximum count of issues with the same text. Set to 0 to
-		// disable.
+		// Maximum count of issues with the same text. Set to 0 to disable.
 		"max-same-issues"?: int & >=0
 
-		// Show only new issues: if there are unstaged changes or
-		// untracked files, only those changes are analyzed, else only
-		// changes in HEAD~ are analyzed.
+		// Show only new issues: if there are unstaged changes or untracked files, only
+		// those changes are analyzed, else only changes in HEAD~ are analyzed.
 		new?: bool
 
-		// Show only new issues created after the best common ancestor
-		// (merge-base against HEAD).
+		// Show only new issues created after the best common ancestor (merge-base against HEAD).
 		"new-from-merge-base"?: string
 
 		// Show only new issues created after this git revision.
@@ -244,31 +243,27 @@ close({
 		// Show only new issues created in git patch with this file path.
 		"new-from-patch"?: string
 
-		// Apply the fixes detected by the linters and formatters (if it's
-		// supported by the linter).
+		// Apply the fixes detected by the linters and formatters (if it's supported by the linter).
 		fix?: bool
 
 		// Make issues output unique by line.
 		"uniq-by-line"?: bool
 
-		// Show issues in any part of update files (requires new-from-rev
-		// or new-from-patch).
+		// Show issues in any part of update files (requires new-from-rev or new-from-patch).
 		"whole-files"?: bool
 	})
 	severity?: close({
-		// Set the default severity for issues. If severity rules are
-		// defined and the issues do not match or no severity is provided
-		// to the rule this will be the default severity applied.
-		// Severities should match the supported severity names of the
-		// selected out format.
+		// Set the default severity for issues. If severity rules are defined and the
+		// issues do not match or no severity is provided to the rule this will be the
+		// default severity applied. Severities should match the supported severity
+		// names of the selected out format.
 		default!: string
 
-		// When a list of severity rules are provided, severity
-		// information will be added to lint issues. Severity rules have
-		// the same filtering capability as exclude rules except you are
-		// allowed to specify one matcher per severity rule.
-		// Only affects out formats that support setting severity
-		// information.
+		// When a list of severity rules are provided, severity information will be
+		// added to lint issues. Severity rules have the same filtering capability as
+		// exclude rules except you are allowed to specify one matcher per severity
+		// rule.
+		// Only affects out formats that support setting severity information.
 		rules?: [...matchN(>=1, [{
 			path!: _
 			...
@@ -306,20 +301,20 @@ close({
 
 #: "godoclint-rules": "pkg-doc" | "single-pkg-doc" | "require-pkg-doc" | "start-with-name" | "require-doc" | "deprecated" | "max-len" | "no-unused-link" | "require-stdlib-doclink"
 
-#: "gosec-rules": "G101" | "G102" | "G103" | "G104" | "G106" | "G107" | "G108" | "G109" | "G110" | "G111" | "G112" | "G114" | "G115" | "G116" | "G117" | "G201" | "G202" | "G203" | "G204" | "G301" | "G302" | "G303" | "G304" | "G305" | "G306" | "G307" | "G401" | "G402" | "G403" | "G404" | "G405" | "G406" | "G501" | "G502" | "G503" | "G504" | "G505" | "G506" | "G507" | "G601" | "G602" | "G701" | "G702" | "G703" | "G704" | "G705" | "G706"
+#: "gosec-rules": "G101" | "G102" | "G103" | "G104" | "G106" | "G107" | "G108" | "G109" | "G110" | "G111" | "G112" | "G113" | "G114" | "G115" | "G116" | "G117" | "G118" | "G119" | "G120" | "G121" | "G122" | "G123" | "G124" | "G201" | "G202" | "G203" | "G204" | "G301" | "G302" | "G303" | "G304" | "G305" | "G306" | "G307" | "G401" | "G402" | "G403" | "G404" | "G405" | "G406" | "G408" | "G501" | "G502" | "G503" | "G504" | "G505" | "G506" | "G507" | "G601" | "G602" | "G701" | "G702" | "G703" | "G704" | "G705" | "G706" | "G707" | "G708" | "G709" | "G710"
 
-#: "govet-analyzers": "appends" | "asmdecl" | "assign" | "atomic" | "atomicalign" | "bools" | "buildtag" | "cgocall" | "composites" | "copylocks" | "deepequalerrors" | "defers" | "directive" | "errorsas" | "fieldalignment" | "findcall" | "framepointer" | "hostport" | "httpmux" | "httpresponse" | "ifaceassert" | "loopclosure" | "lostcancel" | "nilfunc" | "nilness" | "printf" | "reflectvaluecompare" | "shadow" | "shift" | "sigchanyzer" | "slog" | "sortslice" | "stdmethods" | "stdversion" | "stringintconv" | "structtag" | "testinggoroutine" | "tests" | "timeformat" | "unmarshal" | "unreachable" | "unsafeptr" | "unusedresult" | "unusedwrite" | "waitgroup"
+#: "govet-analyzers": "appends" | "asmdecl" | "assign" | "atomic" | "atomicalign" | "bools" | "buildtag" | "cgocall" | "composites" | "copylocks" | "deepequalerrors" | "defers" | "directive" | "errorsas" | "fieldalignment" | "findcall" | "framepointer" | "hostport" | "httpmux" | "httpresponse" | "ifaceassert" | "inline" | "loopclosure" | "lostcancel" | "nilfunc" | "nilness" | "printf" | "reflectvaluecompare" | "shadow" | "shift" | "sigchanyzer" | "slog" | "sortslice" | "stdmethods" | "stdversion" | "stringintconv" | "structtag" | "testinggoroutine" | "tests" | "timeformat" | "unmarshal" | "unreachable" | "unsafeptr" | "unusedresult" | "unusedwrite" | "waitgroup"
 
-#: "iface-analyzers": "identical" | "unused" | "opaque" | "unexported"
+#: "iface-analyzers": "identical" | "unused" | "opaque" | "unexported" | "unusedmethod"
 
 // Usable linter names.
-#: "linter-names": matchN(>=1, ["arangolint" | "asasalint" | "asciicheck" | "bidichk" | "bodyclose" | "canonicalheader" | "containedctx" | "contextcheck" | "copyloopvar" | "cyclop" | "decorder" | "depguard" | "dogsled" | "dupl" | "dupword" | "durationcheck" | "embeddedstructfieldcheck" | "errcheck" | "errchkjson" | "errname" | "errorlint" | "exhaustive" | "exhaustruct" | "exptostd" | "fatcontext" | "forbidigo" | "forcetypeassert" | "funcorder" | "funlen" | "ginkgolinter" | "gocheckcompilerdirectives" | "gochecknoglobals" | "gochecknoinits" | "gochecksumtype" | "gocognit" | "goconst" | "gocritic" | "gocyclo" | "godoclint" | "godot" | "godox" | "err113" | "goheader" | "gomoddirectives" | "gomodguard" | "goprintffuncname" | "gosec" | "gosimple" | "gosmopolitan" | "govet" | "grouper" | "iface" | "importas" | "inamedparam" | "ineffassign" | "interfacebloat" | "intrange" | "iotamixing" | "ireturn" | "lll" | "loggercheck" | "maintidx" | "makezero" | "mirror" | "misspell" | "mnd" | "modernize" | "musttag" | "nakedret" | "nestif" | "nilerr" | "nilnesserr" | "nilnil" | "nlreturn" | "noctx" | "noinlineerr" | "nolintlint" | "nonamedreturns" | "nosprintfhostport" | "paralleltest" | "perfsprint" | "prealloc" | "predeclared" | "promlinter" | "protogetter" | "reassign" | "recvcheck" | "revive" | "rowserrcheck" | "sloglint" | "sqlclosecheck" | "staticcheck" | "stylecheck" | "tagalign" | "tagliatelle" | "testableexamples" | "testifylint" | "testpackage" | "thelper" | "tparallel" | "unconvert" | "unparam" | "unused" | "usestdlibvars" | "usetesting" | "varnamelen" | "wastedassign" | "whitespace" | "wrapcheck" | "wsl" | "wsl_v5" | "zerologlint", string])
+#: "linter-names": matchN(>=1, ["arangolint" | "asasalint" | "asciicheck" | "bidichk" | "bodyclose" | "canonicalheader" | "clickhouselint" | "containedctx" | "contextcheck" | "copyloopvar" | "cyclop" | "decorder" | "depguard" | "dogsled" | "dupl" | "dupword" | "durationcheck" | "embeddedstructfieldcheck" | "errcheck" | "errchkjson" | "errname" | "errorlint" | "exhaustive" | "exhaustruct" | "exhaustruct_v5" | "exptostd" | "fatcontext" | "forbidigo" | "forcetypeassert" | "funcorder" | "funlen" | "ginkgolinter" | "gocheckcompilerdirectives" | "gochecknoglobals" | "gochecknoinits" | "gochecksumtype" | "gocognit" | "goconst" | "gocritic" | "gocyclo" | "godoclint" | "godot" | "godox" | "err113" | "goheader" | "gomoddirectives" | "gomodguard" | "gomodguard_v2" | "goprintffuncname" | "gosec" | "gosimple" | "gosmopolitan" | "govet" | "grouper" | "iface" | "importas" | "inamedparam" | "ineffassign" | "interfacebloat" | "intrange" | "iotamixing" | "ireturn" | "lll" | "loggercheck" | "maintidx" | "makezero" | "mirror" | "misspell" | "mnd" | "modernize" | "musttag" | "nakedret" | "nestif" | "nilerr" | "nilnesserr" | "nilnil" | "nlreturn" | "noctx" | "noinlineerr" | "nolintlint" | "nonamedreturns" | "nosprintfhostport" | "paralleltest" | "perfsprint" | "prealloc" | "predeclared" | "promlinter" | "protogetter" | "reassign" | "recvcheck" | "revive" | "rowserrcheck" | "sloglint" | "sqlclosecheck" | "staticcheck" | "stylecheck" | "tagalign" | "tagliatelle" | "testableexamples" | "testifylint" | "testpackage" | "thelper" | "tparallel" | "unconvert" | "unparam" | "unused" | "usestdlibvars" | "usetesting" | "varnamelen" | "wastedassign" | "whitespace" | "wrapcheck" | "wsl" | "wsl_v5" | "zerologlint", string])
 
-#: "modernize-analyzers": "any" | "fmtappendf" | "forvar" | "mapsloop" | "minmax" | "newexpr" | "omitzero" | "plusbuild" | "rangeint" | "reflecttypefor" | "slicescontains" | "slicessort" | "stditerators" | "stringscut" | "stringscutprefix" | "stringsseq" | "stringsbuilder" | "testingcontext" | "unsafefuncs" | "waitgroup"
+#: "modernize-analyzers": "any" | "atomictypes" | "embedlit" | "errorsastype" | "forvar" | "importcomment" | "mapsloop" | "minmax" | "newexpr" | "omitzero" | "plusbuild" | "rangeint" | "reflecttypeassert" | "reflecttypefor" | "slicesbackward" | "slicesclip" | "slicescontains" | "slicessort" | "stditerators" | "stringscut" | "stringscutprefix" | "stringsseq" | "stringsbuilder" | "testingcontext" | "unsafefuncs" | "waitgroupgo"
 
 #: "relative-path-modes": "gomod" | "gitroot" | "cfg" | "wd"
 
-#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "enforce-switch-style" | "epoch-naming" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "forbidden-call-in-wg-go" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "identical-ifelseif-branches" | "identical-ifelseif-conditions" | "identical-switch-branches" | "identical-switch-conditions" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "inefficient-map-lookup" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "package-directory-mismatch" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-date" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-format" | "unnecessary-if" | "unnecessary-stmt" | "unreachable-code" | "unsecure-url-scheme" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "use-fmt-print" | "use-slices-sort" | "use-waitgroup-go" | "useless-break" | "useless-fallthrough" | "var-declaration" | "var-naming" | "waitgroup-by-value"
+#: "revive-rules": "add-constant" | "argument-limit" | "atomic" | "banned-characters" | "bare-return" | "blank-imports" | "bool-literal-in-expr" | "call-to-gc" | "cognitive-complexity" | "comment-spacings" | "comments-density" | "confusing-naming" | "confusing-results" | "constant-logical-expr" | "context-as-argument" | "context-keys-type" | "cyclomatic" | "datarace" | "deep-exit" | "defer" | "dot-imports" | "duplicated-imports" | "early-return" | "empty-block" | "empty-lines" | "enforce-map-style" | "enforce-repeated-arg-type-style" | "enforce-slice-style" | "enforce-switch-style" | "epoch-naming" | "error-naming" | "error-return" | "error-strings" | "errorf" | "exported" | "file-header" | "file-length-limit" | "filename-format" | "flag-parameter" | "forbidden-call-in-wg-go" | "function-length" | "function-result-limit" | "get-return" | "identical-branches" | "identical-ifelseif-branches" | "identical-ifelseif-conditions" | "identical-switch-branches" | "identical-switch-conditions" | "if-return" | "import-alias-naming" | "import-shadowing" | "imports-blocklist" | "increment-decrement" | "indent-error-flow" | "inefficient-map-lookup" | "line-length-limit" | "max-control-nesting" | "max-public-structs" | "modifies-parameter" | "modifies-value-receiver" | "nested-structs" | "optimize-operands-order" | "package-comments" | "package-naming" | "package-directory-mismatch" | "range-val-address" | "range-val-in-closure" | "range" | "receiver-naming" | "redefines-builtin-id" | "redundant-build-tag" | "redundant-import-alias" | "redundant-test-main-exit" | "string-format" | "string-of-int" | "struct-tag" | "superfluous-else" | "time-date" | "time-equal" | "time-naming" | "unchecked-type-assertion" | "unconditional-recursion" | "unexported-naming" | "unexported-return" | "unhandled-error" | "unnecessary-format" | "unnecessary-if" | "unnecessary-stmt" | "unreachable-code" | "unsecure-url-scheme" | "unused-parameter" | "unused-receiver" | "use-any" | "use-errors-new" | "use-fmt-print" | "use-slices-sort" | "use-waitgroup-go" | "useless-break" | "useless-fallthrough" | "var-declaration" | "var-naming" | "waitgroup-by-value"
 
 #: "simple-format": close({
 	path?: #."formats-path"
@@ -329,7 +324,7 @@ close({
 
 #: "tagliatelle-cases": "" | "camel" | "pascal" | "kebab" | "snake" | "goCamel" | "goPascal" | "goKebab" | "goSnake" | "upper" | "upperSnake" | "lower" | "header"
 
-#: "wsl-checks": "assign" | "branch" | "decl" | "defer" | "expr" | "for" | "go" | "if" | "inc-dec" | "label" | "range" | "return" | "select" | "send" | "switch" | "type-switch" | "append" | "assign-exclusive" | "assign-expr" | "err" | "leading-whitespace" | "trailing-whitespace" | "after-block"
+#: "wsl-checks": "after-block" | "after-decl" | "after-defer" | "after-expr" | "after-go" | "append" | "assign-exclusive" | "assign-expr" | "assign" | "branch" | "cuddle-group" | "decl" | "defer" | "err" | "expr" | "for" | "go" | "if" | "inc-dec" | "label" | "leading-whitespace" | "range" | "return" | "select" | "send" | "switch" | "trailing-whitespace" | "type-switch"
 
 #settings: _
 
@@ -337,8 +332,7 @@ _#defs: "/definitions/settings/definitions/asasalintSettings": close({
 	// To specify a set of function names to exclude.
 	exclude?: list.UniqueItems() & [...string]
 
-	// To enable/disable the asasalint builtin exclusions of function
-	// names.
+	// To enable/disable the asasalint builtin exclusions of function names.
 	"use-builtin-exclusions"?: bool
 })
 
@@ -371,13 +365,22 @@ _#defs: "/definitions/settings/definitions/bidichkSettings": close({
 	"pop-directional-isolate"?: bool
 })
 
+_#defs: "/definitions/settings/definitions/bodycloseSettings": close({
+	// Check that the response body is consumed.
+	"check-consumption"?: bool
+})
+
+_#defs: "/definitions/settings/definitions/canonicalheaderSettings": close({
+	"use-default-exclusions"?: bool
+	exclusions?: [...string]
+})
+
 _#defs: "/definitions/settings/definitions/copyloopvarSettings": close({
 	"check-alias"?: bool
 })
 
-// The custom section can be used to define linter plugins to be
-// loaded at runtime. See README of golangci-lint for more
-// information.
+// The custom section can be used to define linter plugins to be loaded at
+// runtime. See README of golangci-lint for more information.
 // Each custom linter should have a unique name.
 _#defs: "/definitions/settings/definitions/customSettings": {
 	{[=~"^.*$"]: matchN(1, [{
@@ -396,12 +399,10 @@ _#defs: "/definitions/settings/definitions/customSettings": {
 		// The description of the linter, for documentation purposes only.
 		description?: string
 
-		// Intended to point to the repo location of the linter, for
-		// documentation purposes only.
+		// Intended to point to the repo location of the linter, for documentation purposes only.
 		"original-url"?: string
 
-		// Plugins settings/configuration. Only work with plugin based on
-		// `linterdb.PluginConstructor`.
+		// Plugins settings/configuration. Only work with plugin based on `linterdb.PluginConstructor`.
 		settings?: {
 			...
 		}
@@ -421,8 +422,7 @@ _#defs: "/definitions/settings/definitions/cyclopSettings": close({
 _#defs: "/definitions/settings/definitions/decorderSettings": close({
 	"dec-order"?: [..."type" | "const" | "var" | "func"]
 
-	// Underscore vars (vars with "_" as the name) will be ignored at
-	// all checks
+	// Underscore vars (vars with "_" as the name) will be ignored at all checks
 	"ignore-underscore-vars"?: bool
 
 	// Order of declarations is not checked
@@ -451,8 +451,7 @@ _#defs: "/definitions/settings/definitions/depguardSettings": close({
 			// Used to determine the package matching priority.
 			"list-mode"?: "original" | "strict" | "lax"
 
-			// List of file globs that will match this list of settings to
-			// compare against.
+			// List of file globs that will match this list of settings to compare against.
 			files?: [...string]
 
 			// List of allowed packages.
@@ -482,8 +481,8 @@ _#defs: "/definitions/settings/definitions/duplSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/dupwordSettings": close({
-	// Keywords for detecting duplicate words. If this list is not
-	// empty, only the words defined in this list will be detected.
+	// Keywords for detecting duplicate words. If this list is not empty, only the
+	// words defined in this list will be detected.
 	keywords?: list.UniqueItems() & [...string]
 
 	// Keywords used to ignore detection.
@@ -491,28 +490,27 @@ _#defs: "/definitions/settings/definitions/dupwordSettings": close({
 
 	// Checks only comments, skip strings.
 	"comments-only"?: bool
+
+	// Skip raw string literals (backtick-delimited) from duplicate word checking.
+	"skip-raw-strings"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/embeddedstructfieldcheckSettings": close({
-	// Checks that there is an empty space between the embedded fields
-	// and regular fields.
+	// Checks that there is an empty space between the embedded fields and regular fields.
 	"empty-line"?: bool
 
-	// Checks that sync.Mutex and sync.RWMutex are not used as
-	// embedded fields.
+	// Checks that sync.Mutex and sync.RWMutex are not used as embedded fields.
 	"forbid-mutex"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/errcheckSettings": close({
-	// Report about not checking errors in type assertions, i.e.: `a
-	// := b.(MyStruct)`
+	// Report about not checking errors in type assertions, i.e.: `a := b.(MyStruct)`
 	"check-type-assertions"?: bool
 
 	// Report about assignment of errors to blank identifier
 	"check-blank"?: bool
 
-	// List of functions to exclude from checking, where each entry is
-	// a single function to exclude
+	// List of functions to exclude from checking, where each entry is a single function to exclude
 	"exclude-functions"?: [...string]
 
 	// To disable the errcheck built-in exclude list
@@ -555,27 +553,25 @@ _#defs: "/definitions/settings/definitions/exhaustiveSettings": close({
 	// Program elements to check for exhaustiveness.
 	check?: list.UniqueItems() & [...string]
 
-	// Only run exhaustive check on switches with
-	// "//exhaustive:enforce" comment.
+	// Only run exhaustive check on switches with "//exhaustive:enforce" comment.
 	"explicit-exhaustive-switch"?: bool
 
-	// Only run exhaustive check on map literals with
-	// "//exhaustive:enforce" comment.
+	// Only run exhaustive check on map literals with "//exhaustive:enforce" comment.
 	"explicit-exhaustive-map"?: bool
 
 	// Switch statement requires default case even if exhaustive.
 	"default-case-required"?: bool
 
-	// Presence of `default` case in switch statements satisfies
-	// exhaustiveness, even if all enum members are not listed.
+	// Presence of `default` case in switch statements satisfies exhaustiveness,
+	// even if all enum members are not listed.
 	"default-signifies-exhaustive"?: bool
 
-	// Enum members matching `regex` do not have to be listed in
-	// switch statements to satisfy exhaustiveness
+	// Enum members matching `regex` do not have to be listed in switch statements
+	// to satisfy exhaustiveness
 	"ignore-enum-members"?: string
 
-	// Enum types matching the supplied regex do not have to be listed
-	// in switch statements to satisfy exhaustiveness.
+	// Enum types matching the supplied regex do not have to be listed in switch
+	// statements to satisfy exhaustiveness.
 	"ignore-enum-types"?: string
 
 	// Consider enums only in package scopes, not in inner scopes.
@@ -586,16 +582,13 @@ _#defs: "/definitions/settings/definitions/exhaustructSettings": close({
 	// List of regular expressions to match struct packages and names.
 	include?: [...string]
 
-	// List of regular expressions to exclude struct packages and
-	// names from check.
+	// List of regular expressions to exclude struct packages and names from check.
 	exclude?: [...string]
 
-	// Allows empty structures, effectively excluding them from the
-	// check.
+	// Allows empty structures, effectively excluding them from the check.
 	"allow-empty"?: bool
 
-	// List of regular expressions to match type names that should be
-	// allowed to be empty.
+	// List of regular expressions to match type names that should be allowed to be empty.
 	"allow-empty-rx"?: [...string]
 
 	// Allows empty structures in return statements.
@@ -605,18 +598,51 @@ _#defs: "/definitions/settings/definitions/exhaustructSettings": close({
 	"allow-empty-declarations"?: bool
 })
 
+_#defs: "/definitions/settings/definitions/exhaustructv5Settings": close({
+	// List of regular expressions to match type names that should be checked.
+	"enforce-patterns"?: [...string]
+
+	// List of regular expressions to match type names that should be skipped from checking.
+	"ignore-patterns"?: [...string]
+
+	// List of regular expressions to match type names where all fields are treated as optional.
+	"optional-patterns"?: [...string]
+
+	// Allows empty structures, effectively excluding them from the check.
+	"allow-empty"?: bool
+
+	// List of regular expressions to match type names that should be allowed to be empty.
+	"allow-empty-patterns"?: [...string]
+
+	// Allows empty structures in return statements.
+	"allow-empty-returns"?: bool
+
+	// Allows empty structures in variable declarations.
+	"allow-empty-declarations"?: bool
+
+	// When true, only types marked with //exhaustruct:enforce directive or matching
+	// enforce-rx patterns are checked.
+	"explicit-mode"?: bool
+})
+
 _#defs: "/definitions/settings/definitions/fatcontextSettings": close({
 	// Check for potential fat contexts in struct pointers.
 	"check-struct-pointers"?: bool
+
+	// Disable detection of fat contexts in function literals.
+	"check-loops"?: bool
+
+	// Disable detection of fat contexts in function literals.
+	"check-function-literals"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/forbidigoSettings": close({
 	// Exclude code in godoc examples.
 	"exclude-godoc-examples"?: bool
 
-	// Instead of matching the literal source code, use type
-	// information to replace expressions with strings that contain
-	// the package name and (for methods and fields) the type name.
+	// Instead of matching the literal source code, use type information to replace
+	// expressions with strings that contain the package name and (for methods and
+	// fields) the type name.
 	"analyze-types"?: bool
 
 	// List of identifiers to forbid (written using `regexp`)
@@ -633,17 +659,17 @@ _#defs: "/definitions/settings/definitions/forbidigoSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/funcorderSettings": close({
-	// Checks that constructors are placed after the structure
-	// declaration.
+	// Checks that constructors are placed after the structure declaration.
 	constructor?: bool
 
-	// Checks if the exported methods of a structure are placed before
-	// the non-exported ones.
+	// Checks if the exported methods of a structure are placed before the non-exported ones.
 	"struct-method"?: bool
 
-	// Checks if the constructors and/or structure methods are sorted
-	// alphabetically.
+	// Checks if the constructors and/or structure methods are sorted alphabetically.
 	alphabetical?: bool
+
+	// Checks that exported functions are placed before unexported functions.
+	function?: bool
 })
 
 _#defs: "/definitions/settings/definitions/funlenSettings": close({
@@ -664,8 +690,7 @@ _#defs: "/definitions/settings/definitions/gciSettings": close({
 	// Checks that no inline Comments are present.
 	"no-inline-comments"?: bool
 
-	// Checks that no prefix Comments(comment lines above an import)
-	// are present.
+	// Checks that no prefix Comments(comment lines above an import) are present.
 	"no-prefix-comments"?: bool
 
 	// Enable custom order of sections.
@@ -691,12 +716,10 @@ _#defs: "/definitions/settings/definitions/ginkgolinterSettings": close({
 	// Suppress the function all in async assertion warning.
 	"suppress-async-assertion"?: bool
 
-	// Suppress warning for comparing values from different types,
-	// like int32 and uint32.
+	// Suppress warning for comparing values from different types, like int32 and uint32.
 	"suppress-type-compare-assertion"?: bool
 
-	// Trigger warning for ginkgo focus containers like FDescribe,
-	// FContext, FWhen or FIt.
+	// Trigger warning for ginkgo focus containers like FDescribe, FContext, FWhen or FIt.
 	"forbid-focus-container"?: bool
 
 	// Don't trigger warnings for HaveLen(0).
@@ -705,17 +728,15 @@ _#defs: "/definitions/settings/definitions/ginkgolinterSettings": close({
 	// Force using `Expect` with `To`, `ToNot` or `NotTo`
 	"force-expect-to"?: bool
 
-	// Best effort validation of async intervals (timeout and
-	// polling).
+	// Best effort validation of async intervals (timeout and polling).
 	"validate-async-intervals"?: bool
 
-	// Trigger a warning for variable assignments in ginkgo containers
-	// like `Describe`, `Context` and `When`, instead of in
-	// `BeforeEach()`.
+	// Trigger a warning for variable assignments in ginkgo containers like
+	// `Describe`, `Context` and `When`, instead of in `BeforeEach()`.
 	"forbid-spec-pollution"?: bool
 
-	// Force using the Succeed matcher for error functions, and the
-	// HaveOccurred matcher for non-function error values.
+	// Force using the Succeed matcher for error functions, and the HaveOccurred
+	// matcher for non-function error values.
 	"force-succeed"?: bool
 
 	// Force adding assertion descriptions to gomega matchers.
@@ -726,8 +747,8 @@ _#defs: "/definitions/settings/definitions/ginkgolinterSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/gochecksumtypeSettings": close({
-	// Presence of `default` case in switch statements satisfies
-	// exhaustiveness, if all members are not listed.
+	// Presence of `default` case in switch statements satisfies exhaustiveness, if
+	// all members are not listed.
 	"default-signifies-exhaustive"?: bool
 
 	// Include shared interfaces in the exhaustiviness check.
@@ -748,6 +769,7 @@ _#defs: "/definitions/settings/definitions/goconstSettings": close({
 
 	// Minimum occurrences count to trigger.
 	"min-occurrences"?: int
+	"exclude-types"?: [..."Assignment" | "Binary" | "Case" | "Return" | "Call" | "CompositeLit"]
 
 	// Ignore when constant is not used as function argument
 	"ignore-calls"?: bool
@@ -769,27 +791,32 @@ _#defs: "/definitions/settings/definitions/goconstSettings": close({
 
 	// Evaluates of constant expressions like Prefix + "suffix"
 	"eval-const-expressions"?: bool
+
+	// Ignore strings from test files
+	"ignore-tests"?: bool
+	"ignore-functions"?: [...string]
+
+	// Ignore string literals used as map keys
+	"ignore-map-keys"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/gocriticSettings": close({
-	// Which checks should be enabled. By default, a list of stable
-	// checks is used. To see it, run `GL_DEBUG=gocritic
-	// golangci-lint run`.
+	// Which checks should be enabled. By default, a list of stable checks is used.
+	// To see it, run `GL_DEBUG=gocritic golangci-lint run`.
 	"enabled-checks"?: [...#."gocritic-checks"]
 
 	// Which checks should be disabled.
 	"disabled-checks"?: [...#."gocritic-checks"]
 
-	// Enable multiple checks by tags, run `GL_DEBUG=gocritic
-	// golangci-lint run` to see all tags and checks.
+	// Enable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint run` to
+	// see all tags and checks.
 	"enabled-tags"?: [...#."gocritic-tags"]
 
-	// Disable multiple checks by tags, run `GL_DEBUG=gocritic
-	// golangci-lint run` to see all tags and checks.
+	// Disable multiple checks by tags, run `GL_DEBUG=gocritic golangci-lint run` to
+	// see all tags and checks.
 	"disabled-tags"?: [...#."gocritic-tags"]
 
-	// Settings passed to gocritic. Properties must be valid and
-	// enabled check names.
+	// Settings passed to gocritic. Properties must be valid and enabled check names.
 	settings?: close({
 		captLocal?: close({
 			paramsOnly?: bool
@@ -859,24 +886,20 @@ _#defs: "/definitions/settings/definitions/godoclintSettings": {
 	// A map for setting individual rule options.
 	options?: {
 		"max-len"?: {
-			// Maximum line length for godocs, not including the `//`, `/*` or
-			// `*/` tokens.
+			// Maximum line length for godocs, not including the `//`, `/*` or `*/` tokens.
 			length?: int
 			...
 		}
 		"require-doc"?: {
-			// Ignore exported (public) symbols when applying the
-			// `require-doc` rule.
+			// Ignore exported (public) symbols when applying the `require-doc` rule.
 			"ignore-exported"?: bool
 
-			// Ignore unexported (private) symbols when applying the
-			// `require-doc` rule.
+			// Ignore unexported (private) symbols when applying the `require-doc` rule.
 			"ignore-unexported"?: bool
 			...
 		}
 		"start-with-name"?: {
-			// Include unexported symbols when applying the `start-with-name`
-			// rule.
+			// Include unexported symbols when applying the `start-with-name` rule.
 			"include-unexported"?: bool
 			...
 		}
@@ -889,8 +912,7 @@ _#defs: "/definitions/settings/definitions/godotSettings": close({
 	// Comments to be checked.
 	scope?: "declarations" | "toplevel" | "all" | "noinline"
 
-	// List of regexps for excluding particular comment lines from
-	// check.
+	// List of regexps for excluding particular comment lines from check.
 	exclude?: [...string]
 
 	// Check that each sentence ends with a period.
@@ -899,15 +921,14 @@ _#defs: "/definitions/settings/definitions/godotSettings": close({
 	// Check that each sentence starts with a capital letter.
 	capital?: bool
 
-	// DEPRECATED: Check all top-level comments, not only
-	// declarations.
+	// DEPRECATED: Check all top-level comments, not only declarations.
 	"check-all"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/godoxSettings": close({
-	// Report any comments starting with one of these keywords. This
-	// is useful for TODO or FIXME comments that might be left in the
-	// code accidentally and should be resolved before merging.
+	// Report any comments starting with one of these keywords. This is useful for
+	// TODO or FIXME comments that might be left in the code accidentally and
+	// should be resolved before merging.
 	keywords?: [...string]
 })
 
@@ -923,12 +944,16 @@ _#defs: "/definitions/settings/definitions/gofmtSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/gofumptSettings": close({
-	// Choose whether or not to use the extra rules that are disabled
-	// by default.
+	// Choose whether or not to use the extra rules that are disabled by default.
 	"extra-rules"?: bool
 
 	// Module path which contains the source code being formatted.
 	"module-path"?: string
+	extra?: close({
+		"group-params"?:   bool
+		"clothe-returns"?: bool
+		"balance-calls"?:  bool
+	})
 })
 
 _#defs: "/definitions/settings/definitions/goheaderSettings": matchN(1, [{
@@ -958,8 +983,7 @@ _#defs: "/definitions/settings/definitions/goheaderSettings": matchN(1, [{
 })
 
 _#defs: "/definitions/settings/definitions/goimportsSettings": close({
-	// Put imports beginning with prefix after 3rd-party packages. It
-	// is a list of prefixes.
+	// Put imports beginning with prefix after 3rd-party packages. It is a list of prefixes.
 	"local-prefixes"?: [...string]
 })
 
@@ -978,8 +1002,10 @@ _#defs: "/definitions/settings/definitions/gomoddirectivesSettings": close({
 	// List of allowed `replace` directives.
 	"replace-allow-list"?: [...string]
 
-	// Allow to not explain why the version has been retracted in the
-	// `retract` directives.
+	// Allow all `replace` directives.
+	"replace-allow-all"?: bool
+
+	// Allow to not explain why the version has been retracted in the `retract` directives.
 	"retract-allow-no-explanation"?: bool
 
 	// Forbid the use of the `exclude` directives.
@@ -1046,6 +1072,22 @@ _#defs: "/definitions/settings/definitions/gomodguardSettings": close({
 	})
 })
 
+_#defs: "/definitions/settings/definitions/gomodguardv2Settings": close({
+	"local-replace-directives"?: bool
+	allowed?: [...close({
+		module!:       string
+		version?:      string
+		"match-type"?: "" | "exact" | "prefix" | "regex"
+	})]
+	blocked?: [...close({
+		module!:       string
+		version?:      string
+		"match-type"?: string
+		reason?:       string
+		recommendations?: [...string]
+	})]
+})
+
 _#defs: "/definitions/settings/definitions/gosecSettings": close({
 	// To select a subset of rules to run
 	includes?: [...#."gosec-rules"]
@@ -1053,12 +1095,10 @@ _#defs: "/definitions/settings/definitions/gosecSettings": close({
 	// To specify a set of rules to explicitly exclude
 	excludes?: [...#."gosec-rules"]
 
-	// Filter out the issues with a lower severity than the given
-	// value
+	// Filter out the issues with a lower severity than the given value
 	severity?: "low" | "medium" | "high"
 
-	// Filter out the issues with a lower confidence than the given
-	// value
+	// Filter out the issues with a lower confidence than the given value
 	confidence?: "low" | "medium" | "high"
 
 	// To specify the configuration of rules
@@ -1074,18 +1114,15 @@ _#defs: "/definitions/settings/definitions/gosmopolitanSettings": close({
 	// Allow and ignore `time.Local` usages.
 	"allow-time-local"?: bool
 
-	// List of fully qualified names in the `full/pkg/path.name` form,
-	// to act as "i18n escape hatches".
+	// List of fully qualified names in the `full/pkg/path.name` form, to act as "i18n escape hatches".
 	"escape-hatches"?: [...string]
 
-	// List of Unicode scripts to watch for any usage in string
-	// literals.
+	// List of Unicode scripts to watch for any usage in string literals.
 	"watch-for-scripts"?: [...string]
 })
 
 _#defs: "/definitions/settings/definitions/govetSettings": close({
-	// Settings per analyzer. Map of analyzer name to specific
-	// settings.
+	// Settings per analyzer. Map of analyzer name to specific settings.
 	// Run `go tool vet help` to find out more.
 	settings?: {
 		[#."govet-analyzers" & string]: _
@@ -1127,6 +1164,9 @@ _#defs: "/definitions/settings/definitions/ifaceSettings": close({
 		unused?: close({
 			exclude?: [...string]
 		})
+		unusedmethod?: close({
+			exclude?: [...string]
+		})
 	})
 })
 
@@ -1139,8 +1179,7 @@ _#defs: "/definitions/settings/definitions/importasSettings": close({
 
 	// List of aliases
 	alias?: [...close({
-		// Package path e.g.
-		// knative.dev/serving/pkg/apis/autoscaling/v1alpha1
+		// Package path e.g. knative.dev/serving/pkg/apis/autoscaling/v1alpha1
 		pkg!: string
 
 		// Package alias e.g. autoscalingv1alpha1
@@ -1154,8 +1193,7 @@ _#defs: "/definitions/settings/definitions/inamedparamSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/ineffassignSettings": close({
-	// Check escaping variables of type error, may cause false
-	// positives.
+	// Check escaping variables of type error, may cause false positives.
 	"check-escaping-errors"?: bool
 })
 
@@ -1165,13 +1203,11 @@ _#defs: "/definitions/settings/definitions/interfacebloatSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/iotamixingSettings": close({
-	// Whether to report individual consts rather than just the const
-	// block.
+	// Whether to report individual consts rather than just the const block.
 	"report-individual"?: bool
 })
 
-// Use either `reject` or `allow` properties for interfaces
-// matching.
+// Use either `reject` or `allow` properties for interfaces matching.
 _#defs: "/definitions/settings/definitions/ireturnSettings": matchN(>=1, [matchN(0, [null | bool | number | string | [...] | {
 	allow?: "reject"
 	...
@@ -1207,19 +1243,17 @@ _#defs: "/definitions/settings/definitions/loggercheckSettings": close({
 	// Allow check for the log/slog library.
 	slog?: bool
 
-	// Allow check for the "sugar logger" from go.uber.org/zap
-	// library.
+	// Allow check for the "sugar logger" from go.uber.org/zap library.
 	zap?: bool
 
 	// Require all logging keys to be inlined constant strings.
 	"require-string-key"?: bool
 
-	// Require printf-like format specifier (%s, %d for example) not
-	// present.
+	// Require printf-like format specifier (%s, %d for example) not present.
 	"no-printf-like"?: bool
 
-	// List of custom rules to check against, where each rule is a
-	// single logger pattern, useful for wrapped loggers.
+	// List of custom rules to check against, where each rule is a single logger
+	// pattern, useful for wrapped loggers.
 	rules?: [...string]
 })
 
@@ -1236,8 +1270,8 @@ _#defs: "/definitions/settings/definitions/makezeroSettings": close({
 	always?: bool
 })
 
-// Correct spellings using locale preferences for US or UK.
-// Default is to use a neutral variety of English.
+// Correct spellings using locale preferences for US or UK. Default is to use a
+// neutral variety of English.
 _#defs: "/definitions/settings/definitions/misspellSettings": close({
 	locale?: "US" | "UK"
 
@@ -1258,16 +1292,13 @@ _#defs: "/definitions/settings/definitions/mndSettings": close({
 	// List of file patterns to exclude from analysis.
 	"ignored-files"?: [...string]
 
-	// Comma-separated list of function patterns to exclude from the
-	// analysis.
+	// Comma-separated list of function patterns to exclude from the analysis.
 	"ignored-functions"?: [...string]
 
 	// List of numbers to exclude from analysis.
 	"ignored-numbers"?: [...string]
 
-	// The list of enabled checks, see
-	// https://github.com/tommy-muehle/go-mnd/#checks for
-	// description.
+	// The list of enabled checks, see https://github.com/tommy-muehle/go-mnd/#checks for description.
 	checks?: [..."argument" | "case" | "condition" | "operation" | "return" | "assign"]
 })
 
@@ -1285,8 +1316,7 @@ _#defs: "/definitions/settings/definitions/musttagSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/nakedretSettings": close({
-	// Report if a function has more lines of code than this value and
-	// it has naked returns.
+	// Report if a function has more lines of code than this value and it has naked returns.
 	"max-func-lines"?: int & >=0
 })
 
@@ -1299,8 +1329,7 @@ _#defs: "/definitions/settings/definitions/nilnilSettings": close({
 	// To check functions with only two return values.
 	"only-two"?: bool
 
-	// In addition, detect opposite situation (simultaneous return of
-	// non-nil error and valid value).
+	// In addition, detect opposite situation (simultaneous return of non-nil error and valid value).
 	"detect-opposite"?: bool
 
 	// List of return types to check.
@@ -1319,29 +1348,32 @@ _#defs: "/definitions/settings/definitions/nolintlintSettings": close({
 	// Exclude these linters from requiring an explanation.
 	"allow-no-explanation"?: [...#."linter-names"]
 
-	// Enable to require an explanation of nonzero length after each
-	// nolint directive.
+	// Enable to require an explanation of nonzero length after each nolint directive.
 	"require-explanation"?: bool
 
-	// Enable to require nolint directives to mention the specific
-	// linter being suppressed.
+	// Enable to require nolint directives to mention the specific linter being suppressed.
 	"require-specific"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/nonamedreturnsSettings": close({
 	// Report named error if it is assigned inside defer.
 	"report-error-in-defer"?: bool
+
+	// Allow named returns in the signature but report them if referenced in the
+	// body or used by a naked return.
+	"allow-unused-named-returns"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/paralleltestSettings": close({
-	// Ignore missing calls to `t.Parallel()` and only report
-	// incorrect uses of it.
+	// Ignore missing calls to `t.Parallel()` and only report incorrect uses of it.
 	"ignore-missing"?: bool
 
-	// Ignore missing calls to `t.Parallel()` in subtests. Top-level
-	// tests are still required to have `t.Parallel`, but subtests
-	// are allowed to skip it.
+	// Ignore missing calls to `t.Parallel()` in subtests. Top-level tests are still
+	// required to have `t.Parallel`, but subtests are allowed to skip it.
 	"ignore-missing-subtests"?: bool
+
+	// Check that defer is not used with t.Parallel (use t.Cleanup instead).
+	"check-cleanup"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/perfsprintSettings": close({
@@ -1354,8 +1386,7 @@ _#defs: "/definitions/settings/definitions/perfsprintSettings": close({
 	// Enable/disable optimization of error formatting.
 	"error-format"?: bool
 
-	// Optimizes into `err.Error()` even if it is only equivalent for
-	// non-nil errors.
+	// Optimizes into `err.Error()` even if it is only equivalent for non-nil errors.
 	"err-error"?: bool
 
 	// Optimizes `fmt.Errorf`.
@@ -1383,13 +1414,11 @@ _#defs: "/definitions/settings/definitions/perfsprintSettings": close({
 	"loop-other-ops"?: bool
 })
 
-// We do not recommend using this linter before doing performance
-// profiling.
-// For most programs usage of `prealloc` will be premature
-// optimization.
+// We do not recommend using this linter before doing performance profiling.
+// For most programs usage of `prealloc` will be premature optimization.
 _#defs: "/definitions/settings/definitions/preallocSettings": close({
-	// Report preallocation suggestions only on simple loops that have
-	// no returns/breaks/continues/gotos in them.
+	// Report preallocation suggestions only on simple loops that have no
+	// returns/breaks/continues/gotos in them.
 	simple?: bool
 
 	// Report preallocation suggestions on range loops.
@@ -1460,73 +1489,91 @@ _#defs: "/definitions/settings/definitions/rowserrcheckSettings": close({
 	packages?: [...string]
 })
 
-_#defs: "/definitions/settings/definitions/sloglintSettings": close({
-	// Enforce using key-value pairs only (incompatible with
-	// attr-only).
-	"kv-only"?: bool
+_#defs: "/definitions/settings/definitions/sloglintCustomFunc": close({
+	// The full name of the function, including the package. If the function is a
+	// method, the receiver type must be wrapped in parentheses.
+	name?: string
 
-	// Enforce not using global loggers.
+	// The position of the "msg string" argument in the function signature, starting
+	// from 0. If there is no message in the function, a negative value must be
+	// passed.
+	"msg-pos"?: int
+
+	// The position of the "args ...any" argument in the function signature,
+	// starting from 0. If there are no arguments in the function, a negative value
+	// must be passed.
+	"args-pos"?: int
+})
+
+_#defs: "/definitions/settings/definitions/sloglintSettings": close({
+	// Report the use of global loggers.
 	"no-global"?: "" | "all" | "default"
 
-	// Enforce not mixing key-value pairs and attributes.
-	"no-mixed-args"?: bool
-
-	// Enforce using methods that accept a context.
+	// Report the use of functions without a context.Context.
 	context?: "" | "all" | "scope"
 
-	// Enforce using static values for log messages.
+	// Report dynamic log messages, such as those that are built with fmt.Sprintf.
 	"static-msg"?: bool
 
-	// Enforce message style.
+	// Report log messages that do not match a particular style.
 	"msg-style"?: "" | "lowercased" | "capitalized"
 
-	// Enforce a single key naming convention.
-	"key-naming-case"?: "snake" | "kebab" | "camel" | "pascal"
+	// Report the use of both key-value pairs and attributes within a single function call.
+	"no-mixed-args"?: bool
 
-	// Enforce using attributes only (incompatible with kv-only).
+	// Report any use of attributes as function call arguments.
+	"kv-only"?: bool
+
+	// Report any use of key-value pairs as function call arguments.
 	"attr-only"?: bool
 
-	// Enforce using constants instead of raw keys.
+	// Report two or more arguments on the same line.
+	"args-on-sep-lines"?: bool
+
+	// Report the use of string literals as log keys.
 	"no-raw-keys"?: bool
 
-	// Enforce not using specific keys.
+	// Report the use of log keys that are not explicitly allowed.
+	"allowed-keys"?: [...string]
+
+	// Report the use of forbidden log keys.
 	"forbidden-keys"?: [...string]
 
-	// Enforce putting arguments on separate lines.
-	"args-on-sep-lines"?: bool
+	// Report log keys that do not match a particular naming case.
+	"key-naming-case"?: "snake" | "kebab" | "camel" | "pascal"
+
+	// Analyze custom functions in addition to the standard log/slog functions.
+	"custom-funcs"?: [..._#defs."/definitions/settings/definitions/sloglintCustomFunc"]
 })
 
 _#defs: "/definitions/settings/definitions/spancheckSettings": close({
 	// Checks to enable.
 	checks?: [..."end" | "record-error" | "set-status"]
 
-	// A list of regexes for function signatures that silence
-	// `record-error` and `set-status` reports if found in the call
-	// path to a returned error.
+	// A list of regexes for function signatures that silence `record-error` and
+	// `set-status` reports if found in the call path to a returned error.
 	"ignore-check-signatures"?: [...string]
 
-	// A list of regexes for additional function signatures that
-	// create spans.
+	// A list of regexes for additional function signatures that create spans.
 	"extra-start-span-signatures"?: [...string]
 })
 
 _#defs: "/definitions/settings/definitions/staticcheckSettings": close({
 	checks?: [...matchN(>=1, [#."staticcheck-checks", string])]
 
-	// By default, ST1001 forbids all uses of dot imports in non-test
-	// packages. This setting allows setting a whitelist of import
-	// paths that can be dot-imported anywhere.
+	// By default, ST1001 forbids all uses of dot imports in non-test packages. This
+	// setting allows setting a whitelist of import paths that can be dot-imported
+	// anywhere.
 	"dot-import-whitelist"?: [...string]
 
-	// ST1013 recommends using constants from the net/http package
-	// instead of hard-coding numeric HTTP status codes. This setting
-	// specifies a list of numeric status codes that this check does
-	// not complain about.
+	// ST1013 recommends using constants from the net/http package instead of
+	// hard-coding numeric HTTP status codes. This setting specifies a list of
+	// numeric status codes that this check does not complain about.
 	"http-status-code-whitelist"?: [..."100" | "101" | "102" | "103" | "200" | "201" | "202" | "203" | "204" | "205" | "206" | "207" | "208" | "226" | "300" | "301" | "302" | "303" | "304" | "305" | "306" | "307" | "308" | "400" | "401" | "402" | "403" | "404" | "405" | "406" | "407" | "408" | "409" | "410" | "411" | "412" | "413" | "414" | "415" | "416" | "417" | "418" | "421" | "422" | "423" | "424" | "425" | "426" | "428" | "429" | "431" | "451" | "500" | "501" | "502" | "503" | "504" | "505" | "506" | "507" | "508" | "510" | "511"]
 
-	// ST1003 check, among other things, for the correct
-	// capitalization of initialisms. The set of known initialisms
-	// can be configured with this option.
+	// ST1003 check, among other things, for the correct capitalization of
+	// initialisms. The set of known initialisms can be configured with this
+	// option.
 	initialisms?: [...string]
 })
 
@@ -1537,8 +1584,7 @@ _#defs: "/definitions/settings/definitions/tagalignSettings": close({
 	// Whether enable tags sort.
 	sort?: bool
 
-	// Specify the order of tags, the other tags will be sorted by
-	// name.
+	// Specify the order of tags, the other tags will be sorted by name.
 	order?: [...string]
 
 	// Whether enable strict style.
@@ -1582,8 +1628,7 @@ _#defs: "/definitions/settings/definitions/tagliatelleSettings": close({
 			// The field names to ignore.
 			"ignored-fields"?: [...string]
 
-			// Ignore the package (takes precedence over all other
-			// configurations).
+			// Ignore the package (takes precedence over all other configurations).
 			ignore?: bool
 			rules?: {
 				{[=~"^.+$"]: #."tagliatelle-cases"}
@@ -1631,12 +1676,11 @@ _#defs: "/definitions/settings/definitions/testifylintSettings": close({
 		// To enable go vet's printf checks.
 		"check-format-string"?: bool
 
-		// To require f-assertions (e.g. assert.Equalf) if format string
-		// is used, even if there are no variable-length variables.
+		// To require f-assertions (e.g. assert.Equalf) if format string is used, even
+		// if there are no variable-length variables.
 		"require-f-funcs"?: bool
 
-		// To require that the first element of msgAndArgs (msg) has a
-		// string type.
+		// To require that the first element of msgAndArgs (msg) has a string type.
 		"require-string-msg"?: bool
 	})
 	"go-require"?: close({
@@ -1644,8 +1688,8 @@ _#defs: "/definitions/settings/definitions/testifylintSettings": close({
 		"ignore-http-handlers"?: bool
 	})
 	"require-error"?: close({
-		// Regexp for assertions to analyze. If defined, then only matched
-		// error assertions will be reported.
+		// Regexp for assertions to analyze. If defined, then only matched error
+		// assertions will be reported.
 		"fn-pattern"?: string
 	})
 	"suite-extra-assert-call"?: close({
@@ -1658,8 +1702,7 @@ _#defs: "/definitions/settings/definitions/testpackageSettings": close({
 	// Files with names matching this regular expression are skipped.
 	"skip-regexp"?: string
 
-	// List of packages that don't end with _test that tests are
-	// allowed to be in.
+	// List of packages that don't end with _test that tests are allowed to be in.
 	"allow-packages"?: list.UniqueItems() & [...string]
 })
 
@@ -1712,15 +1755,13 @@ _#defs: "/definitions/settings/definitions/unconvertSettings": close({
 })
 
 _#defs: "/definitions/settings/definitions/unparamSettings": close({
-	// Inspect exported functions. Set to true if no external
-	// program/library imports your code.
+	// Inspect exported functions. Set to true if no external program/library imports your code.
 	//
-	// WARNING: if you enable this setting, unparam will report a lot
-	// of false-positives in text editors:
-	// if it's called for subdir of a project it can't find external
-	// interfaces. All text editor integrations
-	// with golangci-lint call it on a directory with the changed
-	// file.
+	// WARNING: if you enable this setting, unparam will report a lot of
+	// false-positives in text editors:
+	// if it's called for subdir of a project it can't find external interfaces. All
+	// text editor integrations
+	// with golangci-lint call it on a directory with the changed file.
 	"check-exported"?: bool
 })
 
@@ -1832,8 +1873,7 @@ _#defs: "/definitions/settings/definitions/varnamelenSettings": close({
 	// Variables used in at most this N-many lines will be ignored.
 	"max-distance"?: int
 
-	// The minimum length of a variable's name that is considered
-	// `long`.
+	// The minimum length of a variable's name that is considered `long`.
 	"min-name-length"?: int
 
 	// Check method receiver names.
@@ -1845,72 +1885,59 @@ _#defs: "/definitions/settings/definitions/varnamelenSettings": close({
 	// Check type parameters.
 	"check-type-param"?: bool
 
-	// Ignore `ok` variables that hold the bool return value of a type
-	// assertion
+	// Ignore `ok` variables that hold the bool return value of a type assertion
 	"ignore-type-assert-ok"?: bool
 
-	// Ignore `ok` variables that hold the bool return value of a map
-	// index.
+	// Ignore `ok` variables that hold the bool return value of a map index.
 	"ignore-map-index-ok"?: bool
 
-	// Ignore `ok` variables that hold the bool return value of a
-	// channel receive.
+	// Ignore `ok` variables that hold the bool return value of a channel receive.
 	"ignore-chan-recv-ok"?: bool
 
-	// Optional list of variable names that should be ignored
-	// completely.
+	// Optional list of variable names that should be ignored completely.
 	"ignore-names"?: [...string]
 
-	// Optional list of variable declarations that should be ignored
-	// completely.
+	// Optional list of variable declarations that should be ignored completely.
 	"ignore-decls"?: [...string]
 })
 
 _#defs: "/definitions/settings/definitions/whitespaceSettings": close({
-	// Enforces newlines (or comments) after every multi-line if
-	// statement
+	// Enforces newlines (or comments) after every multi-line if statement
 	"multi-if"?: bool
 
-	// Enforces newlines (or comments) after every multi-line function
-	// signature
+	// Enforces newlines (or comments) after every multi-line function signature
 	"multi-func"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/wrapcheckSettings": close({
-	// An array of strings specifying additional substrings of
-	// signatures to ignore.
+	// An array of strings specifying additional substrings of signatures to ignore.
 	"extra-ignore-sigs"?: [...string]
 
-	// An array of strings which specify substrings of signatures to
-	// ignore.
+	// An array of strings which specify substrings of signatures to ignore.
 	"ignore-sigs"?: [...string]
 
-	// An array of strings which specify regular expressions of
-	// signatures to ignore.
+	// An array of strings which specify regular expressions of signatures to ignore.
 	"ignore-sig-regexps"?: [...string]
 
-	// An array of glob patterns which, if any match the package of
-	// the function returning the error, will skip wrapcheck analysis
-	// for this error.
+	// An array of glob patterns which, if any match the package of the function
+	// returning the error, will skip wrapcheck analysis for this error.
 	"ignore-package-globs"?: [...string]
 
-	// An array of glob patterns which, if matched to an underlying
-	// interface name, will ignore unwrapped errors returned from a
-	// function whose call is defined on the given interface.
+	// An array of glob patterns which, if matched to an underlying interface name,
+	// will ignore unwrapped errors returned from a function whose call is defined
+	// on the given interface.
 	"ignore-interface-regexps"?: [...string]
 
-	// Determines whether wrapcheck should report errors returned from
-	// inside the package.
+	// Determines whether wrapcheck should report errors returned from inside the package.
 	"report-internal-errors"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/wslSettings": close({
-	// Controls if you may cuddle assignments and anything without
-	// needing an empty line between them.
+	// Controls if you may cuddle assignments and anything without needing an empty line between them.
 	"allow-assign-and-anything"?: bool
 
-	// Allow calls and assignments to be cuddled as long as the lines
-	// have any matching variables, fields or types.
+	// Allow calls and assignments to be cuddled as long as the lines have any
+	// matching variables, fields or types.
 	"allow-assign-and-call"?: bool
 
 	// Allow declarations (var) to be cuddled.
@@ -1919,12 +1946,11 @@ _#defs: "/definitions/settings/definitions/wslSettings": close({
 	// A list of call idents that everything can be cuddled with.
 	"allow-cuddle-with-calls"?: [...string]
 
-	// AllowCuddleWithRHS is a list of right hand side variables that
-	// is allowed to be cuddled with anything.
+	// AllowCuddleWithRHS is a list of right hand side variables that is allowed to
+	// be cuddled with anything.
 	"allow-cuddle-with-rhs"?: [...string]
 
-	// Allow cuddling with any block as long as the variable is used
-	// somewhere in the block
+	// Allow cuddling with any block as long as the variable is used somewhere in the block
 	"allow-cuddle-used-in-block"?: bool
 
 	// Allow multiline assignments to be cuddled.
@@ -1936,32 +1962,33 @@ _#defs: "/definitions/settings/definitions/wslSettings": close({
 	// Allow trailing comments in ending of blocks.
 	"allow-trailing-comment"?: bool
 
-	// When force-err-cuddling is enabled this is a list of names used
-	// for error variables to check for in the conditional.
+	// When force-err-cuddling is enabled this is a list of names used for error
+	// variables to check for in the conditional.
 	"error-variable-names"?: [...string]
 
 	// Force newlines in end of case at this limit (0 = never).
 	"force-case-trailing-whitespace"?: int & >=0
 
-	// Causes an error when an If statement that checks an error
-	// variable doesn't cuddle with the assignment of that variable.
+	// Causes an error when an If statement that checks an error variable doesn't
+	// cuddle with the assignment of that variable.
 	"force-err-cuddling"?: bool
 
-	// Causes an error if a short declaration (:=) cuddles with
-	// anything other than another short declaration.
+	// Causes an error if a short declaration (:=) cuddles with anything other than
+	// another short declaration.
 	"force-short-decl-cuddling"?: bool
 
-	// If true, append is only allowed to be cuddled if appending
-	// value is matching variables, fields or types on line above.
+	// If true, append is only allowed to be cuddled if appending value is matching
+	// variables, fields or types on line above.
 	"strict-append"?: bool
 })
 
 _#defs: "/definitions/settings/definitions/wslSettingsV5": close({
-	"allow-first-in-block"?: bool
-	"allow-whole-block"?:    bool
-	"branch-max-lines"?:     int
-	"case-max-lines"?:       int
-	default?:                "all" | "none" | "default" | ""
+	"allow-first-in-block"?:  bool
+	"allow-whole-block"?:     bool
+	"branch-max-lines"?:      int
+	"case-max-lines"?:        int
+	"cuddle-max-statements"?: int
+	default?:                 "all" | "none" | "default" | ""
 	enable?: [...#."wsl-checks"]
 	disable?: [...#."wsl-checks"]
 })

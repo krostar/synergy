@@ -17,6 +17,7 @@
       "dogsled"
       "err113"
       "exhaustruct"
+      "exhaustruct_v5"
       "forbidigo"
       "forcetypeassert"
       "funlen"
@@ -331,7 +332,8 @@
         ];
         custom-order = true;
       };
-      gofumpt.extra-rules = true;
+
+      gofumpt.extra.group-params = true;
     };
     exclusions = {
       generated = "lax";

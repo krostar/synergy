@@ -13,6 +13,7 @@
                 "bidichk"
                 "bodyclose"
                 "canonicalheader"
+                "clickhouselint"
                 "containedctx"
                 "contextcheck"
                 "copyloopvar"
@@ -30,6 +31,7 @@
                 "errorlint"
                 "exhaustive"
                 "exhaustruct"
+                "exhaustruct_v5"
                 "exptostd"
                 "fatcontext"
                 "forbidigo"
@@ -52,6 +54,7 @@
                 "goheader"
                 "gomoddirectives"
                 "gomodguard"
+                "gomodguard_v2"
                 "goprintffuncname"
                 "gosec"
                 "gosimple"
@@ -427,6 +430,12 @@
                                         description = "Checks only comments, skip strings.";
                                         type = types.nullOr types.bool;
                                       };
+
+                                      skip-raw-strings = lib.mkOption {
+                                        default = null;
+                                        description = "Skip raw string literals (backtick-delimited) from duplicate word checking.";
+                                        type = types.nullOr types.bool;
+                                      };
                                     };
                                   }
                                 );
@@ -515,6 +524,44 @@
                                   }
                                 );
                                 default = null;
+                              };
+
+                              bodyclose = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      check-consumption = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Check that the response body is consumed.";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                                description = "Settings for the bodyclose linter.";
+                              };
+
+                              canonicalheader = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      use-default-exclusions = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Use the default exclusions.";
+                                      };
+
+                                      exclusions = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "List of canonical headers to exclude from the check.";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                                description = "Settings for the canonicalheader linter.";
                               };
 
                               cyclop = lib.mkOption {
@@ -962,6 +1009,64 @@
                                 default = null;
                               };
 
+                              exhaustruct_v5 = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      enforce-patterns = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "List of regular expressions to match type names that should be checked.";
+                                      };
+
+                                      ignore-patterns = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "List of regular expressions to match type names that should be skipped from checking.";
+                                      };
+
+                                      optional-patterns = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "List of regular expressions to match type names where all fields are treated as optional.";
+                                      };
+
+                                      allow-empty = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allows empty structures, effectively excluding them from the check.";
+                                      };
+
+                                      allow-empty-patterns = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "List of regular expressions to match type names that should be allowed to be empty.";
+                                      };
+
+                                      allow-empty-returns = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allows empty structures in return statements.";
+                                      };
+
+                                      allow-empty-declarations = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allows empty structures in variable declarations.";
+                                      };
+
+                                      explicit-mode = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "When true, only types marked with //exhaustruct:enforce directive or matching enforce-rx patterns are checked.";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                                description = "Settings for the exhaustruct_v5 linter.";
+                              };
+
                               fatcontext = lib.mkOption {
                                 type = types.nullOr (
                                   types.submodule {
@@ -970,6 +1075,18 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Check for potential fat contexts in struct pointers.";
+                                      };
+
+                                      check-loops = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Disable detection of fat contexts in function literals.";
+                                      };
+
+                                      check-function-literals = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Disable detection of fat contexts in function literals.";
                                       };
                                     };
                                   }
@@ -1045,6 +1162,11 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Checks if the constructors and/or structure methods are sorted alphabetically.";
+                                      };
+                                      function = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Checks that exported functions are placed before unexported functions.";
                                       };
                                     };
                                   }
@@ -1231,6 +1353,23 @@
                                         description = "Minimum occurrences count to trigger.";
                                       };
 
+                                      exclude-types = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.listOf (
+                                            types.enum [
+                                              "Assignment"
+                                              "Binary"
+                                              "Case"
+                                              "Return"
+                                              "Call"
+                                              "CompositeLit"
+                                            ]
+                                          )
+                                        );
+                                        default = null;
+                                        description = "Look for constants of specified types only.";
+                                      };
+
                                       ignore-calls = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
@@ -1271,6 +1410,24 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Evaluates of constant expressions like Prefix + \"suffix\".";
+                                      };
+
+                                      ignore-tests = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Ignore strings from test files.";
+                                      };
+
+                                      ignore-functions = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "Ignore constants matching the given function calls.";
+                                      };
+
+                                      ignore-map-keys = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Ignore string literals used as map keys.";
                                       };
                                     };
                                   }
@@ -1904,6 +2061,12 @@
                                         description = "List of allowed `replace` directives.";
                                       };
 
+                                      replace-allow-all = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allow all `replace` directives.";
+                                      };
+
                                       retract-allow-no-explanation = lib.mkOption {
                                         type = types.nullOr types.bool;
                                         default = null;
@@ -2058,6 +2221,101 @@
                                 default = null;
                               };
 
+                              gomodguard_v2 = lib.mkOption {
+                                type = types.nullOr (
+                                  types.submodule {
+                                    options = {
+                                      local-replace-directives = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Raise lint issues if loading local path with replace directive.";
+                                      };
+
+                                      allowed = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.listOf (
+                                            types.submodule {
+                                              options = {
+                                                module = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                  description = "Allowed module.";
+                                                };
+
+                                                version = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                  description = "Version constraint.";
+                                                };
+
+                                                match-type = lib.mkOption {
+                                                  type = types.nullOr (
+                                                    types.enum [
+                                                      ""
+                                                      "exact"
+                                                      "prefix"
+                                                      "regex"
+                                                    ]
+                                                  );
+                                                  default = null;
+                                                  description = "How the module is matched.";
+                                                };
+                                              };
+                                            }
+                                          )
+                                        );
+                                        default = null;
+                                        description = "List of allowed modules.";
+                                      };
+
+                                      blocked = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.listOf (
+                                            types.submodule {
+                                              options = {
+                                                module = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                  description = "Blocked module.";
+                                                };
+
+                                                version = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                  description = "Version constraint.";
+                                                };
+
+                                                match-type = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                  description = "How the module is matched.";
+                                                };
+
+                                                reason = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                  description = "Reason why the module is blocked.";
+                                                };
+
+                                                recommendations = lib.mkOption {
+                                                  type = types.nullOr (types.listOf types.str);
+                                                  default = null;
+                                                  description = "Recommended modules that should be used instead.";
+                                                };
+                                              };
+                                            }
+                                          )
+                                        );
+                                        default = null;
+                                        description = "List of blocked modules.";
+                                      };
+                                    };
+                                  }
+                                );
+                                default = null;
+                                description = "Settings for the gomodguard_v2 linter.";
+                              };
+
                               gosec =
                                 let
                                   rules = [
@@ -2072,10 +2330,18 @@
                                     "G110"
                                     "G111"
                                     "G112"
+                                    "G113"
                                     "G114"
                                     "G115"
                                     "G116"
                                     "G117"
+                                    "G118"
+                                    "G119"
+                                    "G120"
+                                    "G121"
+                                    "G122"
+                                    "G123"
+                                    "G124"
                                     "G201"
                                     "G202"
                                     "G203"
@@ -2093,6 +2359,7 @@
                                     "G404"
                                     "G405"
                                     "G406"
+                                    "G408"
                                     "G501"
                                     "G502"
                                     "G503"
@@ -2108,6 +2375,10 @@
                                     "G704"
                                     "G705"
                                     "G706"
+                                    "G707"
+                                    "G708"
+                                    "G709"
+                                    "G710"
                                   ];
                                 in
                                 lib.mkOption {
@@ -2218,6 +2489,7 @@
                                     "httpresponse"
                                     "httpmux"
                                     "ifaceassert"
+                                    "inline"
                                     "loopclosure"
                                     "lostcancel"
                                     "nilfunc"
@@ -2347,6 +2619,7 @@
                                     "unexported"
                                     "unused"
                                     "opaque"
+                                    "unusedmethod"
                                   ];
                                 in
                                 lib.mkOption {
@@ -2376,6 +2649,22 @@
                                                   );
                                                   default = null;
                                                   description = "Settings for the unused analyzer.";
+                                                };
+
+                                                unusedmethod = lib.mkOption {
+                                                  type = types.nullOr (
+                                                    types.submodule {
+                                                      options = {
+                                                        exclude = lib.mkOption {
+                                                          type = types.nullOr (types.listOf types.str);
+                                                          default = null;
+                                                          description = "List of regular expressions to exclude unused methods from check.";
+                                                        };
+                                                      };
+                                                    }
+                                                  );
+                                                  default = null;
+                                                  description = "Settings for the unusedmethod analyzer.";
                                                 };
                                               };
                                             }
@@ -2555,15 +2844,21 @@
                                       let
                                         analyzers = [
                                           "any"
-                                          "fmtappendf"
+                                          "atomictypes"
+                                          "embedlit"
+                                          "errorsastype"
                                           "forvar"
+                                          "importcomment"
                                           "mapsloop"
                                           "minmax"
                                           "newexpr"
                                           "omitzero"
                                           "plusbuild"
                                           "rangeint"
+                                          "reflecttypeassert"
                                           "reflecttypefor"
+                                          "slicesbackward"
+                                          "slicesclip"
                                           "slicescontains"
                                           "slicessort"
                                           "stditerators"
@@ -2573,7 +2868,7 @@
                                           "stringsbuilder"
                                           "testingcontext"
                                           "unsafefuncs"
-                                          "waitgroup"
+                                          "waitgroupgo"
                                         ];
                                       in
                                       {
@@ -2945,6 +3240,12 @@
                                         default = null;
                                         description = "Report named error if it is assigned inside defer.";
                                       };
+
+                                      allow-unused-named-returns = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Allow named returns in the signature but report them if referenced in the body or used by a naked return.";
+                                      };
                                     };
                                   }
                                 );
@@ -2964,6 +3265,12 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Ignore missing calls to `t.Parallel()` in subtests. Top-level tests are still required to have `t.Parallel`, but subtests are allowed to skip it.";
+                                      };
+
+                                      check-cleanup = lib.mkOption {
+                                        type = types.nullOr types.bool;
+                                        default = null;
+                                        description = "Check that defer is not used with t.Parallel (use t.Cleanup instead).";
                                       };
                                     };
                                   }
@@ -3228,6 +3535,7 @@
                                     "nested-structs"
                                     "optimize-operands-order"
                                     "package-comments"
+                                    "package-naming"
                                     "package-directory-mismatch"
                                     "range-val-address"
                                     "range-val-in-closure"
@@ -3485,6 +3793,12 @@
                                         description = "Enforce using constants instead of raw keys.";
                                       };
 
+                                      allowed-keys = lib.mkOption {
+                                        type = types.nullOr (types.listOf types.str);
+                                        default = null;
+                                        description = "Report the use of log keys that are not explicitly allowed.";
+                                      };
+
                                       forbidden-keys = lib.mkOption {
                                         type = types.nullOr (types.listOf types.str);
                                         default = null;
@@ -3495,6 +3809,36 @@
                                         type = types.nullOr types.bool;
                                         default = null;
                                         description = "Enforce putting arguments on separate lines.";
+                                      };
+
+                                      custom-funcs = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.listOf (
+                                            types.submodule {
+                                              options = {
+                                                name = lib.mkOption {
+                                                  type = types.nullOr types.str;
+                                                  default = null;
+                                                  description = "The full name of the function, including the package. If the function is a method, the receiver type must be wrapped in parentheses.";
+                                                };
+
+                                                msg-pos = lib.mkOption {
+                                                  type = types.nullOr types.int;
+                                                  default = null;
+                                                  description = "The position of the \"msg string\" argument in the function signature, starting from 0. If there is no message in the function, a negative value must be passed.";
+                                                };
+
+                                                args-pos = lib.mkOption {
+                                                  type = types.nullOr types.int;
+                                                  default = null;
+                                                  description = "The position of the \"args ...any\" argument in the function signature, starting from 0. If there are no arguments in the function, a negative value must be passed.";
+                                                };
+                                              };
+                                            }
+                                          )
+                                        );
+                                        default = null;
+                                        description = "Analyze custom functions in addition to the standard log/slog functions.";
                                       };
                                     };
                                   }
@@ -5008,6 +5352,11 @@
                                     "leading-whitespace"
                                     "trailing-whitespace"
                                     "after-block"
+                                    "after-decl"
+                                    "after-defer"
+                                    "after-expr"
+                                    "after-go"
+                                    "cuddle-group"
                                   ];
                                 in
                                 lib.mkOption {
@@ -5048,6 +5397,11 @@
                                           type = types.nullOr types.int;
                                           default = null;
                                           description = "Case max lines.";
+                                        };
+                                        cuddle-max-statements = lib.mkOption {
+                                          type = types.nullOr types.int;
+                                          default = null;
+                                          description = "Cuddle max statements.";
                                         };
                                       };
                                     }
@@ -5332,6 +5686,34 @@
                                         type = types.nullOr types.str;
                                         default = null;
                                         description = "Module path which contains the source code being formatted.";
+                                      };
+
+                                      extra = lib.mkOption {
+                                        type = types.nullOr (
+                                          types.submodule {
+                                            options = {
+                                              group-params = lib.mkOption {
+                                                type = types.nullOr types.bool;
+                                                default = null;
+                                                description = "Group parameters of the same type on a single line.";
+                                              };
+
+                                              clothe-returns = lib.mkOption {
+                                                type = types.nullOr types.bool;
+                                                default = null;
+                                                description = "Add parentheses around bare returns.";
+                                              };
+
+                                              balance-calls = lib.mkOption {
+                                                type = types.nullOr types.bool;
+                                                default = null;
+                                                description = "Balance function call arguments across lines.";
+                                              };
+                                            };
+                                          }
+                                        );
+                                        default = null;
+                                        description = "Extra formatting rules that are disabled by default.";
                                       };
                                     };
                                   }
