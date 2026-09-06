@@ -7,6 +7,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    system-manager = {
+      url = "github:numtide/system-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     haumea = {
       url = "github:nix-community/haumea";
       inputs.nixpkgs.follows = "nixpkgs";
